@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="/images/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Inter:300,600,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <title>CMP1063 | Biblioteca</title>
 
     <style>
@@ -385,6 +387,37 @@
             }
         }
 
+        /* Estilização do título "Livros" */
+        .section-title {
+            font-size: 28px; /* Tamanho maior para o título */
+            color: #333; /* Cor do texto */
+            text-align: center; /* Alinha o texto à esquerda */
+            margin-bottom: 10px; /* Espaço abaixo do título */
+            position: relative; /* Necessário para o posicionamento do ícone */
+            padding-left: 35px; /* Espaço para o ícone */
+        }
+
+        /* Linha abaixo do título */
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px; /* Distância da linha abaixo */
+            width: 100%;
+            height: 2px;
+            background-color: #4CAF50; /* Cor da linha */
+        }
+
+        /* Estilização do ícone ao lado do título */
+        .section-title i {
+            position: center;
+            left: 0;
+            top: 0;
+            font-size: 24px; /* Tamanho do ícone */
+            color: #4CAF50; /* Cor do ícone */
+        }
+
+
     </style>
 
 </head>
@@ -433,8 +466,9 @@
             </form>
         </div>
         
-
-        <h2>Livros</h2>
+        <h2 class="section-title">
+            <i class="fas fa-book"></i> Livros
+        </h2>
         <table>
             <thead>
                 <tr>

@@ -9,7 +9,9 @@ export class Library {
 
     // Método para adicionar um livro ao acervo
     public addBook(book: Book): boolean {
+
         const exists = this.acervo.some(b => b.codigo === book.codigo);
+
         if (!exists) {
             this.acervo.push(book);
             console.log(`[SRV-LIBRARY ✅] Livro adicionado: ${book.codigo} - ${book.titulo} (${book.autor})`);
@@ -35,18 +37,26 @@ export class Library {
             console.log(`[SRV-LIBRARY 🔴] Livro não disponível para empréstimo.`);
             return 'not_available';
         }
+
         book.disponivel = false;
         console.log(`[SRV-LIBRARY ✅] Empréstimo registrado para o livro: ${book.titulo}`);
         return 'success';
     }
 
     // Método para registrar a devolução de um livro
-    public registerReturn(codigo: number): void {
+    public registerReturn(codigo: number): string {
+
+        console.log(`[SRV-LIBRARY 🟡] Tentando registrar devolução para o livro com código: ${codigo}`);
+
         let book = this.acervo.find(book => book.codigo === codigo);
-        if (book) {
-            book.disponivel = true;
-            console.log(`[SRV-LIBRARY ✅] Devolução registrada para o livro: ${book.titulo}`);
+        if (!book) {
+            console.log(`[SRV-LIBRARY 🔴] Livro com código ${codigo} não encontrado.`);
+            return 'not_found';
         }
+
+        book.disponivel = true;
+        console.log(`[SRV-LIBRARY ✅] Devolução registrada para o livro: ${book.titulo}`);
+        return 'success';
     }
 
     // Método para retornar todos os livros disponíveis

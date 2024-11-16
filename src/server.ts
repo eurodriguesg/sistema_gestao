@@ -1,10 +1,10 @@
 import path from 'path';
-import express from 'express';
 import bodyParser from 'body-parser';
 import os from 'os';
 import chalk from 'chalk';
 import { Library } from './models/Library';
 import { Book } from './models/Book';
+import express, { Request, Response } from 'express';
 
 // Configurações do servidor
 const port = 31063;
@@ -40,20 +40,43 @@ app.get('/books', (req, res) => {
 });
 
 app.post('/books', (req, res) => {
-    const { codigo, titulo, autor, disponivel } = req.body;
-    const book = new Book(Number(codigo), titulo, autor, disponivel);
-    const added = library.addBook(book);
-    if (added) {
-        res.status(201).send(book);
-    } else {
-        res.status(409).send({ message: `Livro com código ${book.codigo} já existe no acervo.` });
+    try {
+        const { codigo, titulo, autor, disponivel } = req.body;
+
+        if (!codigo) {
+            throw new Error('Campo obrigatório deve ser preenchidos: código');
+        }
+        if (!titulo) {
+            throw new Error('Campo obrigatório deve ser preenchidos: Título');
+        }
+        if (!autor) {
+            throw new Error('Campo obrigatório deve ser preenchidos: Autor');
+        }
+        if (!disponivel) {
+            throw new Error('Campo obrigatório deve ser preenchidos: Disponivel');
+        }
+
+        // Criar o livro e tentar adicioná-lo ao acervo
+        const book = new Book(Number(codigo), titulo, autor, Boolean(disponivel));
+        const added = library.addBook(book);
+
+        if (added) {
+            res.status(201).send(book);
+        } else {
+            res.status(409).send({ message: `Livro com código ${book.codigo} já existe no acervo.` });
+        }
+    } catch (error: any) {
+        res.status(400).send({ message: error.message });
     }
 });
 
 app.post('/books/:codigo/loan', (req, res) => {
+
     const codigo = parseInt(req.params.codigo);
-    console.log(`[SRV 🟡] Recebido pedido de empréstimo para o livro com código: ${codigo}`);
+    // console.log(`[SRV 🟡] Recebido pedido de empréstimo para o livro com código: ${codigo}`);
+
     const loaned = library.registerLoan(codigo);
+
     if (loaned === 'not_found') {
         res.status(404).send({ message: 'Livro não existe' });
     } else if (loaned === 'not_available') {
@@ -66,9 +89,20 @@ app.post('/books/:codigo/loan', (req, res) => {
 });
 
 app.post('/books/:codigo/return', (req, res) => {
-    const codigo = Number(req.params.codigo);
-    library.registerReturn(codigo);
-    res.status(200).send({ message: '[SRV ✅] Devolução registrada' });
+    
+    const codigo = parseInt(req.params.codigo);
+    // console.log(`[SRV 🟡] Recebido pedido de devolução para o livro com código: ${codigo}`);
+
+    const returnb = library.registerReturn(codigo);
+
+    if (returnb === 'not_found') {
+        res.status(404).send({ message: 'Livro não existe' });
+    } else if (returnb === 'success') {
+        res.status(200).send({ message: 'Devolução registrada' });
+    } else {
+        res.status(500).send({ message: 'Erro desconhecido' });
+    }
+    
 });
 
 app.get('/books/available', (req, res) => {
