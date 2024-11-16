@@ -172,7 +172,8 @@
         }
 
         /* Estilização geral do formulário */
-        #addBookForm {
+        #addBookForm,
+        #isBookAvailableForm {
             width: 100%;
             max-width: 600px;
             margin: 20px auto;
@@ -184,7 +185,8 @@
         }
 
         /* Estilização do título */
-        #addBookForm h2 {
+        #addBookForm h2,
+        #isBookAvailableForm h2 {
             font-size: 24px;
             text-align: center;
             margin-bottom: 20px;
@@ -199,7 +201,8 @@
         }
 
         /* Estilização dos campos de input */
-        #addBookForm input {
+        #addBookForm input,
+        #isBookAvailableForm input{
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -209,20 +212,23 @@
         }
 
         /* Foco nos campos de input */
-        #addBookForm input:focus {
+        #addBookForm input:focus,
+        #isBookAvailableForm input:focus{
             border-color: #4CAF50;
             outline: none;
         }
 
         /* Estilização do checkbox */
-        #addBookForm label {
+        #addBookForm label,
+        #isBookAvailableForm label{
             display: inline-block;
             font-size: 16px;
             margin-left: 10px;
         }
 
         /* Estilização do botão */
-        #addBookForm button {
+        #addBookForm button,
+        #isBookAvailableForm button {
             width: 100%;
             padding: 12px;
             background-color: #4CAF50;
@@ -235,7 +241,8 @@
         }
 
         /* Efeito no botão ao passar o mouse */
-        #addBookForm button:hover {
+        #addBookForm button:hover,
+        #isBookAvailableForm button:hover{
             background-color: #45a049;
         }
 
@@ -352,6 +359,7 @@
             }
             
             #addBookForm,
+            #isBookAvailableForm,
             #loanBookForm,
             #returnBookForm {
                 width: 90%;
@@ -359,12 +367,14 @@
             }
 
             #addBookForm input,
+            #isBookAvailableForm input,
             #loanBookForm input,
             #returnBookForm input {
                 width: 100%;
             }
 
             #addBookForm button,
+            #isBookAvailableForm input,
             #loanBookForm button, 
             #returnBookForm button {
                 width: 100%;
@@ -453,8 +463,20 @@
                 </label>
             </div>
 
-            <button type="submit" class="button">Adicionar Livro</button>
-        </form>        
+            <button type="submit" class="button">Adicionar</button>
+        </form>       
+        
+        <form id="isBookAvailableForm">
+
+            <h2 class="section-title">
+                <i class="fas fa-search"></i> Consultar Livro
+            </h2>
+
+            <input type="number" id="avaiCodigo" placeholder="Código do Livro" required>
+
+
+            <button type="submit" class="button">Buscar</button>
+        </form>  
         
         <div class="form-container">
             <form id="loanBookForm">
@@ -462,7 +484,7 @@
                     <i class="fas fa-handshake"></i> Registrar Empréstimo
                 </h2>
                 <input type="number" id="loanCodigo" placeholder="Código do Livro" required>
-                <button type="submit" class="button">Registrar Empréstimo</button>
+                <button type="submit" class="button">Registrar</button>
             </form>
         
             <form id="returnBookForm">
@@ -470,7 +492,7 @@
                     <i class="fas fa-undo"></i> Registrar Devolução
                 </h2>
                 <input type="number" id="returnCodigo" placeholder="Código do Livro" required>
-                <button type="submit" class="button">Registrar Devolução</button>
+                <button type="submit" class="button">Registrar</button>
             </form>
         </div>
         
@@ -489,6 +511,7 @@
             <tbody id="booksList">
             </tbody>
         </table>
+        
     </div>
 
     <footer>
@@ -519,11 +542,34 @@
                 }
                 loadBooks();
             });
+
+            // Manipulador para registrar empréstimo
+            const isBookAvailableForm = document.getElementById('isBookAvailableForm');
+            if (isBookAvailableForm) {
+                isBookAvailableForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const codigo = document.getElementById('avaiCodigo').value;
+                    const response = await fetch(`/books/${codigo}/isAvailable`, {
+                        method: 'POST'
+                    });
+                    if (response.status === 200) {
+                        alert('Livro disponível');
+                        isBookAvailableForm.reset(); // Limpar campos do formulário
+                    } else if (response.status === 404) {
+                        alert('Livro não existe');
+                    } else if (response.status === 409) {
+                        alert('Livro não disponível');
+                    } else {
+                        alert('Erro desconhecido');
+                    }
+                    loadBooks();
+                });
+            }
     
             // Manipulador para registrar empréstimo
-            const loanForm = document.getElementById('loanBookForm');
-            if (loanForm) {
-                loanForm.addEventListener('submit', async (event) => {
+            const loanBookForm = document.getElementById('loanBookForm');
+            if (loanBookForm) {
+                loanBookForm.addEventListener('submit', async (event) => {
                     event.preventDefault();
                     const codigo = document.getElementById('loanCodigo').value;
                     const response = await fetch(`/books/${codigo}/loan`, {
@@ -531,7 +577,7 @@
                     });
                     if (response.status === 200) {
                         alert('Empréstimo registrado');
-                        loanForm.reset(); // Limpar campos do formulário
+                        loanBookForm.reset(); // Limpar campos do formulário
                     } else if (response.status === 404) {
                         alert('Livro não existe');
                     } else if (response.status === 409) {
@@ -566,14 +612,14 @@
             async function loadBooks() {
                 try {
                     const response = await fetch('/books');
-                    console.log('Status da resposta:', response.status);
+                    // console.log('Status da resposta:', response.status);
                     
                     if (!response.ok) {
                         throw new Error('Erro ao carregar livros');
                     }
                     
                     const books = await response.json();
-                    console.log('Livros carregados:', books);
+                    // console.log('Livros carregados:', books);
                     
                     const booksList = document.getElementById('booksList');
                     booksList.innerHTML = '';

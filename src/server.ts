@@ -116,7 +116,7 @@ app.post('/books/:codigo/return', (req, res) => {
     
 });
 
-app.get('/books/:codigo/isAvailable', (req, res) => {
+app.post('/books/:codigo/isAvailable', (req, res) => {
 
     const codigo = parseInt(req.params.codigo);
     // console.log(`[SRV 🟡] Recebido pedido de devolução para o livro com código: ${codigo}`);
@@ -126,7 +126,16 @@ app.get('/books/:codigo/isAvailable', (req, res) => {
     }
 
     const availableBooks = library.isBookAvailable(codigo);
-    res.status(200).send(availableBooks);
+    // console.log(availableBooks)
+
+    if (availableBooks) {
+        res.status(200).send({ message: 'Livro disponível' });
+    } else if (!availableBooks) {
+        res.status(409).send({ message: 'Livro não disponível' });
+    } else {
+        res.status(500).send({ message: 'Erro desconhecido' });
+    }
+    
 });
 
 app.get('/books/available', (req, res) => {
