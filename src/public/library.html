@@ -30,7 +30,7 @@
             margin-top: 20px;
             margin-bottom: 70px;
             text-align: center;
-            max-width: 900px;
+            max-width: 1000px;
             overflow: visible; /* Faz com que a div.container não tenha seu próprio scroll */
         }
         .container p {
@@ -243,7 +243,7 @@
             justify-content: space-between; /* Espaçamento entre os formulários */
             gap: 30px; /* Espaço entre os dois formulários */
             margin: 0 auto; /* Centraliza o contêiner */
-            max-width: 800px;
+            max-width: 900px;
         }
 
         /* Estilização geral do formulário */
@@ -316,6 +316,32 @@
             background-color: #45a049;
         }
 
+        .back-link {
+            display: flex;
+            align-items: center;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .back-link img {
+            margin-left: 3%; /* Espaço entre a imagem e a borda esquerda do link */
+            width: 30px;
+            margin-right: 10px; /* Espaço entre a imagem e o texto */
+            transform: rotate(180deg); /* Rotação da imagem */
+        }
+
+        .back-link span {
+            margin-right: 20px; /* Espaço entre o texto e a borda direita do link */
+        }
+
+        .back-link:hover {
+            text-decoration: none; /* Remove a sublinhado ao hover */
+        }
+
+        .back-link:hover span {
+            text-decoration: none; /* Sublinhado apenas no texto ao hover */
+        }
+
         /* Responsividade - Para telas menores */
         @media (max-width: 768px) {
             .input-group {
@@ -371,6 +397,12 @@
     <div class="stripe red-stripe"></div>
 
     <div class="container">
+
+        <a href="/" class="back-link">
+            <img src="/images/seta.svg" alt="Voltar">
+            <span>Início</span>
+          </a>
+
         <h1>Sistema de Gerenciamento de Biblioteca</h1>
 
         <form id="addBookForm">
