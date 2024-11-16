@@ -394,7 +394,6 @@
             text-align: center; /* Alinha o texto à esquerda */
             margin-bottom: 10px; /* Espaço abaixo do título */
             position: relative; /* Necessário para o posicionamento do ícone */
-            padding-left: 35px; /* Espaço para o ícone */
         }
 
         /* Linha abaixo do título */
@@ -437,9 +436,14 @@
           </a>
 
         <h1>Sistema de Gerenciamento de Biblioteca</h1>
+        <br>
 
         <form id="addBookForm">
-            <h2>Adicionar Livro</h2>
+
+            <h2 class="section-title">
+                <i class="fas fa-plus-square"></i> Adicionar Livro
+            </h2>
+
             <div class="input-group">
                 <input type="number" id="codigo" placeholder="Código" required>
                 <input type="text"   id="titulo" placeholder="Título" required>
@@ -454,13 +458,17 @@
         
         <div class="form-container">
             <form id="loanBookForm">
-                <h2>Registrar Empréstimo</h2>
+                <h2 class="section-title">
+                    <i class="fas fa-handshake"></i> Registrar Empréstimo
+                </h2>
                 <input type="number" id="loanCodigo" placeholder="Código do Livro" required>
                 <button type="submit" class="button">Registrar Empréstimo</button>
             </form>
         
             <form id="returnBookForm">
-                <h2>Registrar Devolução</h2>
+                <h2 class="section-title">
+                    <i class="fas fa-undo"></i> Registrar Devolução
+                </h2>
                 <input type="number" id="returnCodigo" placeholder="Código do Livro" required>
                 <button type="submit" class="button">Registrar Devolução</button>
             </form>
