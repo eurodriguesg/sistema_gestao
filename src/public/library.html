@@ -601,7 +601,11 @@
                     if (response.status === 200) {
                         alert('Devolução registrada');
                         returnForm.reset(); // Limpar campos do formulário
-                    } else {
+                    } else if (response.status === 404) {
+                        alert('Livro não existe');
+                    } else if (response.status === 409) {
+                        alert('Livro já devolvido');
+                    }else {
                         alert('Erro ao registrar devolução');
                     }
                     loadBooks();
