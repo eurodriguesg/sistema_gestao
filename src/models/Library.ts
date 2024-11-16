@@ -18,7 +18,7 @@ export class Library {
             //console.log('Acervo atual:', this.acervo);
             return true;
         } else {
-            console.log(`[SRV-LIBRARY 🔴] Livro com código ${book.codigo} já existe no acervo.`);
+            console.log(`[SRV-LIBRARY 🔴] Livro com código ${book.codigo} já existe no acervo`);
             return false;
         }
     }
@@ -30,17 +30,31 @@ export class Library {
 
         let book = this.acervo.find(book => book.codigo === codigo);
         if (!book) {
-            console.log(`[SRV-LIBRARY 🔴] Livro com código ${codigo} não encontrado.`);
+            console.log(`[SRV-LIBRARY 🔴] Livro com código ${codigo} não encontrado`);
             return 'not_found';
         }
         if (!book.disponivel) {
-            console.log(`[SRV-LIBRARY 🔴] Livro não disponível para empréstimo.`);
+            console.log(`[SRV-LIBRARY 🔴] Livro não disponível para empréstimo`);
             return 'not_available';
         }
 
         book.disponivel = false;
         console.log(`[SRV-LIBRARY ✅] Empréstimo registrado para o livro: ${book.titulo}`);
         return 'success';
+    }
+
+    // Método para verificar se o livro está disponível
+    public isBookAvailable(codigo: number): boolean {
+        console.log(`[SRV-LIBRARY 🟡] Verificando disponibilidade para o livro com código: ${codigo}`);
+
+        const book = this.acervo.find(book => book.codigo === codigo);
+        if (!book) {
+            console.log(`[SRV-LIBRARY 🔴] Livro com código ${codigo} não encontrado`);
+            return false; // Caso o livro não seja encontrado, consideramos que ele não está disponível.
+        }
+
+        console.log(`[SRV-LIBRARY ✅] Livro com código ${codigo} está ${book.disponivel ? 'disponível' : 'indisponível'}`);
+        return book.disponivel;
     }
 
     // Método para registrar a devolução de um livro
@@ -50,8 +64,12 @@ export class Library {
 
         let book = this.acervo.find(book => book.codigo === codigo);
         if (!book) {
-            console.log(`[SRV-LIBRARY 🔴] Livro com código ${codigo} não encontrado.`);
+            console.log(`[SRV-LIBRARY 🔴] Livro com código ${codigo} não encontrado`);
             return 'not_found';
+        }
+        else if (book.disponivel) {
+            console.log(`[SRV-LIBRARY 🔴] Livro já devolvido`);
+            return 'not_available';
         }
 
         book.disponivel = true;

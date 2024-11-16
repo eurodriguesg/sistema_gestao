@@ -100,17 +100,33 @@ app.post('/books/:codigo/return', (req, res) => {
     if (!codigo) {
         throw new Error('Campo obrigatório deve ser preenchidos: código');
     }
-    
+
     const returnb = library.registerReturn(codigo);
+    // console.log(returnb)
 
     if (returnb === 'not_found') {
         res.status(404).send({ message: 'Livro não existe' });
+    } else if (returnb === 'not_available') {
+        res.status(409).send({ message: 'Livro já devolvido' });
     } else if (returnb === 'success') {
         res.status(200).send({ message: 'Devolução registrada' });
     } else {
         res.status(500).send({ message: 'Erro desconhecido' });
     }
     
+});
+
+app.get('/books/:codigo/isAvailable', (req, res) => {
+
+    const codigo = parseInt(req.params.codigo);
+    // console.log(`[SRV 🟡] Recebido pedido de devolução para o livro com código: ${codigo}`);
+
+    if (!codigo) {
+        throw new Error('Campo obrigatório deve ser preenchidos: código');
+    }
+
+    const availableBooks = library.isBookAvailable(codigo);
+    res.status(200).send(availableBooks);
 });
 
 app.get('/books/available', (req, res) => {
