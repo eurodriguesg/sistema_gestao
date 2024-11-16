@@ -75,6 +75,10 @@ app.post('/books/:codigo/loan', (req, res) => {
     const codigo = parseInt(req.params.codigo);
     // console.log(`[SRV 🟡] Recebido pedido de empréstimo para o livro com código: ${codigo}`);
 
+    if (!codigo) {
+        throw new Error('Campo obrigatório deve ser preenchidos: código');
+    }
+    
     const loaned = library.registerLoan(codigo);
 
     if (loaned === 'not_found') {
@@ -93,6 +97,10 @@ app.post('/books/:codigo/return', (req, res) => {
     const codigo = parseInt(req.params.codigo);
     // console.log(`[SRV 🟡] Recebido pedido de devolução para o livro com código: ${codigo}`);
 
+    if (!codigo) {
+        throw new Error('Campo obrigatório deve ser preenchidos: código');
+    }
+    
     const returnb = library.registerReturn(codigo);
 
     if (returnb === 'not_found') {
