@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public'))); // Serve arquivos está
 // Definindo as rotas
 app.get('/books', (req, res) => {
     const allBooks = library.getAllBooks();
-    res.status(200).send(allBooks);
+    res.status(200).json(allBooks); // Certifique-se de usar .json()
 });
 
 app.post('/books', (req, res) => {
