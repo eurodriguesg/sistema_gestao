@@ -1,14 +1,14 @@
 export class Book {
-    codigo: number;
-    titulo: string;
-    autor: string;
-    disponivel: boolean;
+    code: number;
+    title: string;
+    author: string;
+    available: boolean;
 
-    constructor(codigo: number, titulo: string, autor: string, disponivel: boolean) {
+    constructor(code: number, title: string, author: string, available: boolean) {
     
-        this.codigo = codigo;
-        this.titulo = titulo;
-        this.autor  = autor;
-        this.disponivel = disponivel;
+        this.code = code;
+        this.title = title;
+        this.author  = author;
+        this.available = available;
     }
 }

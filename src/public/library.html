@@ -455,11 +455,11 @@
             </h2>
 
             <div class="input-group">
-                <input type="number" id="codigo" placeholder="Código" required>
-                <input type="text"   id="titulo" placeholder="Título" required>
-                <input type="text"   id="autor"  placeholder="Autor"  required>
-                <label for="disponivel">
-                    <input type="checkbox" id="disponivel" checked>Disponível?
+                <input type="number" id="code" placeholder="Código" required>
+                <input type="text"   id="title" placeholder="Título" required>
+                <input type="text"   id="author"  placeholder="Autor"  required>
+                <label for="available">
+                    <input type="checkbox" id="available" checked>Disponível?
                 </label>
             </div>
 
@@ -472,7 +472,7 @@
                 <i class="fas fa-search"></i> Consultar Livro
             </h2>
 
-            <input type="number" id="avaiCodigo" placeholder="Código do Livro" required>
+            <input type="number" id="avaicode" placeholder="Código do Livro" required>
 
 
             <button type="submit" class="button">Buscar</button>
@@ -483,7 +483,7 @@
                 <h2 class="section-title">
                     <i class="fas fa-handshake"></i> Registrar Empréstimo
                 </h2>
-                <input type="number" id="loanCodigo" placeholder="Código do Livro" required>
+                <input type="number" id="loancode" placeholder="Código do Livro" required>
                 <button type="submit" class="button">Registrar</button>
             </form>
         
@@ -491,7 +491,7 @@
                 <h2 class="section-title">
                     <i class="fas fa-undo"></i> Registrar Devolução
                 </h2>
-                <input type="number" id="returnCodigo" placeholder="Código do Livro" required>
+                <input type="number" id="returncode" placeholder="Código do Livro" required>
                 <button type="submit" class="button">Registrar</button>
             </form>
         </div>
@@ -523,14 +523,14 @@
             // Manipulador para adicionar livro
             document.getElementById('addBookForm').addEventListener('submit', async (event) => {
                 event.preventDefault();
-                const codigo = document.getElementById('codigo').value;
-                const titulo = document.getElementById('titulo').value;
-                const autor = document.getElementById('autor').value;
-                const disponivel = document.getElementById('disponivel').checked;
+                const code = document.getElementById('code').value;
+                const title = document.getElementById('title').value;
+                const author = document.getElementById('author').value;
+                const available = document.getElementById('available').checked;
                 const response = await fetch('/books', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ codigo, titulo, autor, disponivel })
+                    body: JSON.stringify({ code, title, author, available })
                 });
                 if (response.status === 201) {
                     const book = await response.json();
@@ -548,8 +548,8 @@
             if (isBookAvailableForm) {
                 isBookAvailableForm.addEventListener('submit', async (event) => {
                     event.preventDefault();
-                    const codigo = document.getElementById('avaiCodigo').value;
-                    const response = await fetch(`/books/${codigo}/isAvailable`, {
+                    const code = document.getElementById('avaicode').value;
+                    const response = await fetch(`/books/${code}/isAvailable`, {
                         method: 'POST'
                     });
                     if (response.status === 200) {
@@ -571,8 +571,8 @@
             if (loanBookForm) {
                 loanBookForm.addEventListener('submit', async (event) => {
                     event.preventDefault();
-                    const codigo = document.getElementById('loanCodigo').value;
-                    const response = await fetch(`/books/${codigo}/loan`, {
+                    const code = document.getElementById('loancode').value;
+                    const response = await fetch(`/books/${code}/loan`, {
                         method: 'POST'
                     });
                     if (response.status === 200) {
@@ -594,8 +594,8 @@
             if (returnForm) {
                 returnForm.addEventListener('submit', async (event) => {
                     event.preventDefault();
-                    const codigo = document.getElementById('returnCodigo').value;
-                    const response = await fetch(`/books/${codigo}/return`, {
+                    const code = document.getElementById('returncode').value;
+                    const response = await fetch(`/books/${code}/return`, {
                         method: 'POST'
                     });
                     if (response.status === 200) {
@@ -631,10 +631,10 @@
                     books.forEach(book => {
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
-                            <td>${book.codigo}</td>
-                            <td>${book.titulo}</td>
-                            <td>${book.autor}</td>
-                            <td>${book.disponivel ? 'Disponível' : 'Indisponível'}</td>
+                            <td>${book.code}</td>
+                            <td>${book.title}</td>
+                            <td>${book.author}</td>
+                            <td>${book.available ? 'Disponível' : 'Indisponível'}</td>
                         `;
                         booksList.appendChild(tr);
                     });

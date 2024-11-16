@@ -14,29 +14,29 @@ router.get('/books', (req, res) => {
 // ADICIONAR LIVROS
 router.post('/books', (req, res) => {
     try {
-        const { codigo, titulo, autor, disponivel } = req.body;
+        const { code, title, author, available } = req.body;
 
-        if (!codigo) {
+        if (!code) {
             throw new Error('Campo obrigatório deve ser preenchidos: código');
         }
-        if (!titulo) {
+        if (!title) {
             throw new Error('Campo obrigatório deve ser preenchidos: Título');
         }
-        if (!autor) {
+        if (!author) {
             throw new Error('Campo obrigatório deve ser preenchidos: Autor');
         }
-        if (!disponivel) {
-            throw new Error('Campo obrigatório deve ser preenchidos: Disponivel');
+        if (!available) {
+            throw new Error('Campo obrigatório deve ser preenchidos: Disponível');
         }
 
         // Criar o livro e tentar adicioná-lo ao acervo
-        const book = new Book(Number(codigo), titulo, autor, Boolean(disponivel));
+        const book = new Book(Number(code), title, author, Boolean(available));
         const added = library.addBook(book);
 
         if (added) {
             res.status(201).send(book);
         } else {
-            res.status(409).send({ message: `Livro com código ${book.codigo} já existe no acervo.` });
+            res.status(409).send({ message: `Livro com código ${book.code} já existe no acervo.` });
         }
     } catch (error: any) {
         res.status(400).send({ message: error.message });
@@ -44,16 +44,16 @@ router.post('/books', (req, res) => {
 });
 
 // REGISTRAR EMPRÉSTIMO DE LIVRO
-router.post('/books/:codigo/loan', (req, res) => {
+router.post('/books/:code/loan', (req, res) => {
 
-    const codigo = parseInt(req.params.codigo);
-    // console.log(`[SRV 🟡] Recebido pedido de empréstimo para o livro com código: ${codigo}`);
+    const code = parseInt(req.params.code);
+    // console.log(`[SRV 🟡] Recebido pedido de empréstimo para o livro com código: ${code}`);
 
-    if (!codigo) {
+    if (!code) {
         throw new Error('Campo obrigatório deve ser preenchidos: código');
     }
     
-    const loaned = library.registerLoan(codigo);
+    const loaned = library.registerLoan(code);
 
     if (loaned === 'not_found') {
         res.status(404).send({ message: 'Livro não existe' });
@@ -67,16 +67,16 @@ router.post('/books/:codigo/loan', (req, res) => {
 });
 
 // REGISTRAR DEVOLUÇÃO DE LIVRO
-router.post('/books/:codigo/return', (req, res) => {
+router.post('/books/:code/return', (req, res) => {
     
-    const codigo = parseInt(req.params.codigo);
-    // console.log(`[SRV 🟡] Recebido pedido de devolução para o livro com código: ${codigo}`);
+    const code = parseInt(req.params.code);
+    // console.log(`[SRV 🟡] Recebido pedido de devolução para o livro com código: ${code}`);
 
-    if (!codigo) {
+    if (!code) {
         throw new Error('Campo obrigatório deve ser preenchidos: código');
     }
 
-    const returnb = library.registerReturn(codigo);
+    const returnb = library.registerReturn(code);
     // console.log(returnb)
 
     if (returnb === 'not_found') {
@@ -92,16 +92,16 @@ router.post('/books/:codigo/return', (req, res) => {
 });
 
 // CONSULTAR DISPONIBILIDADE DO LIVRO
-router.post('/books/:codigo/isAvailable', (req, res) => {
+router.post('/books/:code/isAvailable', (req, res) => {
 
-    const codigo = parseInt(req.params.codigo);
-    // console.log(`[SRV 🟡] Recebido pedido de devolução para o livro com código: ${codigo}`);
+    const code = parseInt(req.params.code);
+    // console.log(`[SRV 🟡] Recebido pedido de devolução para o livro com código: ${code}`);
 
-    if (!codigo) {
+    if (!code) {
         throw new Error('Campo obrigatório deve ser preenchidos: código');
     }
 
-    const availableBooks = library.isBookAvailable(codigo);
+    const availableBooks = library.isBookAvailable(code);
     // console.log(availableBooks)
 
     if (availableBooks) {
