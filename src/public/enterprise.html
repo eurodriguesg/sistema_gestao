@@ -450,32 +450,26 @@
 
     </head>
     <body>
-    
         <header>
             <img src="/images/escola.png" alt="Logo">
         </header>
-        <div class="stripe yellow-stripe"></div>
-        <div class="stripe red-stripe"></div>
-
         <div class="container">
-
             <a href="/" class="back-link">
                 <img src="/images/seta.svg" alt="Voltar">
                 <span>Início</span>
             </a>
-
+    
             <h1>Sistema de Gerenciamento de Funcionários</h1>
-            <br>
-
-            <form id="addEmployeeForm" enctype="multipart/form-data" method="POST" action="/upload">
-
+    
+            <!-- Formulário para Adicionar Funcionário -->
+            <form id="addEmployeeForm" enctype="multipart/form-data" method="POST" action="/api/employees">
                 <h2 class="section-title">
                     <i class="fas fa-plus-square"></i> Adicionar Funcionário
                 </h2>
             
                 <div class="photo-container">
-                    <img id="employeePhoto" src="/images/default-avatar.png" alt="Foto do Funcionário">
-                    <input type="file" id="photoUpload" name="photo" accept="image/*">
+                    <img id="employeePhoto" src="/images/default-avatar.png" alt="Foto do Funcionário" style="width: 150px; height: 150px; object-fit: cover;">
+                    <input type="file" id="photoUpload" name="photo" accept="image/*" onchange="previewPhoto()" required>
                 </div>
             
                 <div class="input-group">
@@ -488,82 +482,49 @@
                 <button type="submit" class="button">Adicionar</button>
             </form>
             
-            <form id="isBookAvailableForm">
-
-                <h2 class="section-title">
-                    <i class="fas fa-search"></i> Consultar Livro
-                </h2>
-
-                <input type="number" id="avaicode" placeholder="Código do Livro" required>
-
-
-                <button type="submit" class="button">Buscar</button>
-            </form>  
-            
-            <div class="form-container">
-                <form id="loanBookForm">
-                    <h2 class="section-title">
-                        <i class="fas fa-handshake"></i> Registrar Empréstimo
-                    </h2>
-                    <input type="number" id="loancode" placeholder="Código do Livro" required>
-                    <button type="submit" class="button">Registrar</button>
-                </form>
-            
-                <form id="returnBookForm">
-                    <h2 class="section-title">
-                        <i class="fas fa-undo"></i> Registrar Devolução
-                    </h2>
-                    <input type="number" id="returncode" placeholder="Código do Livro" required>
-                    <button type="submit" class="button">Registrar</button>
-                </form>
-            </div>
-            
-            <h2 class="section-title">
-                <i class="fas fa-book"></i> Livros
-            </h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Título</th>
-                        <th>Autor</th>
-                        <th>Disponibilidade</th>
-                    </tr>
-                </thead>
-                <tbody id="booksList">
-                </tbody>
-            </table>
-            
         </div>
-
+    
         <footer>
             <p>© 2024 Eliseu Rodrigues. Todos os direitos reservados.</p>
         </footer>
-
+    
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-
-                document.addEventListener('DOMContentLoaded', () => {
-                    document.getElementById('photoUpload').addEventListener('change', function(event) {
-                        const photoInput = event.target;
-                        const photoDisplay = document.getElementById('employeePhoto');
-
-                        if (photoInput.files && photoInput.files[0]) {
-                            const reader = new FileReader();
-
-                            reader.onload = function(e) {
-                                photoDisplay.src = e.target.result;
-                            };
-
-                            reader.readAsDataURL(photoInput.files[0]);
-                        } else {
-                            photoDisplay.src = "public/images/default-avatar.png";
-                        }
+            // Preview da foto antes do upload
+            function previewPhoto() {
+                const photoInput = document.getElementById('photoUpload');
+                const photoPreview = document.getElementById('employeePhoto');
+                const file = photoInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        photoPreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+    
+            // Enviando o formulário via Fetch API
+            document.getElementById('addEmployeeForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+    
+                const formData = new FormData(this);
+    
+                fetch('/api/employees', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert('Funcionário adicionado com sucesso!');
+                        console.log(data);
+                        document.getElementById('employeePhoto').src = data.employee.photo;
+                    })
+                    .catch(error => {
+                        console.error('Erro ao adicionar funcionário:', error);
+                        alert('Erro ao adicionar funcionário!');
                     });
-                });
-                
             });
         </script>
-        
     </body>
+    
 </html>

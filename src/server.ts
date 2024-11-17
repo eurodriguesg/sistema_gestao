@@ -3,8 +3,9 @@ import bodyParser from 'body-parser';
 import os from 'os';
 import chalk from 'chalk';
 import express from 'express';
-import employeeRoutes from './routes/Enterprise.route'; // Rotas de funcionários
-import libraryRoutes from './routes/Library.route';  // Rotas de biblioteca
+import enterpriseRoutes from './routes/Enterprise.route'; // Rotas de funcionários
+import libraryRoutes from './routes/Library.route';    // Rotas de biblioteca
+import uploadRoutes from './routes/Upload.route';      // Rota de upload
 
 const port = 31063;
 const host = '0.0.0.0';
@@ -32,8 +33,9 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public'))); // Serve arquivos estáticos da pasta 'public'
 
 // Adicionando rotas
-app.use('/api/employees', employeeRoutes);
+app.use('/api/employees', enterpriseRoutes);
 app.use('/api/library', libraryRoutes);
+app.use('/api', uploadRoutes); // Adicionando rota de upload
 
 // Iniciando o servidor
 app.listen(port, host, () => {
