@@ -17,16 +17,16 @@ router.post('/books', (req, res) => {
         const { code, title, author, available } = req.body;
 
         if (!code) {
-            throw new Error('Campo obrigatório deve ser preenchidos: código');
+            throw new Error('Campo obrigatório deve ser preenchidos: code');
         }
         if (!title) {
-            throw new Error('Campo obrigatório deve ser preenchidos: Título');
+            throw new Error('Campo obrigatório deve ser preenchidos: title');
         }
         if (!author) {
-            throw new Error('Campo obrigatório deve ser preenchidos: Autor');
+            throw new Error('Campo obrigatório deve ser preenchidos: author');
         }
         if (!available) {
-            throw new Error('Campo obrigatório deve ser preenchidos: Disponível');
+            throw new Error('Campo obrigatório deve ser preenchidos: available');
         }
 
         // Criar o livro e tentar adicioná-lo ao acervo

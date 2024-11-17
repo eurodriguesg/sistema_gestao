@@ -1,21 +1,22 @@
 import { Book } from './Book';
 
 export class Library {
-    private acervo: Array<Book>;
+
+    private collection: Array<Book>;
 
     constructor() {
-        this.acervo = new Array<Book>();
+        this.collection = new Array<Book>();
     }
 
     // Método para adicionar um livro ao acervo
     public addBook(book: Book): boolean {
 
-        const exists = this.acervo.some(b => b.code === book.code);
+        const exists = this.collection.some(b => b.code === book.code);
 
         if (!exists) {
-            this.acervo.push(book);
+            this.collection.push(book);
             console.log(`[SRV-LIBRARY ✅] Livro adicionado: ${book.code} - ${book.title} (${book.author})`);
-            //console.log('Acervo atual:', this.acervo);
+            //console.log('Acervo atual:', this.collection);
             return true;
         } else {
             console.log(`[SRV-LIBRARY 🔴] Livro com código ${book.code} já existe no acervo`);
@@ -28,7 +29,7 @@ export class Library {
 
         console.log(`[SRV-LIBRARY 🟡] Tentando registrar empréstimo para o livro com código: ${code}`);
 
-        let book = this.acervo.find(book => book.code === code);
+        let book = this.collection.find(book => book.code === code);
         if (!book) {
             console.log(`[SRV-LIBRARY 🔴] Livro com código ${code} não encontrado`);
             return 'not_found';
@@ -47,7 +48,7 @@ export class Library {
     public isBookAvailable(code: number): boolean {
         console.log(`[SRV-LIBRARY 🟡] Verificando disponibilidade para o livro com código: ${code}`);
 
-        const book = this.acervo.find(book => book.code === code);
+        const book = this.collection.find(book => book.code === code);
         if (!book) {
             console.log(`[SRV-LIBRARY 🔴] Livro com código ${code} não encontrado`);
             return false; // Caso o livro não seja encontrado, consideramos que ele não está disponível.
@@ -62,7 +63,7 @@ export class Library {
 
         console.log(`[SRV-LIBRARY 🟡] Tentando registrar devolução para o livro com código: ${code}`);
 
-        let book = this.acervo.find(book => book.code === code);
+        let book = this.collection.find(book => book.code === code);
         if (!book) {
             console.log(`[SRV-LIBRARY 🔴] Livro com código ${code} não encontrado`);
             return 'not_found';
@@ -79,12 +80,12 @@ export class Library {
 
     // Método para retornar todos os livros disponíveis
     public listAvailableBooks(): Array<Book> {
-        return this.acervo.filter(book => book.available);
+        return this.collection.filter(book => book.available);
     }
 
     // Método para retornar todos os livros do acervo
     public getAllBooks(): Array<Book> {
-        return this.acervo;
+        return this.collection;
     }
     
 }
