@@ -31,6 +31,23 @@ const app = express();
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public'))); // Serve arquivos estáticos da pasta 'public'
 
+// Rotas amigáveis
+app.get('/library', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/library.html'));
+});
+
+app.get('/enterprise', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/enterprise.html'));
+});
+
+app.get('/hotel', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/hotel.html'));
+});
+
+app.get('/tasks', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/tasks.html'));
+});
+
 // Adicionando rotas
 app.use('/api/library', libraryRoutes);
 app.use('/api/employees', enterpriseRoutes);
