@@ -540,7 +540,7 @@
                 
 
                 <div class="input-group">
-                    <input type="number" id="registration" name="registration" placeholder="Código" required>
+                    <input type="number" id="registration" name="registration" placeholder="Matrícula" required>
                     <input type="text" id="name" name="name" placeholder="Nome" required>
                     <input type="text" id="role" name="role" placeholder="Cargo" required>
                     <input type="text" id="salary" name="salary" placeholder="Salário" required>
@@ -555,7 +555,7 @@
                     <i class="fas fa-search"></i> Consultar Funcionário
                 </h2>
 
-                <input type="text" id="employeeSearch" name="employeeSearch" placeholder="Código do funcionário" required>
+                <input type="text" id="employeeSearch" name="employeeSearch" placeholder="Matrícula do funcionário" required>
 
                 <button type="submit" class="button">Buscar</button>
             </form>
@@ -568,7 +568,7 @@
             <table id="employeeTable">
                 <thead>
                     <tr>
-                        <th>Código</th>
+                        <th>Matrícula</th>
                         <th>Nome</th>
                         <th>Cargo</th>
                         <th>Salário</th>
@@ -585,7 +585,7 @@
                 <div class="modal-content">
                     <button class="close-button" onclick="closeModal()">X</button>
                     <img id="modalPhoto" src="" alt="Foto do funcionário" class="modal-photo" />
-                    <p>Código: <span id="modalRegistration"></span></p>
+                    <p>Matrícula: <span id="modalRegistration"></span></p>
                     <p>Nome: <span id="modalName"></span></p>
                     <p>Cargo: <span id="modalRole"></span></p>
                     <p>Salário: <span id="modalSalary"></span></p>
@@ -608,7 +608,7 @@
 
                 const registration = document.getElementById('employeeSearch').value; // Pega o valor inserido no campo de busca
                 if (!registration) {
-                    alert('Por favor, insira o código do funcionário.');
+                    alert('Por favor, insira a Matrícula do funcionário.');
                     return;
                 }
 
