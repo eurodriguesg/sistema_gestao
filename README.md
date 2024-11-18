@@ -187,4 +187,4 @@ Caso tenha dúvidas ou sugestões, entre em contato:
 
 - **Nome:** Eliseu Rodrigues Guimarães
 - **Email:** eliseu.rguimaraes@gmail.com
-- **GitHub:** [eurodriguesg](https://github.com/eurodriguesg)
+- **GitHub:** https://github.com/eurodriguesg
