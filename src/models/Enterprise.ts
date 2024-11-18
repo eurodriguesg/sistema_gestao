@@ -26,6 +26,24 @@ export class Enterprise {
         }
     }
 
+    // Novo método para adicionar múltiplos funcionários
+    public addEmployees(employees: Employee[]): { added: number; duplicates: number } {
+        let added = 0;
+        let duplicates = 0;
+
+        employees.forEach(employee => {
+            const success = this.addEmployee(employee);
+            if (success) {
+                added++;
+            } else {
+                duplicates++;
+            }
+        });
+
+        console.log(`[SRV-ENTERPRISE] Total adicionados: ${added}, Duplicados: ${duplicates}`);
+        return { added, duplicates };
+    }
+
     // Método para atualizar o salário de um funcionário
     public updateSalary(registration: number, salary: number): string {
         console.log(`[SRV-ENTERPRISE 🟡] Tentando alterar o salário do funcionário com código: ${registration}`);

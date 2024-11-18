@@ -20,50 +20,87 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Adicionar funcionário com upload de foto
 router.post('/addEmployee', upload.single('photo'), (req: Request, res: Response) => {
     try {
-        const { registration, name, role, salary } = req.body;
+        // Verificar se é uma lista de funcionários ou um único funcionário
+        const isArray = Array.isArray(req.body);
 
-        // Validação dos campos obrigatórios
-        if (!registration || !name || !role || !salary) {
-            throw new Error('Todos os campos obrigatórios devem ser preenchidos.');
-        }
+        if (isArray) {
+            const employees = req.body;
 
-        // Caminho padrão da foto
-        let photoPath = req.file ? `/uploads/${req.file.filename}` : '/images/default-avatar.png';
+            // Validar os campos obrigatórios para cada funcionário
+            const isValid = employees.every((emp: any) => emp.registration && emp.name && emp.role && emp.salary);
 
-        // Renomear a foto usando o 'registration'
-        if (req.file) {
-            const newFileName = `${registration}${path.extname(req.file.originalname)}`;
-            const newFilePath = path.join(__dirname, '../public/uploads', newFileName);
+            if (!isValid) {
+                res.status(400).json({ message: 'Todos os funcionários devem ter registration, name, role e salary.' });
+                return;
+            }
 
-            try {
-                fs.renameSync(req.file.path, newFilePath);
-                photoPath = `/uploads/${newFileName}`;
-            } catch (error) {
-                console.error('Erro ao renomear o arquivo:', error);
+            // Converter o array para instâncias da classe Employee
+            const employeeInstances = employees.map((emp: any) => new Employee(
+                Number(emp.registration),
+                emp.name,
+                emp.role,
+                Number(emp.salary),
+                emp.photoPath || '/images/default-avatar.png' // Caminho padrão da foto
+            ));
+
+            // Adicionar funcionários usando o método addEmployees
+            const result = enterprise.addEmployees(employeeInstances);
+
+            res.status(200).json({
+                message: 'Processamento concluído.',
+                added: result.added,
+                duplicates: result.duplicates
+            });
+            return;
+        } else {
+            // Caso seja um único funcionário (objeto)
+            const { registration, name, role, salary } = req.body;
+
+            // Validação dos campos obrigatórios
+            if (!registration || !name || !role || !salary) {
+                res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos.' });
+                return;
+            }
+
+            // Caminho padrão da foto
+            let photoPath = req.file ? `/uploads/${req.file.filename}` : '/images/default-avatar.png';
+
+            // Renomear a foto usando o 'registration'
+            if (req.file) {
+                const newFileName = `${registration}${path.extname(req.file.originalname)}`;
+                const newFilePath = path.join(__dirname, '../public/uploads', newFileName);
+
+                try {
+                    fs.renameSync(req.file.path, newFilePath);
+                    photoPath = `/uploads/${newFileName}`;
+                } catch (error) {
+                    console.error('Erro ao renomear o arquivo:', error);
+                }
+            }
+
+            // Criar funcionário e adicioná-lo ao sistema
+            const employee = new Employee(Number(registration), name, role, Number(salary), photoPath);
+            const added = enterprise.addEmployee(employee);
+
+            if (added) {
+                res.status(200).json({
+                    message: 'Funcionário adicionado com sucesso!',
+                    employee
+                });
+            } else {
+                res.status(409).json({
+                    message: `Funcionário com código ${registration} já existe.`
+                });
             }
         }
-
-        // Criar funcionário e adicioná-lo ao sistema
-        const employee = new Employee(Number(registration), name, role, Number(salary), photoPath);
-        const added = enterprise.addEmployee(employee);
-
-        if (added) {
-            res.status(200).json({
-                message: 'Funcionário adicionado com sucesso!',
-                employee
-            });
-        } else {
-            res.status(409).json({
-                message: `Funcionário com código ${registration} já existe.`
-            });
-        }
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        console.error(`[SRV-ENTERPRISE] Erro ao adicionar funcionário(s): ${error.message}`);
+        res.status(500).json({ message: 'Erro interno do servidor.' });
     }
 });
+
 
 // Alterar salário do funcionário
 router.post('/changeSalary', (req, res) => {
