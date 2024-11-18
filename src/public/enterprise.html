@@ -516,7 +516,7 @@
             <h1>Sistema de Gerenciamento de Funcionários</h1>
     
             <!-- Formulário para Adicionar Funcionário -->
-            <form id="addEmployeeForm" enctype="multipart/form-data" method="POST" action="/api/employees/addEmployee">
+            <form id="addEmployeeForm" enctype="multipart/form-data">
                 <h2 class="section-title">
                     <i class="fas fa-plus-square"></i> Adicionar Funcionário
                 </h2>
@@ -544,7 +544,7 @@
 
                 <input type="text" id="employeeSearch" name="employeeSearch" placeholder="Código do funcionário" required>
 
-                <button type="button" onclick="searchEmployee()">Buscar</button>
+                <button type="submit" class="button">Buscar</button>
             </form>
 
 
@@ -588,6 +588,21 @@
         </footer>
     
         <script>
+
+            // Consultar Funcionário
+            document.getElementById('searchEmployeeForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Impede o envio padrão do formulário
+
+                const registration = document.getElementById('employeeSearch').value; // Pega o valor inserido no campo de busca
+                if (!registration) {
+                    alert('Por favor, insira o código do funcionário.');
+                    return;
+                }
+
+                // Chama a função para buscar os dados do funcionário
+                fetchEmployeeData(registration);
+            });
+
             // Preview da foto antes do upload
             function previewPhoto() {
                 const photoInput = document.getElementById('photoUpload');
@@ -602,25 +617,30 @@
                 }
             }
 
-            // Consultar Funcionário
+            // Função para buscar os dados do funcionário e exibir o modal
             function fetchEmployeeData(registration) {
                 fetch(`/api/employees/${registration}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.employee) {
-                            document.getElementById('modalPhoto').src = data.employee.photoPath;
+                            // Preenche o modal com os dados do funcionário
+                            document.getElementById('modalPhoto').src = data.employee.photoPath || '/images/default-avatar.png';
                             document.getElementById('modalRegistration').textContent = data.employee.registration;
                             document.getElementById('modalName').textContent = data.employee.name;
                             document.getElementById('modalRole').textContent = data.employee.role;
-                            document.getElementById('modalSalary').textContent = data.employee.salary;
-                            document.getElementById('employeeModal').style.display = 'flex'; // Mostrar o modal
+                            document.getElementById('modalSalary').textContent = `R$ ${data.employee.salary}`;
+                            document.getElementById('employeeModal').style.display = 'flex'; // Exibe o modal
                         } else {
                             alert('Funcionário não encontrado!');
                         }
                     })
-                    .catch(error => console.error('Erro ao buscar funcionário:', error));
+                    .catch(error => {
+                        console.error('Erro ao buscar funcionário:', error);
+                        alert('Erro ao buscar funcionário!');
+                    });
             }
 
+            // Função para fechar o modal
             function closeModal() {
                 document.getElementById('employeeModal').style.display = 'none';
             }
@@ -700,26 +720,41 @@
             }
 
             // Adicionar funcionário e recarregar tabela
-            document.getElementById('addEmployeeForm').addEventListener('submit', function (event) {
-                event.preventDefault();
+            document.getElementById('addEmployeeForm').addEventListener('submit', async function (event) {
+                event.preventDefault(); // Impede o envio padrão do formulário
 
-                const formData = new FormData(this);
+                const form = this;
+                const submitButton = form.querySelector('button[type="submit"]');
+                const formData = new FormData(form);
 
-                fetch('/api/employees/addEmployee', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
+                submitButton.disabled = true;
+
+                try {
+                    const response = await fetch('/api/employees/addEmployee', {
+                        method: 'POST', // Definindo o método HTTP no fetch
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Erro na resposta da API');
+                    }
+
+                    const data = await response.json();
+                    
                     alert('Funcionário adicionado com sucesso!');
                     console.log(data);
+
+                    form.reset();
+                    document.getElementById('employeePhoto').src = '/images/default-avatar.png';
                     loadEmployees(); // Atualiza a tabela após adicionar
-                })
-                .catch(error => {
+                } catch (error) {
                     console.error('Erro ao adicionar funcionário:', error);
                     alert('Erro ao adicionar funcionário!');
-                });
+                } finally {
+                    submitButton.disabled = false;
+                }
             });
+
 
             // Carrega os funcionários ao abrir a página
             document.addEventListener('DOMContentLoaded', loadEmployees);
