@@ -13,7 +13,7 @@ export class Enterprise {
     public addEmployee(employee: Employee): boolean {
 
         const exists = this.employees.some(e => e.registration === employee.registration);
-        console.log(`[SRV 🟡] Recebido pedido de cadastro de funcionário: ${exists}`);
+        // console.log(`[SRV 🟡] Recebido pedido de cadastro de funcionário: ${exists}`);
 
         if (!exists) {
             this.employees.push(employee);
@@ -56,7 +56,7 @@ export class Enterprise {
     }
 
     public listEmployees() {
-        console.log(`[SRV-ENTERPRISE 🟡] Listando funcionários!`);
+        //console.log(`[SRV-ENTERPRISE 🟡] Listando funcionários!`);
         return this.employees;
     }
     

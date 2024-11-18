@@ -57,9 +57,8 @@
                 display: inline-block;
                 font-size: 16px;
                 font-weight: bold; /* Torna a fonte dos botões mais grossa */
-                margin: 4px 2px;
                 cursor: pointer;
-                border-radius: 80px;
+                border-radius: 5px;
                 transition: background-color 0.3s;
             }
             .button:hover {
@@ -172,7 +171,18 @@
             }
 
             /* Estilização geral do formulário */
-            #addEmployeeForm,
+            #addEmployeeForm {
+                width: 100%;
+                max-width: 800px;
+                margin: 20px auto;
+                margin-bottom: 30px;
+                padding: 30px;
+                border: 2px solid #ccc;
+                border-radius: 8px;
+                background-color: #f9f9f9;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            
             #searchEmployeeForm {
                 width: 100%;
                 max-width: 450px;
@@ -236,7 +246,7 @@
                 background-color: #4CAF50;
                 color: white;
                 border: none;
-                border-radius: 24px;
+                border-radius: 5px;
                 cursor: pointer;
                 font-size: 16px;
                 margin-top: 10px;
@@ -327,7 +337,7 @@
                 }
             }
 
-            /* Estilização do título "Livros" */
+            /* Estilização do título "Funcionários" */
             .section-title {
                 font-size: 28px; /* Tamanho maior para o título */
                 color: #333; /* Cor do texto */
@@ -359,70 +369,144 @@
             .photo-container {
                 display: flex;
                 flex-direction: column;
-                align-items: center;
+                align-items: center; /* Centraliza horizontalmente */
+                justify-content: center; /* Centraliza verticalmente, se necessário */
                 margin-bottom: 20px;
+                padding: 10px; /* Adicione espaço interno para evitar cortes */
+                width: 60%; /* Garante que o contêiner ocupe toda a largura disponível */
+                box-sizing: border-box; /* Inclui padding no cálculo total de tamanho */
             }
 
             .photo-container img {
-                width: 150px;
-                height: 150px;
-                border-radius: 50%;
-                object-fit: cover;
-                border: 2px solid #ccc;
+                width: 150px; /* Tamanho fixo da largura */
+                height: 150px; /* Tamanho fixo da altura */
+                border-radius: 50%; /* Mantém o formato circular */
+                object-fit: cover; /* Preenche a área sem distorcer */
+                border: 4px solid #4CAF50; /* Apenas para depuração */
             }
 
-            .photo-container input {
-                margin-top: 10px;
+            .photo-container input[type="file"] {
+                width: auto; /* Permite que o botão se ajuste ao conteúdo */
+                padding: 10px 20px; /* Adicione espaçamento interno */
+                font-size: 16px; /* Tamanho do texto */
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                color: #f9f9f9;
+                cursor: pointer;
+                box-sizing: border-box; /* Garante que padding não cause cortes */
             }
 
-            /* Estilos para o Modal */
+            .photo-container input[type="file"]::-webkit-file-upload-button {
+                padding: 5px 15px; /* Ajusta o botão */
+                font-size: 16px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                cursor: pointer;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+
+            .photo-container input[type="file"]::-webkit-file-upload-button:hover {
+                background-color: #45a049;
+            }
+
+           /* Estilo para o modal overlay */
             .modal-overlay {
                 position: fixed;
                 top: 0;
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 0, 0, 0.5); /* Fundo opaco */
+                background-color: rgba(0, 0, 0, 0.6); /* Fundo semi-transparente */
                 display: flex;
-                align-items: center;
                 justify-content: center;
-                z-index: 9999; /* Certifique-se de que o modal esteja acima de outros elementos */
+                align-items: center;
+                z-index: 1000;
             }
 
+            /* Estilo do conteúdo do modal */
             .modal-content {
-                background-color: #fff;
-                padding: 30px;
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                width: 400px; /* Aumentado para mais espaço */
-                max-width: 90%;
+                background-color: #fff; /* Fundo branco */
+                border-radius: 10px; /* Cantos arredondados */
+                padding: 20px 30px; /* Espaçamento interno */
+                width: 400px; /* Largura fixa */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra elegante */
+                text-align: center; /* Centraliza o texto */
                 position: relative;
-                text-align: center;
             }
 
+            /* Botão de fechar o modal */
             .close-button {
                 position: absolute;
-                top: 15px;
-                right: 15px;
-                background: #ff5f5f;
-                color: white;
+                top: 10px;
+                right: 10px;
+                background: #ff5c5c; /* Cor de destaque */
                 border: none;
-                border-radius: 50%;
-                width: 30px;
-                height: 30px;
-                cursor: pointer;
-                font-weight: bold;
+                color: #fff;
                 font-size: 16px;
+                font-weight: bold;
+                padding: 5px 10px;
+                border-radius: 50%;
+                cursor: pointer;
+                transition: background 0.3s ease;
             }
 
-            .modal-photo {
-                width: 150px; /* Tamanho ajustável */
-                height: 150px; 
-                object-fit: cover;
-                border-radius: 50%; /* Moldura redonda */
-                border: 4px solid #4CAF50; /* Cor da moldura */
-                margin-bottom: 20px;
+            .close-button:hover {
+                background: #e04a4a; /* Cor no hover */
             }
+
+            /* Foto do funcionário */
+            .modal-photo {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 3px solid #4CAF50; /* Destaque ao redor da imagem */
+                margin-bottom: 20px; /* Espaçamento abaixo da foto */
+            }
+
+            /* Estilo dos textos do modal */
+            .modal-content p {
+                margin: 10px 0;
+                font-size: 16px;
+                font-weight: 600; /* Negrito leve */
+                color: #333;
+            }
+
+            .modal-content span {
+                font-weight: 400; /* Regular */
+                color: #666; /* Tom mais claro */
+            }
+
+            /* Campo de input do salário */
+            .modal-content input[type="text"] {
+                width: calc(100% - 20px); /* Ajusta à largura disponível */
+                padding: 10px;
+                font-size: 14px;
+                margin: 15px 0;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+
+            /* Botão de atualização de salário */
+            .modal-content button {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                font-size: 14px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.3s ease;
+                font-weight: bold;
+            }
+
+            .modal-content button:hover {
+                background-color: #45a049;
+            }
+
 
         </style>
 
@@ -446,9 +530,10 @@
                 </h2>
 
                 <div class="photo-container">
-                    <img id="employeePhoto" src="/images/default-avatar.png" alt="Foto do Funcionário" style="width: 150px; height: 150px; object-fit: cover;">
+                    <img id="employeePhoto" src="/images/default-avatar.png" alt="Foto do Funcionário" class="photo-preview" />
                     <input type="file" id="photoUpload" name="photo" accept="image/*" onchange="previewPhoto()" required>
                 </div>
+                
 
                 <div class="input-group">
                     <input type="number" id="registration" name="registration" placeholder="Código" required>
@@ -527,7 +612,7 @@
                 fetchEmployeeData(registration);
             });
 
-            // Preview da foto antes do upload
+            // Função para preview da imagem antes do upload
             function previewPhoto() {
                 const photoInput = document.getElementById('photoUpload');
                 const photoPreview = document.getElementById('employeePhoto');
@@ -634,7 +719,7 @@
                                 <td>${employee.role}</td>
                                 <td>R$ ${employee.salary}</td>
                                 <td>
-                                    <button onclick="fetchEmployeeData(${employee.registration})">Ver</button>
+                                    <button class="button" onclick="fetchEmployeeData(${employee.registration})">Ver</button>
                                 </td>
                             `;
                             tableBody.appendChild(row);
@@ -673,7 +758,7 @@
                     loadEmployees(); // Atualiza a tabela após adicionar
                 } catch (error) {
                     console.error('Erro ao adicionar funcionário:', error);
-                    alert('Erro ao adicionar funcionário!');
+                    alert('Funcionário já existe!');
                 } finally {
                     submitButton.disabled = false;
                 }
