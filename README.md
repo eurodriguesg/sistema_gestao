@@ -40,7 +40,7 @@
 ## Módulo: Biblioteca
 
 ### Descrição do Projeto
-Este projeto é um sistema de gerenciamento de biblioteca desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de uma biblioteca pública:
+Este prmódulo é um sistema de gerenciamento de biblioteca desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de uma biblioteca pública:
 
 - **Cadastrar novos livros no acervo**.
 - **Registrar empréstimos de livros para os usuários**.
@@ -107,67 +107,68 @@ As funções podem ser executadas diretamente no arquivo principal (`index.ts`).
 ## Módulo: Empresa
 
 ### Descrição do Projeto
-Este projeto é um sistema de gerenciamento de biblioteca desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de uma biblioteca pública:
+Este módulo é um sistema de gerenciamento de funcionários desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de uma biblioteca pública:
 
-- **Cadastrar novos livros no acervo**.
-- **Registrar empréstimos de livros para os usuários**.
-- **Consultar a disponibilidade de um livro específico**.
+- **Cadastrar Funcionários na Empresa**.
+- **Alterar salário do Funcionário**.
+- **Consultar um funcionário específico**.
 
-O projeto simula um cenário real de gerenciamento de biblioteca, utilizando conceitos de orientação a objetos, encapsulamento e tipagem estática.
+O projeto simula um cenário real de gerenciamento de funcionários, utilizando conceitos de orientação a objetos, encapsulamento e tipagem estática.
 
 ---
 
 ### Funcionalidades
 O sistema possui as seguintes funcionalidades:
 
-1. **Cadastrar Livros**  
-   Permite adicionar novos livros ao acervo da biblioteca.
+1. **Cadastrar Funcionários**  
+   Permite adicionar novos funcionários a Empresa.
 
-2. **Registrar Empréstimos**  
-   Marca um livro como indisponível para empréstimos.
+2. **Alterar Salário do Funcionário**  
+   Alterar o salário de um funcionário.
 
 3. **Consultar Disponibilidade**  
-   Verifica se um livro específico está disponível ou não.
+   Verificar um funcionário específico.
 
 ---
 
 ### Estrutura do Projeto
 
-### Classe `Livro`
-Representa um livro no acervo da biblioteca. Possui as seguintes propriedades:
+### Classe `Funcionario`
+Representa um Funcionário no acervo da Empresa. Possui as seguintes propriedades:
 
-- `codigo` (number): Identificador único do livro.
-- `titulo` (string): Título do livro.
-- `autor` (string): Autor do livro.
-- `disponivel` (boolean): Indica se o livro está disponível para empréstimo.
+- `matricula` (number): Identificador único do funcionário.
+- `nome` (string): Nome do funcionário.
+- `cargo` (string): Cargo do funcionário.
+- `salario` (number): Salário do funcionário.
 
 Além disso, inclui um construtor para inicializar todas as propriedades.
 
-### Classe `Biblioteca`
-Gerencia os livros do acervo e oferece os seguintes métodos:
+### Classe `Empresa`
+Gerencia os Funcionários da Empresa e oferece os seguintes métodos:
 
-- **`adicionarLivro(livro: Livro): void`**  
-  Adiciona um novo livro ao acervo.
+- **`adicionarFuncionario(funcionario: Funcionario): void`**  
+  Adiciona um novo funcionário à empresa.
 
-- **`registrarEmprestimo(codigo: number): void`**  
-  Marca o livro especificado como indisponível.
+- **`atualizarSalario(matricula: number, salario: number): void`**  
+  Atualiza o salário do funcionário com a matrícula
+especificada.
 
-- **`consultarDisponibilidade(codigo: number): boolean`**  
-  Retorna `true` se o livro estiver disponível, ou `false` caso contrário.
+- **`consultarFuncionario(matricula: number): Funcionario | undefined`**  
+  Atualiza o salário do funcionário com a matrícula especificada.
 
 ### Testando o Sistema
 O projeto inclui funções para testar o sistema:
 
-1. **Cadastrar Livros**  
-   Três instâncias de `Livro` são criadas e adicionadas ao acervo.
+1. **Cadastrar Funcionário**  
+   É possível criar quantas instâncias de `Funcionário` desejar adicionar a empresa.
 
-2. **Registrar Empréstimos**  
-   Um dos livros cadastrados é emprestado.
+2. **Alterar Salário**  
+   É possível atualizar o salário de duas formas, selecionando um funcionário na listagem, por veio da ação `ver`ou por meio da consulta de um determinado Funcionário.
 
-3. **Consultar Disponibilidade**  
-   Verifica a disponibilidade de um livro pelo código e imprime o resultado no console.
+3. **Consultar Funcionário**  
+   Verifica um Funcionário pela matricula e apresenta o resultado no modal.
 
-As funções podem ser executadas diretamente no arquivo principal (`index.ts`).
+As funções podem ser executadas diretamente na instância do servidor local que será criado (`http://127.0.0.1:31063`) ou demais interfaces de rede local.
 
 ---
 
