@@ -173,10 +173,11 @@
 
             /* Estilização geral do formulário */
             #addBookForm,
-            #isBookAvailableForm {
+            #searchEmployeeForm {
                 width: 100%;
-                max-width: 600px;
+                max-width: 450px;
                 margin: 20px auto;
+                margin-bottom: 30px;
                 padding: 30px;
                 border: 2px solid #ccc;
                 border-radius: 8px;
@@ -186,7 +187,7 @@
 
             /* Estilização do título */
             #addBookForm h2,
-            #isBookAvailableForm h2 {
+            #searchEmployeeForm h2 {
                 font-size: 24px;
                 text-align: center;
                 margin-bottom: 20px;
@@ -202,7 +203,7 @@
 
             /* Estilização dos campos de input */
             #addBookForm input,
-            #isBookAvailableForm input{
+            #searchEmployeeForm input{
                 width: 100%;
                 padding: 10px;
                 border: 1px solid #ccc;
@@ -213,14 +214,14 @@
 
             /* Foco nos campos de input */
             #addBookForm input:focus,
-            #isBookAvailableForm input:focus{
+            #searchEmployeeForm input:focus{
                 border-color: #4CAF50;
                 outline: none;
             }
 
             /* Estilização do checkbox */
             #addBookForm label,
-            #isBookAvailableForm label{
+            #searchEmployeeForm label{
                 display: inline-block;
                 font-size: 16px;
                 margin-left: 10px;
@@ -228,9 +229,10 @@
 
             /* Estilização do botão */
             #addBookForm button,
-            #isBookAvailableForm button {
-                width: 100%;
-                padding: 12px;
+            #searchEmployeeForm button {
+                width: auto; /* Permite que o botão tenha uma largura automática */
+                min-width: 150px; /* Define um tamanho mínimo, ajuste conforme necessário */
+                padding: 12px 20px; /* Ajuste o espaçamento interno para o botão */
                 background-color: #4CAF50;
                 color: white;
                 border: none;
@@ -238,11 +240,15 @@
                 cursor: pointer;
                 font-size: 16px;
                 margin-top: 10px;
+                transition: background-color 0.3s;
+                display: block; /* Garante que o botão seja um bloco para centralização */
+                margin-left: auto; /* Centraliza o botão */
+                margin-right: auto; /* Centraliza o botão */
             }
 
             /* Efeito no botão ao passar o mouse */
             #addBookForm button:hover,
-            #isBookAvailableForm button:hover{
+            #searchEmployeeForm button:hover{
                 background-color: #45a049;
             }
 
@@ -359,7 +365,7 @@
                 }
                 
                 #addBookForm,
-                #isBookAvailableForm,
+                #searchEmployeeForm,
                 #loanBookForm,
                 #returnBookForm {
                     width: 90%;
@@ -367,14 +373,14 @@
                 }
 
                 #addBookForm input,
-                #isBookAvailableForm input,
+                #searchEmployeeForm input,
                 #loanBookForm input,
                 #returnBookForm input {
                     width: 100%;
                 }
 
                 #addBookForm button,
-                #isBookAvailableForm input,
+                #searchEmployeeForm input,
                 #loanBookForm button, 
                 #returnBookForm button {
                     width: 100%;
@@ -536,16 +542,16 @@
                     <i class="fas fa-search"></i> Consultar Funcionário
                 </h2>
 
-                <div class="input-group">
-                    <input type="text" id="employeeSearch" name="employeeSearch" placeholder="Digite o código do funcionário" required>
-                </div>
+                <input type="text" id="employeeSearch" name="employeeSearch" placeholder="Código do funcionário" required>
 
-                <button type="button" class="button" onclick="searchEmployee()">Buscar</button>
+                <button type="button" onclick="searchEmployee()">Buscar</button>
             </form>
 
 
-
             <!-------| TABELA |------->
+            <h2 class="section-title">
+                <i class="fa-solid fa-users-gear"></i> Funcionários
+            </h2>
             <table id="employeeTable">
                 <thead>
                     <tr>
