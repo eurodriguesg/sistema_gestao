@@ -131,3 +131,6 @@ dist
 
 # Build
 build
+
+# Upload
+src/public/uploads
