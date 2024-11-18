@@ -24,6 +24,24 @@ export class Library {
         }
     }
 
+    // Método para adicionar múltiplos livros ao acervo
+    public addBooks(books: Book[]): { added: number; duplicates: number } {
+        let added = 0;
+        let duplicates = 0;
+
+        books.forEach(book => {
+            const success = this.addBook(book);
+            if (success) {
+                added++;
+            } else {
+                duplicates++;
+            }
+        });
+
+        console.log(`[SRV-LIBRARY] Total adicionados: ${added}, Duplicados: ${duplicates}`);
+        return { added, duplicates };
+    }
+
     // Método para registrar um empréstimo de um livro
     public registerLoan(code: number): string {
 

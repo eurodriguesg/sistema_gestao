@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response, RequestHandler } from 'express';
 import { Library } from '../models/Library';
 import { Book } from '../models/Book';
 
@@ -6,42 +6,76 @@ const router = Router();
 const library = new Library();
 
 // LISTAR TODOS OS LIVROS
-router.get('/books', (req, res) => {
+router.get('/books', (req: Request, res: Response) => {
     const allBooks = library.getAllBooks();
-    res.status(200).json(allBooks); // Certifique-se de usar .json()
+    res.status(200).json(allBooks);
 });
 
-// ADICIONAR LIVROS
-router.post('/books', (req, res) => {
+// Função de middleware para adicionar livro(s)
+const addBooksHandler: RequestHandler = (req, res) => {
     try {
-        const { code, title, author, available } = req.body;
+        // Verificar se o corpo da requisição é um array (múltiplos livros) ou um objeto (um único livro)
+        const isArray = Array.isArray(req.body);
 
-        if (!code) {
-            throw new Error('Campo obrigatório deve ser preenchidos: code');
-        }
-        if (!title) {
-            throw new Error('Campo obrigatório deve ser preenchidos: title');
-        }
-        if (!author) {
-            throw new Error('Campo obrigatório deve ser preenchidos: author');
-        }
-        if (!available) {
-            throw new Error('Campo obrigatório deve ser preenchidos: available');
-        }
+        if (isArray) {
+            // Adicionar múltiplos livros
+            const books = req.body;
 
-        // Criar o livro e tentar adicioná-lo ao acervo
-        const book = new Book(Number(code), title, author, Boolean(available));
-        const added = library.addBook(book);
+            // Validar os campos obrigatórios para cada livro
+            const isValid = books.every((book: any) => book.code && book.title && book.author && book.available !== undefined);
 
-        if (added) {
-            res.status(201).send(book);
+            if (!isValid) {
+                res.status(400).json({ message: 'Todos os livros devem ter code, title, author e available.' });
+                return;
+            }
+
+            // Converter o array para instâncias da classe Book
+            const bookInstances = books.map((book: any) => new Book(
+                Number(book.code),
+                book.title,
+                book.author,
+                Boolean(book.available)
+            ));
+
+            // Adicionar livros usando o método addBooks
+            const result = library.addBooks(bookInstances);
+
+            res.status(200).json({
+                message: 'Processamento concluído.',
+                added: result.added,
+                duplicates: result.duplicates
+            });
+            return;
         } else {
-            res.status(409).send({ message: `Livro com código ${book.code} já existe no acervo.` });
+            // Adicionar um único livro
+            const { code, title, author, available } = req.body;
+
+            // Validação dos campos obrigatórios
+            if (!code || !title || !author || available === undefined) {
+                res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos: code, title, author, available' });
+                return;
+            }
+
+            // Criar o livro e tentar adicioná-lo ao acervo
+            const book = new Book(Number(code), title, author, Boolean(available));
+            const added = library.addBook(book);
+
+            if (added) {
+                res.status(201).json({ message: 'Livro adicionado com sucesso!', book });
+            } else {
+                res.status(409).json({ message: `Livro com código ${book.code} já existe no acervo.` });
+            }
+            return;
         }
     } catch (error: any) {
-        res.status(400).send({ message: error.message });
+        console.error(`[SRV-LIBRARY] Erro ao adicionar livro(s): ${error.message}`);
+        res.status(500).json({ message: 'Erro interno do servidor.' });
+        return;
     }
-});
+};
+
+// Adicionar a função de middleware à rota POST
+router.post('/books', addBooksHandler);
 
 // REGISTRAR EMPRÉSTIMO DE LIVRO
 router.post('/books/:code/loan', (req, res) => {
