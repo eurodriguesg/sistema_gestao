@@ -83,7 +83,7 @@ Gerencia os livros do acervo e oferece os seguintes métodos:
 
 3. Execute o programa:
     ```bash
-   node dist/index.js
+   npm run dev ou npm start
     ```
 
 ---
