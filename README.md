@@ -68,7 +68,7 @@ Gerencia os livros do acervo e oferece os seguintes métodos:
 1. Clone este repositório:
    ```bash
    git clone https://github.com/eurodriguesg/sistema_gestao.git
-   cd sistema-biblioteca
+   cd sistema_gestao
     ```
 
 2. Instale as dependências:
