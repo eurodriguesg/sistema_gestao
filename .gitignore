@@ -134,3 +134,4 @@ build
 
 # Upload
 src/public/uploads
+.vercel

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/svg+xml" href="/images/favicon.ico">
+        <link href="https://fonts.googleapis.com/css?family=Inter:300,600,700,900" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <title>CMP1063 | Hotel</title>
+
+        <style>
+            body {
+                font-family: 'Inter', sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: #f0f0f0;
+                min-height: 100vh; /* Garante que o body ocupe toda a altura da janela */
+                overflow-x: hidden; /* Remove o scroll horizontal */
+                overflow-y: auto; /* Ativa o scroll vertical quando necessário */
+            }
+            .container {
+                width: 80%;
+                margin: auto;
+                padding: 20px 0; /* Adiciona um espaço de 20px no topo e no rodapé */
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                margin-top: 20px;
+                margin-bottom: 70px;
+                text-align: center;
+                max-width: 1000px;
+                overflow: visible; /* Faz com que a div.container não tenha seu próprio scroll */
+            }
+            .container p {
+                text-align: center; /* Centraliza o texto */
+                font-weight: bold; /* Deixa o texto em negrito */
+                color: #333;
+                margin-left: 5%;
+                margin-right: 5%;
+            }
+            h1 {
+                color: #333;
+                text-align: center;
+                margin-top: 0px;
+            }
+            .button {
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                font-weight: bold; /* Torna a fonte dos botões mais grossa */
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 80px;
+                transition: background-color 0.3s;
+            }
+            .button:hover {
+                background-color: #45a049;
+            }
+            header {
+                background-color: #003C85;
+                color: #fff;
+                padding: 2px 0;
+                display: flex;
+                justify-content: center; /* Centraliza horizontalmente os itens */
+                align-items: center; /* Alinha verticalmente os itens */
+                width: 100%;
+                text-align: center;
+            }
+            header img {
+                height: 60px;   /* Ajuste este valor para o tamanho desejado */
+                margin: 0.5% 0; /* Adiciona uma margem de 5% para cima e para baixo */
+            }
+            p {
+                margin: 20px 0;
+            }
+
+            label {
+                margin: 10px 0;
+                font-weight: bold;
+                color: #003C85;
+                margin-bottom: 0px
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            select {
+                margin: 10px 0;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                width: calc(100% - 22px);
+                max-width: 15%;
+            }
+            input {
+                margin: 10px 0;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                width: calc(100% - 22px);
+                max-width: 40%;
+            }
+            .stripe {
+                height: 5px; /* Ajuste este valor para a altura desejada */
+                width: 100%;
+            }
+            .yellow-stripe {
+                background-color: #F4C511;
+            }
+            .red-stripe {
+                background-color: #D02729;
+            }
+            .black-stripe {
+                height: 2px; /* Ajuste este valor para a altura desejada */
+                width: 80%;
+                background-color: #85858586;
+                margin: 0 auto; 
+            }
+            header h2 {
+                margin: auto; /* Centraliza o título */
+            }
+            footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: #333;
+                color: #fff;
+                text-align: center;
+                padding: 5px 0; /* Ajuste no padding para um footer menor */
+            }
+            /* Estilização da tabela */
+            table {
+                width: 100%;
+                margin: 20px 0;
+                border-collapse: collapse; /* Garante que as células fiquem grudadas */
+                border-spacing: 0;
+            }
+
+            table th, table td {
+                padding: 15px;
+                text-align: left;
+                font-size: 16px;
+                border: 1px solid #ddd;
+                background-color: #fff; /* Fundo branco para as células */
+                color: #555; /* Cor do texto */
+            }
+
+            table th {
+                background-color: #f2f2f2; /* Cor de fundo para o cabeçalho */
+                color: #333;
+                font-weight: bold;
+            }
+
+            table tr:hover {
+                background-color: #f9f9f9; /* Efeito de hover nas linhas */
+            }
+
+            /* Estilização das bordas e do contêiner da tabela */
+            .container {
+                padding: 20px;
+            }
+
+            /* Estilização geral do formulário */
+            #addBookForm,
+            #isBookAvailableForm {
+                width: 100%;
+                max-width: 600px;
+                margin: 20px auto;
+                padding: 30px;
+                border: 2px solid #ccc;
+                border-radius: 8px;
+                background-color: #f9f9f9;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Estilização do título */
+            #addBookForm h2,
+            #isBookAvailableForm h2 {
+                font-size: 24px;
+                text-align: center;
+                margin-bottom: 20px;
+                color: #333;
+            }
+
+            /* Estilização do grupo de inputs lado a lado */
+            .input-group {
+                display: flex;
+                gap: 20px;  /* Espaçamento entre os inputs */
+                margin-bottom: 20px;
+            }
+
+            /* Estilização dos campos de input */
+            #addBookForm input,
+            #isBookAvailableForm input{
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 16px;
+            }
+
+            /* Foco nos campos de input */
+            #addBookForm input:focus,
+            #isBookAvailableForm input:focus{
+                border-color: #4CAF50;
+                outline: none;
+            }
+
+            /* Estilização do checkbox */
+            #addBookForm label,
+            #isBookAvailableForm label{
+                display: inline-block;
+                font-size: 16px;
+                margin-left: 10px;
+            }
+
+            /* Estilização do botão */
+            #addBookForm button,
+            #isBookAvailableForm button {
+                width: 100%;
+                padding: 12px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-top: 10px;
+            }
+
+            /* Efeito no botão ao passar o mouse */
+            #addBookForm button:hover,
+            #isBookAvailableForm button:hover{
+                background-color: #45a049;
+            }
+
+            .form-container {
+                width: 100%; /* Pode ajustar a largura do contêiner */
+                display: flex;
+                justify-content: space-between; /* Espaçamento entre os formulários */
+                gap: 30px; /* Espaço entre os dois formulários */
+                margin: 0 auto; /* Centraliza o contêiner */
+                max-width: 900px;
+            }
+
+            /* Estilização geral do formulário */
+            #loanBookForm,
+            #returnBookForm {
+                width: 100%;
+                max-width: 600px;
+                margin: 20px auto;
+                padding: 20px;
+                border: 2px solid #ccc;
+                border-radius: 8px;
+                background-color: #f9f9f9;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Estilização do título */
+            #loanBookForm h2,
+            #returnBookForm h2 {
+                font-size: 24px;
+                text-align: center;
+                margin-bottom: 20px;
+                color: #333;
+            }
+
+            /* Estilização dos campos de input */
+            #loanBookForm input,
+            #returnBookForm input {
+                width: 100%;
+                padding: 12px;
+                margin: 10px 0;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 16px;
+            }
+
+            /* Foco nos campos de input */
+            #loanBookForm input:focus,
+            #returnBookForm input:focus{
+                border-color: #4CAF50;
+                outline: none;
+            }
+
+            /* Estilização do checkbox */
+            #loanBookForm label,
+            #returnBookForm label  {
+                display: inline-block;
+                font-size: 16px;
+                margin-left: 10px;
+            }
+
+            /* Estilização do botão */
+            #loanBookForm button,
+            #returnBookForm button {
+                width: 100%;
+                padding: 12px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-top: 10px;
+                transition: background-color 0.3s;
+            }
+
+            /* Efeito no botão ao passar o mouse */
+            #loanBookForm button:hover,
+            #returnBookForm button:hover {
+                background-color: #45a049;
+            }
+
+            .back-link {
+                display: flex;
+                align-items: center;
+                color: #333;
+                text-decoration: none;
+            }
+
+            .back-link img {
+                margin-left: 3%; /* Espaço entre a imagem e a borda esquerda do link */
+                width: 30px;
+                margin-right: 10px; /* Espaço entre a imagem e o texto */
+                transform: rotate(180deg); /* Rotação da imagem */
+            }
+
+            .back-link span {
+                margin-right: 20px; /* Espaço entre o texto e a borda direita do link */
+            }
+
+            .back-link:hover {
+                text-decoration: none; /* Remove a sublinhado ao hover */
+            }
+
+            .back-link:hover span {
+                text-decoration: none; /* Sublinhado apenas no texto ao hover */
+            }
+
+            /* Responsividade - Para telas menores */
+            @media (max-width: 768px) {
+                .input-group {
+                    flex-direction: column;  /* Coloca os campos em coluna quando a tela é pequena */
+                    gap: 10px;
+                }
+                
+                #addBookForm,
+                #isBookAvailableForm,
+                #loanBookForm,
+                #returnBookForm {
+                    width: 90%;
+                    padding: 15px;
+                }
+
+                #addBookForm input,
+                #isBookAvailableForm input,
+                #loanBookForm input,
+                #returnBookForm input {
+                    width: 100%;
+                }
+
+                #addBookForm button,
+                #isBookAvailableForm input,
+                #loanBookForm button, 
+                #returnBookForm button {
+                    width: 100%;
+                }
+
+                table th, table td {
+                    padding: 10px; /* Reduz o espaçamento para telas menores */
+                }
+
+                table {
+                    margin: 10px 0;
+                }
+
+                table th {
+                    font-size: 14px; /* Ajusta o tamanho da fonte */
+                }
+
+                table td {
+                    font-size: 14px; /* Ajusta o tamanho da fonte */
+                }
+            }
+
+            /* Estilização do título "Livros" */
+            .section-title {
+                font-size: 28px; /* Tamanho maior para o título */
+                color: #333; /* Cor do texto */
+                text-align: center; /* Alinha o texto à esquerda */
+                margin-bottom: 10px; /* Espaço abaixo do título */
+                position: relative; /* Necessário para o posicionamento do ícone */
+            }
+
+            /* Linha abaixo do título */
+            .section-title::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: -5px; /* Distância da linha abaixo */
+                width: 100%;
+                height: 2px;
+                background-color: #4CAF50; /* Cor da linha */
+            }
+
+            /* Estilização do ícone ao lado do título */
+            .section-title i {
+                position: center;
+                left: 0;
+                top: 0;
+                font-size: 24px; /* Tamanho do ícone */
+                color: #4CAF50; /* Cor do ícone */
+            }
+
+
+        </style>
+
+    </head>
+    <body>
+    
+        <header>
+            <img src="/images/escola.png" alt="Logo">
+        </header>
+        <div class="stripe yellow-stripe"></div>
+        <div class="stripe red-stripe"></div>
+
+        <div class="container">
+
+            <a href="/" class="back-link">
+                <img src="/images/seta.svg" alt="Voltar">
+                <span>Início</span>
+            </a>
+
+            <h1>Sistema de Gerenciamento de Reservas de Hotel</h1>
+            <br>
+
+            <form id="addBookForm">
+
+                <h2 class="section-title">
+                    <i class="fa-solid fa-hotel"></i> Registrar Reserva
+                </h2>
+
+                <div class="input-group">
+                    <input type="number" id="numberFour" placeholder="Nº Quarto" required>
+                    <input type="text"   id="guestName" placeholder="Hospede"    required>
+                    <input type="date"   id="entryDate" placeholder="Check-in"   required>
+                    <input type="date"   id="dateExit" placeholder="Check-out"   required>
+                </div>
+
+                <button type="submit" class="button">Adicionar</button>
+            </form>       
+            
+            
+            
+            <div class="form-container">
+
+                <form id="isBookAvailableForm">
+
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-bed"></i> Consultar Quarto
+                    </h2>
+    
+                    <input type="number" id="avaicode" placeholder="Nº Quarto" required>
+    
+                    <button type="submit" class="button">Buscar</button>
+                </form>  
+
+                <form id="returnBookForm">
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-ban"></i> Cancelar Reserva
+                    </h2>
+                    <input type="number" id="returncode" placeholder="Nº Quarto" required>
+                    <button type="submit" class="button">Registrar</button>
+                </form>
+            </div>
+            
+            <h2 class="section-title">
+                <i class="fas fa-book"></i> Livros
+            </h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nº Quarto</th>
+                        <th>Hospede</th>
+                        <th>Autor</th>
+                        <th>Disponibilidade</th>
+                    </tr>
+                </thead>
+                <tbody id="booksList">
+                </tbody>
+            </table>
+            
+        </div>
+
+        <footer>
+            <p>© 2024 Eliseu Rodrigues. Todos os direitos reservados.</p>
+        </footer>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Manipulador para adicionar livro
+                document.getElementById('addBookForm').addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const numberFour = document.getElementById('numberFour').value;
+                    const guestName = document.getElementById('guestName').value;
+                    const author = document.getElementById('author').value;
+                    const available = document.getElementById('available').checked;
+                    const response = await fetch('/api/library/books', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ numberFour, guestName, author, available })
+                    });
+                    if (response.status === 201) {
+                        const book = await response.json();
+                        console.log('Livro adicionado:', book);
+                        document.getElementById('addBookForm').reset(); // Limpar campos do formulário
+                    } else {
+                        const error = await response.json();
+                        alert(error.message);
+                    }
+                    loadBooks();
+                });
+
+                // Manipulador para registrar empréstimo
+                const isBookAvailableForm = document.getElementById('isBookAvailableForm');
+                if (isBookAvailableForm) {
+                    isBookAvailableForm.addEventListener('submit', async (event) => {
+                        event.preventDefault();
+                        const numberFour = document.getElementById('avaicode').value;
+                        const response = await fetch(`/api/library/books/${numberFour}/isAvailable`, {
+                            method: 'POST'
+                        });
+                        if (response.status === 200) {
+                            alert('Livro disponível');
+                            isBookAvailableForm.reset(); // Limpar campos do formulário
+                        } else if (response.status === 404) {
+                            alert('Livro não existe');
+                        } else if (response.status === 409) {
+                            alert('Livro não disponível');
+                        } else {
+                            alert('Erro desconhecido');
+                        }
+                        loadBooks();
+                    });
+                }
+        
+                // Manipulador para registrar empréstimo
+                const loanBookForm = document.getElementById('loanBookForm');
+                if (loanBookForm) {
+                    loanBookForm.addEventListener('submit', async (event) => {
+                        event.preventDefault();
+                        const numberFour = document.getElementById('loancode').value;
+                        const response = await fetch(`/api/library/books/${numberFour}/loan`, {
+                            method: 'POST'
+                        });
+                        if (response.status === 200) {
+                            alert('Empréstimo registrado');
+                            loanBookForm.reset(); // Limpar campos do formulário
+                        } else if (response.status === 404) {
+                            alert('Livro não existe');
+                        } else if (response.status === 409) {
+                            alert('Livro não disponível para empréstimo');
+                        } else {
+                            alert('Erro desconhecido');
+                        }
+                        loadBooks();
+                    });
+                }
+        
+                // Manipulador para registrar devolução
+                const returnForm = document.getElementById('returnBookForm');
+                if (returnForm) {
+                    returnForm.addEventListener('submit', async (event) => {
+                        event.preventDefault();
+                        const numberFour = document.getElementById('returncode').value;
+                        const response = await fetch(`/api/library/books/${numberFour}/return`, {
+                            method: 'POST'
+                        });
+                        if (response.status === 200) {
+                            alert('Devolução registrada');
+                            returnForm.reset(); // Limpar campos do formulário
+                        } else if (response.status === 404) {
+                            alert('Livro não existe');
+                        } else if (response.status === 409) {
+                            alert('Livro já devolvido');
+                        }else {
+                            alert('Erro ao registrar devolução');
+                        }
+                        loadBooks();
+                    });
+                }
+        
+                // Função para carregar a lista de livros
+                async function loadBooks() {
+                    try {
+                        const response = await fetch('/api/library/books');
+                        // console.log('Status da resposta:', response.status);
+                        
+                        if (!response.ok) {
+                            throw new Error('Erro ao carregar livros');
+                        }
+                        
+                        const books = await response.json();
+                        // console.log('Livros carregados:', books);
+                        
+                        const booksList = document.getElementById('booksList');
+                        booksList.innerHTML = '';
+                        
+                        books.forEach(book => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${book.numberFour}</td>
+                                <td>${book.guestName}</td>
+                                <td>${book.author}</td>
+                                <td>${book.available ? 'Disponível' : 'Indisponível'}</td>
+                            `;
+                            booksList.appendChild(tr);
+                        });
+                    } catch (error) {
+                        console.error('Erro ao buscar livros:', error);
+                    }
+                }
+        
+                // Chame a função para carregar os livros inicialmente
+                loadBooks();
+            });
+        </script>
+        
+    </body>
+</html>

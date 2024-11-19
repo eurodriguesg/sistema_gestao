@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import express from 'express';
 import enterpriseRoutes from './routes/Enterprise.route'; // Rotas de funcionários
 import libraryRoutes from './routes/Library.route';    // Rotas de biblioteca
+import hotelRoutes from './routes/Hotel.route';    // Rotas de biblioteca
 
 const port = 31063;
 const host = '0.0.0.0';
@@ -50,7 +51,8 @@ app.get('/tasks', (req, res) => {
 
 // Adicionando rotas
 app.use('/api/library', libraryRoutes);
-app.use('/api/employees', enterpriseRoutes);
+app.use('/api/employees', enterpriseRoutes); // MUDAR PARA ENTERPRISE
+app.use('/api/hotel', hotelRoutes);
 
 // Iniciando o servidor
 app.listen(port, host, () => {
