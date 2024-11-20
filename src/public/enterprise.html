@@ -709,7 +709,7 @@
 
             // Função para carregar funcionários na tabela
             function loadEmployees() {
-                fetch('/api/enterprise/list')
+                fetch('/api/enterprise/getAllEmployees')
                     .then(response => response.json())
                     .then(data => {
                         const tableBody = document.querySelector('#employeeTable tbody');
