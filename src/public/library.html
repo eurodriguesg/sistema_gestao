@@ -527,7 +527,7 @@
                     const title = document.getElementById('title').value;
                     const author = document.getElementById('author').value;
                     const available = document.getElementById('available').checked;
-                    const response = await fetch('/api/library/books', {
+                    const response = await fetch('/api/library/addBooks', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ code, title, author, available })
@@ -549,7 +549,7 @@
                     isBookAvailableForm.addEventListener('submit', async (event) => {
                         event.preventDefault();
                         const code = document.getElementById('avaicode').value;
-                        const response = await fetch(`/api/library/books/${code}/isAvailable`, {
+                        const response = await fetch(`/api/library/checkAvailability/${code}`, {
                             method: 'POST'
                         });
                         if (response.status === 200) {
@@ -572,7 +572,7 @@
                     loanBookForm.addEventListener('submit', async (event) => {
                         event.preventDefault();
                         const code = document.getElementById('loancode').value;
-                        const response = await fetch(`/api/library/books/${code}/loan`, {
+                        const response = await fetch(`/api/library/bookLoan/${code}`, {
                             method: 'POST'
                         });
                         if (response.status === 200) {
@@ -595,7 +595,7 @@
                     returnForm.addEventListener('submit', async (event) => {
                         event.preventDefault();
                         const code = document.getElementById('returncode').value;
-                        const response = await fetch(`/api/library/books/${code}/return`, {
+                        const response = await fetch(`/api/library/bookReturn/${code}`, {
                             method: 'POST'
                         });
                         if (response.status === 200) {
@@ -615,7 +615,7 @@
                 // Função para carregar a lista de livros
                 async function loadBooks() {
                     try {
-                        const response = await fetch('/api/library/books');
+                        const response = await fetch('/api/library/getAllBooks');
                         // console.log('Status da resposta:', response.status);
                         
                         if (!response.ok) {
@@ -628,7 +628,7 @@
                         const booksList = document.getElementById('booksList');
                         booksList.innerHTML = '';
                         
-                        books.forEach(book => {
+                        books.allBooks.forEach(book => {
                             const tr = document.createElement('tr');
                             tr.innerHTML = `
                                 <td>${book.code}</td>
