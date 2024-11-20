@@ -51,7 +51,7 @@ app.get('/tasks', (req, res) => {
 
 // Adicionando rotas
 app.use('/api/library', libraryRoutes);
-app.use('/api/enterprise', enterpriseRoutes); // MUDAR PARA ENTERPRISE
+app.use('/api/enterprise', enterpriseRoutes);
 app.use('/api/hotel', hotelRoutes);
 
 // Iniciando o servidor
