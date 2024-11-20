@@ -632,7 +632,7 @@
 
             // Função para buscar os dados do funcionário e exibir o modal
             function fetchEmployeeData(registration) {
-                fetch(`/api/employees/${registration}`)
+                fetch(`/api/enterprise/${registration}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.employee) {
@@ -667,7 +667,7 @@
                     return;
                 }
 
-                fetch('/api/employees/changeSalary', {
+                fetch('/api/enterprise/changeSalary', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ registration, salary: newSalary })
@@ -709,7 +709,7 @@
 
             // Função para carregar funcionários na tabela
             function loadEmployees() {
-                fetch('/api/employees/list')
+                fetch('/api/enterprise/list')
                     .then(response => response.json())
                     .then(data => {
                         const tableBody = document.querySelector('#employeeTable tbody');
@@ -743,7 +743,7 @@
                 submitButton.disabled = true;
 
                 try {
-                    const response = await fetch('/api/employees/addEmployee', {
+                    const response = await fetch('/api/enterprise/addEmployee', {
                         method: 'POST', // Definindo o método HTTP no fetch
                         body: formData
                     });
