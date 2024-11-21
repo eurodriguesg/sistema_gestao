@@ -535,7 +535,7 @@
 
                 <div class="photo-container">
                     <img id="employeePhoto" src="/images/default-avatar.png" alt="Foto do Funcionário" class="photo-preview" />
-                    <input type="file" id="photoUpload" name="photo" accept="image/*" onchange="previewPhoto()">
+                    <input type="file" id="photoUpload" name="photo" accept="image/*">
                 </div>
                 
 
@@ -601,6 +601,20 @@
         </footer>
     
         <script>
+
+            // Consultar Funcionário
+            document.getElementById('getAllEmployeesForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Impede o envio padrão do formulário
+
+                const registration = document.getElementById('employeeSearch').value; // Pega o valor inserido no campo de busca
+                if (!registration) {
+                    alert('Por favor, insira a Matrícula do funcionário.');
+                    return;
+                }
+
+                // Chama a função para buscar os dados do funcionário
+                fetchEmployeeData(registration);
+            });
 
             // Carrega os funcionários ao abrir a página
             document.addEventListener('DOMContentLoaded', loadEmployees);
@@ -695,30 +709,30 @@
 
             // Função para buscar os dados do funcionário e exibir o modal
             function fetchEmployeeData(registration) {
-            fetch(`/api/enterprise/${registration}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.employee) {
-                        // Busca a foto no localStorage
-                        const base64Image = localStorage.getItem(`employeePhoto_${registration}`) || '/images/default-avatar.png';
+                fetch(`/api/enterprise/${registration}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.employee) {
+                            // Busca a foto no localStorage
+                            const base64Image = localStorage.getItem(`employeePhoto_${registration}`) || '/images/default-avatar.png';
 
-                        // Preenche o modal com os dados do funcionário
-                        document.getElementById('modalPhoto').src = base64Image;
-                        document.getElementById('modalRegistration').textContent = data.employee.registration;
-                        document.getElementById('modalName').textContent = data.employee.name;
-                        document.getElementById('modalRole').textContent = data.employee.role;
-                        document.getElementById('modalSalary').textContent = `R$ ${data.employee.salary}`;
+                            // Preenche o modal com os dados do funcionário
+                            document.getElementById('modalPhoto').src = base64Image;
+                            document.getElementById('modalRegistration').textContent = data.employee.registration;
+                            document.getElementById('modalName').textContent = data.employee.name;
+                            document.getElementById('modalRole').textContent = data.employee.role;
+                            document.getElementById('modalSalary').textContent = `R$ ${data.employee.salary}`;
 
-                        // Exibe o modal
-                        document.getElementById('employeeModal').style.display = 'flex';
-                    } else {
-                        alert('Funcionário não encontrado!');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao buscar funcionário:', error);
-                    alert('Erro ao buscar funcionário!');
-                });
+                            // Exibe o modal
+                            document.getElementById('employeeModal').style.display = 'flex';
+                        } else {
+                            alert('Funcionário não encontrado!');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao buscar funcionário:', error);
+                        alert('Erro ao buscar funcionário!');
+                    });
             }
 
             // Função para fechar o modal
@@ -785,6 +799,71 @@
                     })
                     .catch(error => console.error('Erro ao carregar funcionários:', error));
             }
+
+            // ARMAZENAAMENTO BUFFER: Função para comprimir e armazenar a imagem
+            function compressAndStoreImage(file, registration) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const img = new Image();
+                    img.onload = function () {
+                        const canvas = document.createElement('canvas');
+                        const maxWidth = 800; // Defina uma largura máxima para a imagem
+                        const scale = maxWidth / img.width;
+                        canvas.width = maxWidth;
+                        canvas.height = img.height * scale;
+
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                        // Comprime a imagem para base64 (qualidade ajustável)
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7); // Qualidade 70%
+                        
+                        // Armazena no LocalStorage
+                        try {
+                            localStorage.setItem(`employeePhoto_${registration}`, compressedBase64);
+                            console.log('Imagem comprimida e armazenada com sucesso.');
+                        } catch (e) {
+                            console.error('Erro ao salvar imagem no LocalStorage:', e);
+                            alert('Falha ao salvar imagem: espaço insuficiente no armazenamento.');
+                        }
+                    };
+                    img.src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            }
+
+            // ARMAZENAAMENTO BUFFER: Evento de mudança no input de upload de foto
+            const photoInput = document.getElementById('photoUpload');
+
+            photoInput.addEventListener('change', function () {
+                const file = this.files[0];
+                const registration = document.getElementById('registration').value;
+
+                if (!file) return; // Evita erros se nenhum arquivo for selecionado
+
+                // Validação de matrícula
+                if (!registration) {
+                    alert('Por favor, insira a matrícula antes de enviar a foto.');
+                    this.value = ''; // Limpa o campo de arquivo
+                    return;
+                }
+
+                // Validação de tamanho do arquivo
+                if (file.size > 2 * 1024 * 1024) { // Limite de 2MB
+                    alert('Por favor, envie uma imagem menor que 2MB.');
+                    this.value = ''; // Limpa o campo de arquivo
+                    document.getElementById('employeePhoto').src = '/images/default-avatar.png'; // Restaura o avatar padrão
+                } else {
+                    // Comprime e armazena a imagem no LocalStorage
+                    compressAndStoreImage(file, registration);
+
+                    // Exibe o preview da imagem
+                    previewPhoto(); // Chama a função de preview somente se passar a validação
+                }
+            });
+
 
             // Função para atualizar salário
             function updateSalary() {
