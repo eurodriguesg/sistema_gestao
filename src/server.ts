@@ -32,11 +32,11 @@ const getLocalIPs = (): string[] => {
 // _________________________________________________________________________________________________________________________________________________________
 
 // Configurando middleware
-app.use(bodyParser.json());
 app.use(express.json()); // Para requisições com `Content-Type: application/json`3
 app.use(express.urlencoded({ extended: true })); // Para requisições com `Content-Type: application/x-www-form-urlencoded`
 app.use(express.static(path.join(__dirname, 'public'))); // Serve arquivos estáticos da pasta 'public'
-
+app.use(bodyParser.json({ limit: '10mb' })); // Ajuste o limite conforme necessário
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 // _________________________________________________________________________________________________________________________________________________________
 
 // Rotas amigáveis para acesso as páginas
