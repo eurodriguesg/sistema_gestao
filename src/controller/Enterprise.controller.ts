@@ -30,7 +30,7 @@ export class EnterpriseController {
     // _________________________________________________________________________________________________________________________________________________________
 
     // Adicionar funcionários
-    async addEmployee(req: Request, res: Response) {
+    /*async addEmployee(req: Request, res: Response) {
         // console.log("[SRV 🟡] Recebido pedido de cadastro de funcionário:", req.body);
     
         try {
@@ -127,6 +127,49 @@ export class EnterpriseController {
                 function: "addEmployee", 
                 stage: "Erro ao adicionar funcionário(s)", 
                 error: error
+            });
+        }
+    }*/
+    // ARMAZENAAMENTO BUFFER: Adicionar funcionário sem armazenar imagens
+    async addEmployee(req: Request, res: Response) {
+        try {
+            const { registration, name, role, salary } = req.body;
+
+            if (!registration || !name || !role || !salary) {
+                res.status(400).json({
+                    message: "Todos os campos obrigatórios devem ser preenchidos",
+                    fields: "registration, name, role e salary",
+                });
+                return;
+            }
+
+            const employee = new Employee(
+                Number(registration),
+                name,
+                role,
+                Number(salary),
+                '' // Não há mais necessidade de armazenar o photoPath
+            );
+            const added = enterprise.addEmployee(employee);
+
+            if (added) {
+                res.status(201).json({
+                    message: 'Funcionário adicionado com sucesso',
+                    employee: `${employee.registration} - ${employee.name} (${employee.role})`,
+                });
+            } else {
+                res.status(409).json({
+                    message: 'Funcionário já existe',
+                    employee: `${employee.registration} - ${employee.name} (${employee.role})`,
+                });
+            }
+        } catch (error: any) {
+            console.error(`[SRV-ENTERPRISE 🔴] Erro ao adicionar funcionário(s): ${error.message}`);
+            res.status(500).json({
+                message: "Erro interno do servidor",
+                function: "addEmployee",
+                stage: "Erro ao adicionar funcionário(s)",
+                error: error,
             });
         }
     }

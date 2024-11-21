@@ -602,6 +602,83 @@
     
         <script>
 
+            // Carrega os funcionários ao abrir a página
+            document.addEventListener('DOMContentLoaded', loadEmployees);
+
+            // Adicionar funcionário e recarregar tabela
+            /*document.getElementById('addEmployeeForm').addEventListener('submit', async function (event) {
+                event.preventDefault(); // Impede o envio padrão do formulário
+
+                const form = this;
+                const submitButton = form.querySelector('button[type="submit"]');
+                const formData = new FormData(form);
+
+                submitButton.disabled = true;
+
+                try {
+                    const response = await fetch('/api/enterprise/addEmployee', {
+                        method: 'POST', // Definindo o método HTTP no fetch
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Erro na resposta da API');
+                    }
+
+                    const data = await response.json();
+                    
+                    alert('Funcionário adicionado com sucesso!');
+                    console.log(data);
+
+                    form.reset();
+                    document.getElementById('employeePhoto').src = '/images/default-avatar.png';
+                    loadEmployees(); // Atualiza a tabela após adicionar
+                } catch (error) {
+                    console.error('Erro ao adicionar funcionário:', error);
+                    alert('Funcionário já existe!');
+                } finally {
+                    submitButton.disabled = false;
+                }
+            });*/
+
+            // ARMAZENAAMENTO BUFFER: Adicionar funcionário e salvar imagem no localStorage
+            document.getElementById('addEmployeeForm').addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                const form = this;
+                const registration = document.getElementById('registration').value;
+                const name = document.getElementById('name').value;
+                const role = document.getElementById('role').value;
+                const salary = document.getElementById('salary').value;
+                const photoInput = document.getElementById('photoUpload');
+
+                // Salva imagem no localStorage, se fornecida
+                if (photoInput.files.length > 0) {
+                    savePhotoToLocalStorage(registration, photoInput.files[0]);
+                }
+
+                // Adiciona funcionário à API
+                const employeeData = { registration, name, role, salary };
+                try {
+                    const response = await fetch('/api/enterprise/addEmployee', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(employeeData)
+                    });
+
+                    if (response.ok) {
+                        alert('Funcionário adicionado com sucesso!');
+                        form.reset();
+                        document.getElementById('employeePhoto').src = '/images/default-avatar.png';
+                        loadEmployees(); // Atualiza a tabela
+                    } else {
+                        alert('Erro ao adicionar funcionário.');
+                    }
+                } catch (error) {
+                    console.error('Erro ao adicionar funcionário:', error);
+                }
+            });
+
             // Função para preview da imagem antes do upload
             function previewPhoto() {
                 const photoInput = document.getElementById('photoUpload');
@@ -618,30 +695,95 @@
 
             // Função para buscar os dados do funcionário e exibir o modal
             function fetchEmployeeData(registration) {
-                fetch(`/api/enterprise/${registration}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.employee) {
-                            // Preenche o modal com os dados do funcionário
-                            document.getElementById('modalPhoto').src = data.employee.photoPath || '/images/default-avatar.png';
-                            document.getElementById('modalRegistration').textContent = data.employee.registration;
-                            document.getElementById('modalName').textContent = data.employee.name;
-                            document.getElementById('modalRole').textContent = data.employee.role;
-                            document.getElementById('modalSalary').textContent = `R$ ${data.employee.salary}`;
-                            document.getElementById('employeeModal').style.display = 'flex'; // Exibe o modal
-                        } else {
-                            alert('Funcionário não encontrado!');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erro ao buscar funcionário:', error);
-                        alert('Erro ao buscar funcionário!');
-                    });
+            fetch(`/api/enterprise/${registration}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.employee) {
+                        // Busca a foto no localStorage
+                        const base64Image = localStorage.getItem(`employeePhoto_${registration}`) || '/images/default-avatar.png';
+
+                        // Preenche o modal com os dados do funcionário
+                        document.getElementById('modalPhoto').src = base64Image;
+                        document.getElementById('modalRegistration').textContent = data.employee.registration;
+                        document.getElementById('modalName').textContent = data.employee.name;
+                        document.getElementById('modalRole').textContent = data.employee.role;
+                        document.getElementById('modalSalary').textContent = `R$ ${data.employee.salary}`;
+
+                        // Exibe o modal
+                        document.getElementById('employeeModal').style.display = 'flex';
+                    } else {
+                        alert('Funcionário não encontrado!');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar funcionário:', error);
+                    alert('Erro ao buscar funcionário!');
+                });
             }
 
             // Função para fechar o modal
             function closeModal() {
                 document.getElementById('employeeModal').style.display = 'none';
+            }
+
+            // ARMAZENAAMENTO BUFFER: Função para salvar imagem em localStorage como Base64
+            function savePhotoToLocalStorage(registration, file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const base64Image = e.target.result;
+                    localStorage.setItem(`employeePhoto_${registration}`, base64Image); // Salva com a matrícula como chave
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Função para carregar funcionários na tabela
+            /*function loadEmployees() {
+                fetch('/api/enterprise/getAllEmployees')
+                    .then(response => response.json())
+                    .then(data => {
+                        const tableBody = document.querySelector('#employeeTable tbody');
+                        tableBody.innerHTML = ''; // Limpa a tabela antes de adicionar novos dados
+
+                        data.employees.forEach(employee => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${employee.registration}</td>
+                                <td>${employee.name}</td>
+                                <td>${employee.role}</td>
+                                <td>R$ ${employee.salary}</td>
+                                <td>
+                                    <button class="button" onclick="fetchEmployeeData(${employee.registration})">Ver</button>
+                                </td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar funcionários:', error));
+            }*/
+
+            // ARMAZENAAMENTO BUFFER: Função para carregar funcionários na tabela
+            function loadEmployees() {
+                fetch('/api/enterprise/getAllEmployees')
+                    .then(response => response.json())
+                    .then(data => {
+                        const tableBody = document.querySelector('#employeeTable tbody');
+                        tableBody.innerHTML = ''; // Limpa a tabela antes de adicionar novos dados
+
+                        data.employees.forEach(employee => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${employee.registration}</td>
+                                <td>${employee.name}</td>
+                                <td>${employee.role}</td>
+                                <td>R$ ${employee.salary}</td>
+                                <td>
+                                    <button class="button" onclick="fetchEmployeeData(${employee.registration})">Ver</button>
+                                </td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar funcionários:', error));
             }
 
             // Função para atualizar salário
@@ -692,70 +834,6 @@
                     }
                 });
             }
-
-            // Função para carregar funcionários na tabela
-            function loadEmployees() {
-                fetch('/api/enterprise/getAllEmployees')
-                    .then(response => response.json())
-                    .then(data => {
-                        const tableBody = document.querySelector('#employeeTable tbody');
-                        tableBody.innerHTML = ''; // Limpa a tabela antes de adicionar novos dados
-
-                        data.employees.forEach(employee => {
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>${employee.registration}</td>
-                                <td>${employee.name}</td>
-                                <td>${employee.role}</td>
-                                <td>R$ ${employee.salary}</td>
-                                <td>
-                                    <button class="button" onclick="fetchEmployeeData(${employee.registration})">Ver</button>
-                                </td>
-                            `;
-                            tableBody.appendChild(row);
-                        });
-                    })
-                    .catch(error => console.error('Erro ao carregar funcionários:', error));
-            }
-
-            // Adicionar funcionário e recarregar tabela
-            document.getElementById('addEmployeeForm').addEventListener('submit', async function (event) {
-                event.preventDefault(); // Impede o envio padrão do formulário
-
-                const form = this;
-                const submitButton = form.querySelector('button[type="submit"]');
-                const formData = new FormData(form);
-
-                submitButton.disabled = true;
-
-                try {
-                    const response = await fetch('/api/enterprise/addEmployee', {
-                        method: 'POST', // Definindo o método HTTP no fetch
-                        body: formData
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Erro na resposta da API');
-                    }
-
-                    const data = await response.json();
-                    
-                    alert('Funcionário adicionado com sucesso!');
-                    console.log(data);
-
-                    form.reset();
-                    document.getElementById('employeePhoto').src = '/images/default-avatar.png';
-                    loadEmployees(); // Atualiza a tabela após adicionar
-                } catch (error) {
-                    console.error('Erro ao adicionar funcionário:', error);
-                    alert('Funcionário já existe!');
-                } finally {
-                    submitButton.disabled = false;
-                }
-            });
-
-            // Carrega os funcionários ao abrir a página
-            document.addEventListener('DOMContentLoaded', loadEmployees);
 
         </script>
     </body>
