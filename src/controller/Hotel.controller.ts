@@ -136,11 +136,8 @@ export class HotelController {
 
     // Consultar disponibilidade de quarto
     checkRoomAvailability(req: Request, res: Response) {
-        
         try {
-
             const { numberFour, entryDate, dateExit } = req.body;
-            // console.log("[SRV 🟡] Recebendo pedido para realizar reserva de quarto:", req.body);
 
             if (!numberFour || !entryDate || !dateExit) {
                 res.status(400).json({ 
@@ -150,28 +147,67 @@ export class HotelController {
                 return;
             }
 
-            const result = hotel.checkRoomAvailability(numberFour,entryDate,dateExit);
-
-            if (result === 'not_found') {
-                res.status(404).json({ message: 'Quarto não encontrado', numberFour: numberFour});
-            } else if (result === 'not_available') {
-                res.status(409).json({ message: 'Quarto reservado', numberFour: numberFour});
-            } else if (result === 'success') {
-                res.status(200).json({ message: 'Quarto disponível', numberFour: numberFour, booking: result});
-            } else {
-                res.status(500).json({ message: 'Erro desconhecido' });
+            // Validar se `numberFour` é um número
+            if (isNaN(Number(numberFour))) {
+                res.status(400).json({ message: "O número do quarto deve ser um número válido." });
+                return;
             }
 
+            // Converter strings de datas para objetos Date
+            const entry = new Date(entryDate);
+            const exit = new Date(dateExit);
+
+            // Validar se as datas são válidas
+            if (isNaN(entry.getTime()) || isNaN(exit.getTime())) {
+                res.status(400).json({ message: "Datas inválidas." });
+                return;
+            }
+
+            // Validar se a data de entrada é antes da data de saída
+            if (entry >= exit) {
+                res.status(400).json({ message: "A data de entrada deve ser anterior à data de saída." });
+                return;
+            }
+
+            // Chamar o método do model para verificar disponibilidade
+            const result = hotel.checkRoomAvailability(Number(numberFour), entry, exit);
+
+            // Analisar o status retornado
+            switch (result.status) {
+                case 'not_found':
+                    res.status(404).json({ 
+                        message: 'Quarto não encontrado', 
+                        numberFour 
+                    });
+                    break;
+                case 'not_available':
+                    res.status(409).json({ 
+                        message: 'Quarto reservado', 
+                        numberFour 
+                    });
+                    break;
+                case 'success':
+                    res.status(200).json({ 
+                        message: 'Quarto disponível', 
+                        numberFour 
+                    });
+                    break;
+                default:
+                    res.status(500).json({ 
+                        message: 'Erro desconhecido', 
+                        details: result.details || null 
+                    });
+            }
         } catch (error: any) {
             console.error(`[SRV-HOTEL 🔴] Erro ao obter quarto por número: ${error.message}`);
             res.status(500).json({ 
                 message: "Erro interno do servidor", 
-                function: "getReservationByNumber", 
-                stage: "Erro ao obter quarto por número", 
-                error: error
+                function: "checkRoomAvailability", 
+                error: error.message 
             });
         }
     }
+
 
     // Cancelar uma reserva
     cancelBooking(req: Request, res: Response) {

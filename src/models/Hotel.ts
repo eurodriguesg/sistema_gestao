@@ -66,23 +66,34 @@ export class Hotel {
     }    
 
     // Método para onsultar disponibilidade para um período
-    checkRoomAvailability(numberFour: number, entryDate: Date, dateExit: Date): string {
-        const conflict = this.bookings.some(booking =>
-            booking.numberFour === numberFour &&
-            ((entryDate >= booking.entryDate && entryDate <= booking.dateExit) ||
-             (dateExit >= booking.entryDate && dateExit <= booking.dateExit) ||
-             (entryDate <= booking.entryDate && dateExit >= booking.dateExit))
-        );
+    checkRoomAvailability(numberFour: number, entryDate: Date, dateExit: Date): { status: string, details?: any } {
+        //console.log("====== Início da comparação de datas ======");
+        //console.log("Entrada solicitada:", entryDate.toISOString());
+        //console.log("Saída solicitada:", dateExit.toISOString());
+    
+        const conflict = this.bookings.some(booking => {
+            //console.log("Reserva existente - Entrada:", booking.entryDate.toISOString(), "Saída:", booking.dateExit.toISOString());
+    
+            return booking.numberFour === numberFour &&
+                // Qualquer sobreposição de intervalos
+                !(
+                    dateExit <= booking.entryDate || // Saída antes do início da reserva existente
+                    entryDate >= booking.dateExit   // Entrada após o fim da reserva existente
+                );
+        });
+    
+        //console.log("====== Fim da comparação de datas ======");
     
         if (conflict) {
-            console.log(`[SRV-HOTEL 🔴] Quarto ${numberFour} está reservado para o período solicitado.`);
-            return 'not_available';
+            console.log(`Quarto ${numberFour} está reservado para o período solicitado.`);
+            return { status: 'not_available' };
         }
     
-        console.log(`[SRV-HOTEL ✅] Quarto ${numberFour} está disponível para o período solicitado.`);
-        return 'success';
-    }    
-
+        console.log(`Quarto ${numberFour} está disponível para o período solicitado.`);
+        return { status: 'success' };
+    }
+    
+    
     // Método para cancelar uma reserva com base no número do quarto
     cancelBooking(bookingId: string): boolean {
         const index = this.bookings.findIndex(booking => booking.id === bookingId);

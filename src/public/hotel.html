@@ -482,6 +482,7 @@
 
                 <button type="submit" class="button">Buscar</button>
             </form>  
+
             <form id="cancelBookingForm">
                 <h2 class="section-title">
                     <i class="fa-solid fa-ban"></i> Cancelar Reserva
@@ -543,33 +544,48 @@
                     getAllBookings();
                 });
 
-                // Manipulador para registrar empréstimo
+                // Manipulador para realizar reserva
                 const checkRoomAvailability = document.getElementById('checkRoomAvailability');
                 console.log(checkRoomAvailability);              
                 if (checkRoomAvailability) {
                     checkRoomAvailability.addEventListener('submit', async (event) => {
-                        event.preventDefault();
-                        
-                        const numberFour = document.getElementById('cra-numberFour').value;
-                        const entryDate  = document.getElementById('cra-entryDate').value;
-                        const dateExit   = document.getElementById('cra-dateExit').value;
+                    event.preventDefault();
 
-                        const response = await fetch(`/api/hotel/checkRoomAvailability`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ numberFour, entryDate, dateExit })
-                        });
-                        
-                        if (response.status === 200) {
+                    const numberFour = document.getElementById('cra-numberFour').value;
+                    const entryDate = document.getElementById('cra-entryDate').value;
+                    const dateExit = document.getElementById('cra-dateExit').value;
+
+                    if (!numberFour || !entryDate || !dateExit) {
+                        alert("Por favor, preencha todos os campos.");
+                        return;
+                    }
+
+                    if (new Date(entryDate) >= new Date(dateExit)) {
+                        alert("A data de entrada deve ser anterior à data de saída.");
+                        return;
+                    }
+
+                    const response = await fetch(`/api/hotel/checkRoomAvailability`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ numberFour, entryDate, dateExit })
+                    });
+
+                    switch (response.status) {
+                        case 200:
                             alert('Quarto disponível');
-                            checkRoomAvailability.reset(); // Limpar campos do formulário
-                        } else if (response.status === 404) {
+                            break;
+                        case 404:
                             alert('Quarto não encontrado');
-                        } else if (response.status === 409) {
+                            break;
+                        case 409:
                             alert('Quarto não disponível');
-                        } else {
+                            break;
+                        default:
                             alert('Erro desconhecido');
-                        }
+                    }
+
+                    checkRoomAvailability.reset();
                         getAllBookings();
                     });
                 }
@@ -597,41 +613,47 @@
                     });
                 }
                 
-                // Função para carregar a lista de reservas
+                // Referência ao corpo da tabela
+                const booksList = document.getElementById('booksList');
+
+                // Função para carregar as reservas e exibir na tabela
                 async function getAllBookings() {
                     try {
                         const response = await fetch('/api/hotel/getAllBookings');
-                        console.log('Status da resposta:', response.status);
-                        
-                        if (!response.ok) {
-                            throw new Error('Erro ao carregar reservas');
+                        const data = await response.json();
+
+                        if (response.ok && data.bookings) {
+                            booksList.innerHTML = ''; // Limpar tabela antes de preencher
+
+                            data.bookings.forEach(booking => {
+                                // Formatando as datas para exibir apenas dia/mês/ano
+                                const entryDate = new Date(booking.entryDate).toLocaleDateString();
+                                const dateExit = new Date(booking.dateExit).toLocaleDateString();
+
+                                // Criar uma nova linha para cada reserva
+                                const row = `
+                                    <tr>
+                                        <td>${booking.id}</td>
+                                        <td>${booking.numberFour}</td>
+                                        <td>${booking.guestName}</td>
+                                        <td>${entryDate}</td>
+                                        <td>${dateExit}</td>
+                                    </tr>
+                                `;
+                                booksList.innerHTML += row; // Adicionar a linha à tabela
+                            });
+                        } else {
+                            booksList.innerHTML = `<tr><td colspan="5">Nenhuma reserva encontrada.</td></tr>`;
                         }
-                        
-                        const bookings = await response.json();
-                        console.log('Reservas carregados:', bookings);
-                        
-                        const booksList = document.getElementById('booksList');
-                        console.log('Reservas carregados:', booksList);
-                        booksList.innerHTML = '';
-                        
-                        bookings.bookings.forEach(booksing => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td>${booksing.id}</td>
-                                <td>${booksing.numberFour}</td>
-                                <td>${booksing.guestName}</td>
-                                <td>${booksing.entryDate}</td>
-                                <td>${booksing.dateExit}</td>
-                            `;
-                            booksList.appendChild(tr);
-                        });
                     } catch (error) {
-                        console.error('Erro ao buscar reservas:', error);
+                        console.error("Erro ao carregar reservas:", error);
+                        booksList.innerHTML = `<tr><td colspan="5">Erro ao carregar reservas.</td></tr>`;
                     }
                 }
-        
-                // Chame a função para carregar os livros inicialmente
-                getAllBookings();
+
+                // Carregar as reservas ao carregar a página
+                document.addEventListener('DOMContentLoaded', getAllBookings);
+
             });
         </script>
         
