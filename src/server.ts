@@ -41,19 +41,19 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 // Rotas amigáveis para acesso as páginas
 app.get('/library', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/library.html'));
+    res.sendFile(path.join(__dirname, 'public/Library.html'));
 });
 
 app.get('/enterprise', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/enterprise.html'));
+    res.sendFile(path.join(__dirname, 'public/Enterprise.html'));
 });
 
 app.get('/hotel', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/hotel.html'));
+    res.sendFile(path.join(__dirname, 'public/Hotel.html'));
 });
 
 app.get('/tasks', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/tasks.html'));
+    res.sendFile(path.join(__dirname, 'public/Tasks.html'));
 });
 
 // _________________________________________________________________________________________________________________________________________________________
