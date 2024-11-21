@@ -173,7 +173,7 @@
 
             /* Estilização geral do formulário */
             #addBookForm,
-            #isBookAvailableForm {
+            #checkRoomAvailability {
                 width: 100%;
                 max-width: 600px;
                 margin: 20px auto;
@@ -186,7 +186,7 @@
 
             /* Estilização do título */
             #addBookForm h2,
-            #isBookAvailableForm h2 {
+            #checkRoomAvailability h2 {
                 font-size: 24px;
                 text-align: center;
                 margin-bottom: 20px;
@@ -202,7 +202,7 @@
 
             /* Estilização dos campos de input */
             #addBookForm input,
-            #isBookAvailableForm input{
+            #checkRoomAvailability input{
                 width: 100%;
                 padding: 10px;
                 border: 1px solid #ccc;
@@ -213,14 +213,14 @@
 
             /* Foco nos campos de input */
             #addBookForm input:focus,
-            #isBookAvailableForm input:focus{
+            #checkRoomAvailability input:focus{
                 border-color: #4CAF50;
                 outline: none;
             }
 
             /* Estilização do checkbox */
             #addBookForm label,
-            #isBookAvailableForm label{
+            #checkRoomAvailability label{
                 display: inline-block;
                 font-size: 16px;
                 margin-left: 10px;
@@ -228,7 +228,7 @@
 
             /* Estilização do botão */
             #addBookForm button,
-            #isBookAvailableForm button {
+            #checkRoomAvailability button {
                 width: 100%;
                 padding: 12px;
                 background-color: #4CAF50;
@@ -242,7 +242,7 @@
 
             /* Efeito no botão ao passar o mouse */
             #addBookForm button:hover,
-            #isBookAvailableForm button:hover{
+            #checkRoomAvailability button:hover{
                 background-color: #45a049;
             }
 
@@ -257,7 +257,7 @@
 
             /* Estilização geral do formulário */
             #loanBookForm,
-            #returnBookForm {
+            #cancelBookingForm {
                 width: 100%;
                 max-width: 600px;
                 margin: 20px auto;
@@ -270,7 +270,7 @@
 
             /* Estilização do título */
             #loanBookForm h2,
-            #returnBookForm h2 {
+            #cancelBookingForm h2 {
                 font-size: 24px;
                 text-align: center;
                 margin-bottom: 20px;
@@ -279,7 +279,7 @@
 
             /* Estilização dos campos de input */
             #loanBookForm input,
-            #returnBookForm input {
+            #cancelBookingForm input {
                 width: 100%;
                 padding: 12px;
                 margin: 10px 0;
@@ -291,14 +291,14 @@
 
             /* Foco nos campos de input */
             #loanBookForm input:focus,
-            #returnBookForm input:focus{
+            #cancelBookingForm input:focus{
                 border-color: #4CAF50;
                 outline: none;
             }
 
             /* Estilização do checkbox */
             #loanBookForm label,
-            #returnBookForm label  {
+            #cancelBookingForm label  {
                 display: inline-block;
                 font-size: 16px;
                 margin-left: 10px;
@@ -306,7 +306,7 @@
 
             /* Estilização do botão */
             #loanBookForm button,
-            #returnBookForm button {
+            #cancelBookingForm button {
                 width: 100%;
                 padding: 12px;
                 background-color: #4CAF50;
@@ -321,7 +321,7 @@
 
             /* Efeito no botão ao passar o mouse */
             #loanBookForm button:hover,
-            #returnBookForm button:hover {
+            #cancelBookingForm button:hover {
                 background-color: #45a049;
             }
 
@@ -359,24 +359,24 @@
                 }
                 
                 #addBookForm,
-                #isBookAvailableForm,
+                #checkRoomAvailability,
                 #loanBookForm,
-                #returnBookForm {
+                #cancelBookingForm {
                     width: 90%;
                     padding: 15px;
                 }
 
                 #addBookForm input,
-                #isBookAvailableForm input,
+                #checkRoomAvailability input,
                 #loanBookForm input,
-                #returnBookForm input {
+                #cancelBookingForm input {
                     width: 100%;
                 }
 
                 #addBookForm button,
-                #isBookAvailableForm input,
+                #checkRoomAvailability input,
                 #loanBookForm button, 
-                #returnBookForm button {
+                #cancelBookingForm button {
                     width: 100%;
                 }
 
@@ -457,6 +457,9 @@
                 <div class="input-group">
                     <input type="number" id="numberFour" placeholder="Nº Quarto" required>
                     <input type="text"   id="guestName" placeholder="Hospede"    required>
+                </div>
+                
+                <div class="input-group">
                     <input type="date"   id="entryDate" placeholder="Check-in"   required>
                     <input type="date"   id="dateExit" placeholder="Check-out"   required>
                 </div>
@@ -464,40 +467,40 @@
                 <button type="submit" class="button">Adicionar</button>
             </form>       
             
-            
-            
-            <div class="form-container">
+            <form id="checkRoomAvailability">
 
-                <form id="isBookAvailableForm">
+                <h2 class="section-title">
+                    <i class="fa-solid fa-bed"></i> Consultar Quarto
+                </h2>
 
-                    <h2 class="section-title">
-                        <i class="fa-solid fa-bed"></i> Consultar Quarto
-                    </h2>
-    
-                    <input type="number" id="avaicode" placeholder="Nº Quarto" required>
-    
-                    <button type="submit" class="button">Buscar</button>
-                </form>  
+                <div class="input-group">
 
-                <form id="returnBookForm">
-                    <h2 class="section-title">
-                        <i class="fa-solid fa-ban"></i> Cancelar Reserva
-                    </h2>
-                    <input type="number" id="returncode" placeholder="Nº Quarto" required>
-                    <button type="submit" class="button">Registrar</button>
-                </form>
-            </div>
+                    <input type="number" id="cra-numberFour" placeholder="Nº Quarto" required>
+                    <input type="date"   id="cra-entryDate"  placeholder="Check-in"  required>
+                    <input type="date"   id="cra-dateExit"   placeholder="Check-out" required>
+                </div>
+
+                <button type="submit" class="button">Buscar</button>
+            </form>  
+            <form id="cancelBookingForm">
+                <h2 class="section-title">
+                    <i class="fa-solid fa-ban"></i> Cancelar Reserva
+                </h2>
+                <input type="text" id="cbf-bookingId" placeholder="Nº Reserva" required>
+                <button type="submit" class="button">Registrar</button>
+            </form>
             
             <h2 class="section-title">
-                <i class="fas fa-book"></i> Livros
+                <i class="fa-solid fa-door-open"></i> Reservas
             </h2>
             <table>
                 <thead>
                     <tr>
+                        <th>Nº Reserva</th>
                         <th>Nº Quarto</th>
                         <th>Hospede</th>
-                        <th>Autor</th>
-                        <th>Disponibilidade</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
                     </tr>
                 </thead>
                 <tbody id="booksList">
@@ -512,131 +515,123 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', () => {
+        
                 // Manipulador para adicionar livro
                 document.getElementById('addBookForm').addEventListener('submit', async (event) => {
                     event.preventDefault();
+
                     const numberFour = document.getElementById('numberFour').value;
-                    const guestName = document.getElementById('guestName').value;
-                    const author = document.getElementById('author').value;
-                    const available = document.getElementById('available').checked;
-                    const response = await fetch('/api/library/books', {
+                    const guestName  = document.getElementById('guestName').value;
+                    const entryDate  = document.getElementById('entryDate').value;
+                    const dateExit   = document.getElementById('dateExit').value;
+
+                    const response   = await fetch('/api/hotel/makeBooking', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ numberFour, guestName, author, available })
+                        body: JSON.stringify({ numberFour, guestName, entryDate, dateExit })
                     });
+
                     if (response.status === 201) {
-                        const book = await response.json();
-                        console.log('Livro adicionado:', book);
+                        const booking = await response.json();
+                        console.log('Livro adicionado:', booking);
                         document.getElementById('addBookForm').reset(); // Limpar campos do formulário
                     } else {
                         const error = await response.json();
                         alert(error.message);
                     }
-                    loadBooks();
+
+                    getAllBookings();
                 });
 
                 // Manipulador para registrar empréstimo
-                const isBookAvailableForm = document.getElementById('isBookAvailableForm');
-                if (isBookAvailableForm) {
-                    isBookAvailableForm.addEventListener('submit', async (event) => {
+                const checkRoomAvailability = document.getElementById('checkRoomAvailability');
+                console.log(checkRoomAvailability);              
+                if (checkRoomAvailability) {
+                    checkRoomAvailability.addEventListener('submit', async (event) => {
                         event.preventDefault();
-                        const numberFour = document.getElementById('avaicode').value;
-                        const response = await fetch(`/api/library/books/${numberFour}/isAvailable`, {
-                            method: 'POST'
+                        
+                        const numberFour = document.getElementById('cra-numberFour').value;
+                        const entryDate  = document.getElementById('cra-entryDate').value;
+                        const dateExit   = document.getElementById('cra-dateExit').value;
+
+                        const response = await fetch(`/api/hotel/checkRoomAvailability`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ numberFour, entryDate, dateExit })
                         });
+                        
                         if (response.status === 200) {
-                            alert('Livro disponível');
-                            isBookAvailableForm.reset(); // Limpar campos do formulário
+                            alert('Quarto disponível');
+                            checkRoomAvailability.reset(); // Limpar campos do formulário
                         } else if (response.status === 404) {
-                            alert('Livro não existe');
+                            alert('Quarto não encontrado');
                         } else if (response.status === 409) {
-                            alert('Livro não disponível');
+                            alert('Quarto não disponível');
                         } else {
                             alert('Erro desconhecido');
                         }
-                        loadBooks();
+                        getAllBookings();
                     });
                 }
         
-                // Manipulador para registrar empréstimo
-                const loanBookForm = document.getElementById('loanBookForm');
-                if (loanBookForm) {
-                    loanBookForm.addEventListener('submit', async (event) => {
-                        event.preventDefault();
-                        const numberFour = document.getElementById('loancode').value;
-                        const response = await fetch(`/api/library/books/${numberFour}/loan`, {
-                            method: 'POST'
-                        });
-                        if (response.status === 200) {
-                            alert('Empréstimo registrado');
-                            loanBookForm.reset(); // Limpar campos do formulário
-                        } else if (response.status === 404) {
-                            alert('Livro não existe');
-                        } else if (response.status === 409) {
-                            alert('Livro não disponível para empréstimo');
-                        } else {
-                            alert('Erro desconhecido');
-                        }
-                        loadBooks();
-                    });
-                }
-        
-                // Manipulador para registrar devolução
-                const returnForm = document.getElementById('returnBookForm');
+                // Manipulador para cancelar reserva
+                const returnForm = document.getElementById('cancelBookingForm');
                 if (returnForm) {
                     returnForm.addEventListener('submit', async (event) => {
                         event.preventDefault();
-                        const numberFour = document.getElementById('returncode').value;
-                        const response = await fetch(`/api/library/books/${numberFour}/return`, {
-                            method: 'POST'
+
+                        const bookingId = document.getElementById('cbf-bookingId').value;
+
+                        const response = await fetch(`/api/hotel/cancelBooking/${bookingId}`, {
+                            method: 'DELETE'
                         });
                         if (response.status === 200) {
-                            alert('Devolução registrada');
-                            returnForm.reset(); // Limpar campos do formulário
+                            alert('Cancelamento realizado');
+                            returnForm.reset();
                         } else if (response.status === 404) {
-                            alert('Livro não existe');
-                        } else if (response.status === 409) {
-                            alert('Livro já devolvido');
-                        }else {
+                            alert('Quarto não encontrado');
+                        } else {
                             alert('Erro ao registrar devolução');
                         }
-                        loadBooks();
+                        getAllBookings();
                     });
                 }
-        
-                // Função para carregar a lista de livros
-                async function loadBooks() {
+                
+                // Função para carregar a lista de reservas
+                async function getAllBookings() {
                     try {
-                        const response = await fetch('/api/library/books');
-                        // console.log('Status da resposta:', response.status);
+                        const response = await fetch('/api/hotel/getAllBookings');
+                        console.log('Status da resposta:', response.status);
                         
                         if (!response.ok) {
-                            throw new Error('Erro ao carregar livros');
+                            throw new Error('Erro ao carregar reservas');
                         }
                         
-                        const books = await response.json();
-                        // console.log('Livros carregados:', books);
+                        const bookings = await response.json();
+                        console.log('Reservas carregados:', bookings);
                         
                         const booksList = document.getElementById('booksList');
+                        console.log('Reservas carregados:', booksList);
                         booksList.innerHTML = '';
                         
-                        books.forEach(book => {
+                        bookings.bookings.forEach(booksing => {
                             const tr = document.createElement('tr');
                             tr.innerHTML = `
-                                <td>${book.numberFour}</td>
-                                <td>${book.guestName}</td>
-                                <td>${book.author}</td>
-                                <td>${book.available ? 'Disponível' : 'Indisponível'}</td>
+                                <td>${booksing.id}</td>
+                                <td>${booksing.numberFour}</td>
+                                <td>${booksing.guestName}</td>
+                                <td>${booksing.entryDate}</td>
+                                <td>${booksing.dateExit}</td>
                             `;
                             booksList.appendChild(tr);
                         });
                     } catch (error) {
-                        console.error('Erro ao buscar livros:', error);
+                        console.error('Erro ao buscar reservas:', error);
                     }
                 }
         
                 // Chame a função para carregar os livros inicialmente
-                loadBooks();
+                getAllBookings();
             });
         </script>
         
