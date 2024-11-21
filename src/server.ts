@@ -8,8 +8,8 @@ import libraryRoutes    from './routes/Library.route';    // Rotas de biblioteca
 import hotelRoutes      from './routes/Hotel.route';      // Rotas de hotel
 
 // Váriaveis para definições de rede
-const port = 31063;
-const host = '0.0.0.0';
+const startPort = 31063;  // Porta inicial
+const host      = '0.0.0.0';
 
 // Criando o app do Express
 const app = express();
@@ -65,17 +65,46 @@ app.use('/api/hotel', hotelRoutes);
 
 // _________________________________________________________________________________________________________________________________________________________
 
-// Iniciando o servidor
-app.listen(port, host, () => {
-    console.log(chalk.greenBright('\n[SRV ✅] Servidor iniciado com sucesso!'));
-    console.log(chalk.cyanBright('\nEndereços disponíveis:'));
+// Função para encontrar uma porta disponível
+const findAvailablePort = async (port: number): Promise<number> => {
+    return new Promise((resolve) => {
+        const server = app.listen(port, host, () => {
+            server.close(() => resolve(port));
+        });
+        server.on('error', () => {
+            resolve(findAvailablePort(port + 1));
+        });
+    });
+};
 
-    // Exibir URLs acessíveis
-    console.log(chalk.yellowBright(`- Local:    http://127.0.0.1:${port}`));
-    const localIPs = getLocalIPs();
-    for (const ip of localIPs) {
-        console.log(chalk.yellowBright(`- Rede:     http://${ip}:${port}`));
-    }
+// _________________________________________________________________________________________________________________________________________________________
 
-    console.log(chalk.blueBright('\nPressione CTRL+C para parar o servidor.\n'));
-});
+// Iniciar o servidor local
+const startServer = async () => {
+    const port = await findAvailablePort(startPort);
+
+    app.listen(port, host, () => {
+        console.log(chalk.greenBright('\n[SRV ✅] Servidor iniciado com sucesso!'));
+        console.log(chalk.cyanBright('\nEndereços disponíveis:'));
+
+        console.log(chalk.yellowBright(`- Local:    http://127.0.0.1:${port}`));
+        const localIPs = getLocalIPs();
+        for (const ip of localIPs) {
+            console.log(chalk.yellowBright(`- Rede:     http://${ip}:${port}`));
+        }
+
+        console.log(chalk.blueBright('\nPressione CTRL+C para parar o servidor.\n'));
+    });
+};
+
+// _________________________________________________________________________________________________________________________________________________________
+
+// Verifique se está em ambiente de desenvolvimento local
+if (process.env.NODE_ENV !== 'production') {
+    startServer();
+}
+
+// _________________________________________________________________________________________________________________________________________________________
+
+// Exporta o app como handler para o Vercel
+export default app;

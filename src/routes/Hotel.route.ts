@@ -18,6 +18,5 @@ router.post('/checkRoomAvailability', hotelController.checkRoomAvailability);
 // Rota para cancelar reserva
 router.delete('/cancelBooking/:bookingId', hotelController.cancelBooking);
 
-
 export default router;
 
