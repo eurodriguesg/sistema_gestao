@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="components/images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Inter:300,600,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="components/css/TaskManager.css">
+    <title>CMP1063 | Gestor de Tarefas</title>
+</head>
+<body>
+    <header>
+        <img src="components/images/escola.png" alt="Logo">
+    </header>
+    <div class="stripe yellow-stripe"></div>
+    <div class="stripe red-stripe"></div>
+
+    <div class="container">
+        <a href="/" class="back-link">
+            <img src="components/images/seta.svg" alt="Voltar">
+            <span>Início</span>
+        </a>
+
+        <h1>Sistema de Gerenciamento de Tarefas</h1>
+        <br>
+
+        <!-- Formulário para adicionar tarefas -->
+        <form id="addTaskForm">
+            <h2 class="section-title">
+                <i class="fa-solid fa-file-invoice"></i> Adicionar Tarefa
+            </h2>
+            <div class="input-group">
+                <input type="text" id="description" placeholder="Descrição" required>
+                
+                <!-- Seleção de status com opções predefinidas -->
+                <select id="status" required>
+                    <option value="" disabled selected>Selecione o status</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Em Andamento">Em Andamento</option>
+                    <option value="Concluída">Concluída</option>
+                </select>
+                
+                <input type="text" id="project" placeholder="Projeto" required>
+            </div>
+            <button type="submit" class="button">Adicionar</button>
+        </form>
+
+
+        <div class="form-row">
+            <!-- Formulário para atualizar status -->
+            <form id="updateTaskForm" class="form-inline">
+                <h2 class="section-title">
+                    <i class="fa-solid fa-bolt"></i> Alterar Status
+                </h2>
+                <div class="input-group">
+                    <input type="text" id="taskId" placeholder="ID da Tarefa" required>
+                    <select id="newStatus" required>
+                        <option value="" disabled selected>Selecione o novo status</option>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Em Andamento">Em Andamento</option>
+                        <option value="Concluída">Concluída</option>
+                    </select>
+                </div>
+                <button type="submit" class="button">Atualizar</button>
+            </form>
+        
+            <!-- Formulário para consultar tarefas por projeto -->
+            <form id="searchTaskForm" class="form-inline">
+                <h2 class="section-title">
+                    <i class="fa-solid fa-list-check"></i> Consultar Tarefas por Projeto
+                </h2>
+                <input type="text" id="projectName" placeholder="Nome do Projeto" required>
+                <button type="submit" class="button">Buscar</button>
+            </form>
+        </div>
+        
+
+        <!-- Tabela para exibir tarefas -->
+        <h2 class="section-title">
+            <i class="fas fa-tasks"></i> Tarefas
+        </h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                    <th>Projeto</th>
+                </tr>
+            </thead>
+            <tbody id="tasksList">
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>© 2024 Eliseu Rodrigues. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="components/js/TaskManager.js"></script>
+</body>
+</html>

@@ -1,11 +1,12 @@
-import path             from 'path';
-import bodyParser       from 'body-parser';
-import os               from 'os';
-import chalk            from 'chalk';
-import express          from 'express';
-import enterpriseRoutes from './routes/Enterprise.route'; // Rotas de funcionários
-import libraryRoutes    from './routes/Library.route';    // Rotas de biblioteca
-import hotelRoutes      from './routes/Hotel.route';      // Rotas de hotel
+import path              from 'path';
+import bodyParser        from 'body-parser';
+import os                from 'os';
+import chalk             from 'chalk';
+import express           from 'express';
+import taskManagerRoutes from './routes/TaskManager.routes'; // Rotas do Gerenciado de Tarefas
+import enterpriseRoutes  from './routes/Enterprise.routes';   // Rotas de Empresa
+import libraryRoutes     from './routes/Library.routes';      // Rotas de Bibliotecas
+import hotelRoutes       from './routes/Hotel.routes';        // Rotas de Hotel
 
 // Váriaveis para definições de rede
 const startPort = 31063;  // Porta inicial
@@ -52,8 +53,8 @@ app.get('/hotel', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/Hotel.html'));
 });
 
-app.get('/tasks', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/Tasks.html'));
+app.get('/taskManager', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/TaskManager.html'));
 });
 
 // _________________________________________________________________________________________________________________________________________________________
@@ -62,6 +63,7 @@ app.get('/tasks', (req, res) => {
 app.use('/api/library', libraryRoutes);
 app.use('/api/enterprise', enterpriseRoutes);
 app.use('/api/hotel', hotelRoutes);
+app.use('/api/taskManager', taskManagerRoutes);
 
 // _________________________________________________________________________________________________________________________________________________________
 
