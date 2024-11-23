@@ -42,7 +42,9 @@
 ### Descrição do Projeto
 Este módulo é um sistema de gerenciamento de biblioteca desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de uma biblioteca pública:
 
-- **Cadastrar novos livros no acervo**.
+- **Consulta todos os livros do acervo**.
+- **Retorna todos os livros disponíveis.**.
+- **Adicionar novo(s) livro(s) ao acervo**.
 - **Registrar empréstimos de livros para os usuários**.
 - **Registrar devolução de livros para os usuários**.
 - **Consultar a disponibilidade de um livro específico**.
@@ -51,7 +53,7 @@ O projeto simula um cenário real de gerenciamento de biblioteca, utilizando con
 
 ---
 
-### Funcionalidades
+### Funcionalidades Principais
 O sistema possui as seguintes funcionalidades:
 
 1. **Cadastrar Livros**  
