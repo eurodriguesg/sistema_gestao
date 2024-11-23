@@ -13,7 +13,7 @@ body {
 .container {
     width: 80%;
     margin: auto;
-    padding: 20px 0; /* Adiciona um espaço de 20px no topo e no rodapé */
+    padding: 20px; /* Adiciona um espaço de 20px no topo e no rodapé */
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -153,9 +153,40 @@ table tr:hover {
     background-color: #f9f9f9; /* Efeito de hover nas linhas */
 }
 
-/* Estilização das bordas e do contêiner da tabela */
-.container {
-    padding: 20px;
+/* Centralizar o formulário e alinhar os elementos */
+.input-group {
+    display: flex; /* Ativa o alinhamento horizontal */
+    gap: 10px; /* Espaçamento entre os elementos */
+}
+
+/* Estilizar os campos de entrada e o seletor */
+.input-group input,
+.input-group select {
+    flex: 1; /* Todos os inputs terão o mesmo tamanho */
+    min-width: 150px; /* Define uma largura mínima */
+    width: 100%; /* Largura total do contêiner pai */
+    max-width: 400px; /* Largura máxima */
+    padding: 10px; /* Espaçamento interno */
+    font-size: 16px; /* Tamanho do texto */
+    border: 1px solid #ccc; /* Borda padrão */
+    border-radius: 4px; /* Bordas arredondadas */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    background-color: #ffffff; /* Efeito de hover nas linhas */
+}
+
+.form-container {
+    width: 100%; /* Pode ajustar a largura do contêiner */
+    display: flex;
+    justify-content: space-between; /* Espaçamento entre os formulários */
+    gap: 30px; /* Espaço entre os dois formulários */
+    margin: 0 auto; /* Centraliza o contêiner */
+    max-width: 900px;
+}
+
+/* Ajuste individual dos formulários */
+.form-container form {
+    flex: 1; /* Cada formulário ocupa o mesmo espaço */
+    min-width: 300px; /* Largura mínima */
 }
 
 /* Estilização geral do formulário */
@@ -165,7 +196,7 @@ table tr:hover {
     width: 100%;
     max-width: 600px;
     margin: 20px auto;
-    padding: 30px;
+    padding: 20px;
     border: 2px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
@@ -182,39 +213,18 @@ table tr:hover {
     color: #333;
 }
 
-/* Centralizar o formulário e alinhar os elementos */
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Espaçamento entre os campos */
-    align-items: center; /* Alinhar os itens ao centro */
-    margin: 20px 0; /* Margem vertical */
-}
-
-/* Estilizar os campos de entrada e o seletor */
-.input-group input,
-.input-group select {
-    width: 100%; /* Largura total do contêiner pai */
-    max-width: 400px; /* Largura máxima */
-    padding: 10px; /* Espaçamento interno */
-    font-size: 16px; /* Tamanho do texto */
-    border: 1px solid #ccc; /* Borda padrão */
-    border-radius: 4px; /* Bordas arredondadas */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-}
-
 /* Estilização dos campos de input */
 #addTaskForm input,
 #updateTaskForm input,
 #searchTaskForm input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
+    margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
     font-size: 16px;
 }
-
 /* Foco nos campos de input */
 #addTaskForm input:focus,
 #updateTaskForm input:focus,
@@ -256,92 +266,6 @@ table tr:hover {
 #addTaskForm button:hover,
 #updateTaskForm button:hover,
 #searchTaskForm button:hover{
-    background-color: #45a049;
-}
-
-.form-container {
-    width: 100%; /* Pode ajustar a largura do contêiner */
-    display: flex;
-    justify-content: space-between; /* Espaçamento entre os formulários */
-    gap: 30px; /* Espaço entre os dois formulários */
-    margin: 0 auto; /* Centraliza o contêiner */
-    max-width: 900px;
-}
-
-/* Estilização geral do formulário */
-#updateTaskForm,
-#searchTaskForm,
-#searchTaskForm {
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Estilização do título */
-#updateTaskForm h2,
-#searchTaskForm h2, 
-#searchTaskForm h2 {
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-/* Estilização dos campos de input */
-#updateTaskForm input,
-#searchTaskForm input,
-#searchTaskForm input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-/* Foco nos campos de input */
-#updateTaskForm input:focus,
-#searchTaskForm input:focus,
-#searchTaskForm input:focus{
-    border-color: #4CAF50;
-    outline: none;
-}
-
-/* Estilização do checkbox */
-#updateTaskForm label,
-#searchTaskForm label,
-#searchTaskForm label  {
-    display: inline-block;
-    font-size: 16px;
-    margin-left: 10px;
-}
-
-/* Estilização do botão */
-#updateTaskForm button,
-#searchTaskForm button,
-#searchTaskForm button {
-    width: 100%;
-    padding: 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    transition: background-color 0.3s;
-}
-
-/* Efeito no botão ao passar o mouse */
-#updateTaskForm button:hover,
-#searchTaskForm button:hover,
-#searchTaskForm button:hover {
     background-color: #45a049;
 }
 

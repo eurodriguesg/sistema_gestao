@@ -33,7 +33,6 @@
             <div class="input-group">
                 <input type="text" id="description" placeholder="Descrição" required>
                 
-                <!-- Seleção de status com opções predefinidas -->
                 <select id="status" required>
                     <option value="" disabled selected>Selecione o status</option>
                     <option value="Pendente">Pendente</option>
@@ -44,19 +43,18 @@
                 <input type="text" id="project" placeholder="Projeto" required>
             </div>
             <button type="submit" class="button">Adicionar</button>
-        </form>
+        </form>        
 
-
-        <div class="form-row">
+        <div class="form-container">
             <!-- Formulário para atualizar status -->
-            <form id="updateTaskForm" class="form-inline">
+            <form id="updateTaskForm">
                 <h2 class="section-title">
                     <i class="fa-solid fa-bolt"></i> Alterar Status
                 </h2>
                 <div class="input-group">
                     <input type="text" id="taskId" placeholder="ID da Tarefa" required>
                     <select id="newStatus" required>
-                        <option value="" disabled selected>Selecione o novo status</option>
+                        <option value="" disabled selected>Selecione o status</option>
                         <option value="Pendente">Pendente</option>
                         <option value="Em Andamento">Em Andamento</option>
                         <option value="Concluída">Concluída</option>
@@ -66,7 +64,7 @@
             </form>
         
             <!-- Formulário para consultar tarefas por projeto -->
-            <form id="searchTaskForm" class="form-inline">
+            <form id="searchTaskForm">
                 <h2 class="section-title">
                     <i class="fa-solid fa-list-check"></i> Consultar Tarefas por Projeto
                 </h2>
@@ -74,7 +72,6 @@
                 <button type="submit" class="button">Buscar</button>
             </form>
         </div>
-        
 
         <!-- Tabela para exibir tarefas -->
         <h2 class="section-title">
