@@ -9,7 +9,7 @@ export class Hotel {
     }
 
     // Método para ajustar a data ignorando o fuso horário
-    formatDate(date: Date): string {
+    private formatDate(date: Date): string {
         return date.toISOString().split('T')[0].split('-').reverse().join('/'); // Retorna no formato dd/mm/aaaa
     }
 
@@ -102,7 +102,7 @@ export class Hotel {
     }
 
 
-    // Método para onsultar disponibilidade para um período
+    // Método para consultar disponibilidade para um período
     checkRoomAvailability(numberFour: number, entryDate: Date, dateExit: Date): { status: string, details?: any } {
         //console.log("====== Início da comparação de datas ======");
         //console.log("Entrada solicitada:", entryDate.toISOString());

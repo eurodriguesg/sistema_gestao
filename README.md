@@ -40,7 +40,7 @@
 ## Módulo: Biblioteca
 
 ### Descrição do Projeto
-Este módulo é um sistema de gerenciamento de biblioteca desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de uma biblioteca pública:
+Este módulo é um sistema de gerenciamento de livros desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de uma biblioteca pública:
 
 - **Consulta todos os livros do acervo**.
 - **Retorna todos os livros disponíveis.**.
@@ -54,19 +54,7 @@ O projeto simula um cenário real de gerenciamento de biblioteca, utilizando con
 ---
 
 ### Funcionalidades Principais
-O sistema possui as seguintes funcionalidades:
-
-1. **Cadastrar Livros**  
-   Permite adicionar novos livros ao acervo da biblioteca.
-
-2. **Registrar Empréstimos**  
-   Marca um livro como indisponível para empréstimos.
-
-3. **Registrar Empréstimos**  
-   Marca um livro como disponível para empréstimos.
-
-4. **Consultar Disponibilidade**  
-   Verifica se um livro específico está disponível ou não.
+O sistema possui as seguintes funcionalidades previstas na descrição.
 
 ---
 
@@ -178,7 +166,7 @@ O projeto inclui uma API para testar o sistema:
       "message": "Livro já existe",
       "book": "1001 - O Príncipe (NICOLAU MAQUIAVEL)"
   }
-- **Resposta de erro (400):**  
+- **Resposta de BadRequest (400):**  
   ```json
    {
       "message": "Todos os campos obrigatórios devem ser preenchidos: code, title, author"
@@ -279,8 +267,6 @@ O projeto inclui uma API para testar o sistema:
       "code": 1020
    }
 
-A API pode ser consumida via POSTMAN ou similares.
-
 ---
 
 ## Módulo: Empresa
@@ -298,19 +284,7 @@ O projeto simula um cenário real de gerenciamento de funcionários, utilizando 
 ---
 
 ### Funcionalidades Principais
-O sistema possui as seguintes funcionalidades:
-
-1. **Consulta todos os funcionários da empresa**  
-   Lista todos os funcionários da empresa.
-
-2. **Adicionar novo(s) funcionários(s) à empresa**  
-   Permite adicionar novos funcionários a Empresa.
-
-3. **Alterar Salário do Funcionário**  
-   Alterar o salário de um funcionário.
-
-4. **Consultar a funcionário por matrícula**  
-   Verificar um funcionário específico.
+O sistema possui as seguintes funcionalidades previstas na descrição.
 
 ---
 
@@ -396,10 +370,10 @@ O projeto inclui uma API para testar o sistema:
 - **Resposta de conflito (409):**  
   ```json
    {
-   "message": "Funcionário já existe",
-   "employee": "1001 - ELISEU RODRIGUES GUIMARAES (DESENVOLVEDOR)"
+      "message": "Funcionário já existe",
+      "employee": "1001 - ELISEU RODRIGUES GUIMARAES (DESENVOLVEDOR)"
    }
-- **Resposta de erro (400):**  
+- **Resposta de BadRequest (400):**   
   ```json
    {
       "message": "Todos os campos obrigatórios devem ser preenchidos",
@@ -459,8 +433,171 @@ O projeto inclui uma API para testar o sistema:
 - **Resposta de erro (404):**  
   ```json
    {
-   "message": "Funcionário não encontrado",
-   "registration": 1020
+      "message": "Funcionário não encontrado",
+      "registration": 1020
+   }
+
+---
+
+## Módulo: Hotel
+
+### Descrição do Projeto
+Este módulo é um sistema de gerenciamento de reservas desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de um Hotel:
+
+- **Consulta todas as reservas de um hotel**.
+- **Adicionar nova(s) reserva(s) de um quarto**.
+- **Consultar reserva por quarto**.
+- **Cancelar reserva por quarto**.
+
+O projeto simula um cenário real de gerenciamento de reservas, utilizando conceitos de orientação a objetos, encapsulamento e tipagem estática.
+
+---
+
+### Funcionalidades Principais
+O sistema possui as seguintes funcionalidades previstas na descrição.
+
+---
+
+### Estrutura do Projeto
+
+### Classe `Booking`
+Representa uma reserva no Hotel. Possui as seguintes propriedades:
+
+- `id` (number): Identificador único da reserva de 5 caracteres
+- `numberFour` (number): Número do quarto
+- `guestName` (string): Nome do hóspede
+- `entryDate` (Date): Data de entrada
+- `dateExit` (Date): Data de saída
+
+Além disso, inclui um construtor para inicializar todas as propriedades.
+
+### Classe `Hotel`
+Gerencia os livros do acervo e oferece os seguintes métodos:
+
+- **`getAllBookings()`**  
+  Consulta todas as reservas registradas
+
+- **`makeBooking(booking: Booking): boolean`**  
+  Adiciona uma única reserva no hotel.
+  
+- **`makeBookings(bookings: Booking[]): boolean`**  
+  Adicionar múltiplas reservas no hotel.
+
+- **`checkRoomAvailability(numberFour: number, entryDate: Date, dateExit: Date): { status: string, details?: any }`**
+  Consultar disponibilidade para um período.
+  
+- **`cancelBooking(bookingId: string): boolean`**  
+  Cancelar uma reserva com base no número do quarto.
+
+- **`listAvailableBookings(): Booking[]`**  
+  Listar todas as reservas disponíveis (não ocupadas hoje).
+
+---
+
+### Testando o Sistema
+O projeto inclui uma API para testar o sistema:
+
+### **Rotas**
+
+##### **1. Listar reservas do hotel**
+- **URL:** `/api/hotel/getAllBookings`  
+- **Método:** `GET`  
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Reservas do Hotel",
+      "bookings": [
+         {
+            "id": "X0X0X",
+            "numberFour": 102,
+            "guestName": "ELISEU RODRIGUES GUIMARÃES",
+            "entryDate": "2024-12-01T00:00:00.000Z",
+            "dateExit": "2024-12-02T00:00:00.000Z"
+         }
+      ]
+   }
+
+##### **2. Adicionar reserva(s)**
+- **URL:** `/api/hotel/makeBooking`  
+- **Método:** `POST`  
+- **Headers:**  
+  ```
+  Content-Type: application/json
+  ```
+- **Body:**  
+  ```json
+   {
+      "numberFour": "102",
+      "guestName": "ELISEU RODRIGUES GUIMARÃES",
+      "entryDate": "2024-12-01",
+      "dateExit": "2024-12-02"
+   }
+  ```
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Reserva não realizada devido a conflito de data",
+      "booking": 102,
+      "guestName": "ELISEU RODRIGUES GUIMARÃES"
+   }
+  ```
+- **Resposta de conflito (409):**  
+  ```json
+   {
+      "message": "Reserva não realizada devido a conflito de data",
+      "booking": 102,
+      "guestName": "ELISEU RODRIGUES GUIMARÃES"
+   }
+- **Resposta de BadRequest (400):**  
+  ```json
+   {
+      "message": "Todos os campos obrigatórios devem ser preenchidos",
+      "fields": "numberFour, guestName, entryDate e dateExit"
+   }
+
+##### **3. Consultar disponibilidade de quarto**
+- **URL:** `/api/hotel/checkRoomAvailability`  
+- **Método:** `GET`  
+- **Headers:**  
+  ```
+  Content-Type: application/json
+  ```
+- **Body:**  
+  ```json
+   {
+      "numberFour": "101",
+      "entryDate": "2024-11-22",
+      "dateExit": "2024-11-28"
+   }
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Quarto disponível",
+      "numberFour": "101"
+   }
+- **Resposta de conflito (409):** 
+  ```json
+   {
+      "message": "Quarto reservado",
+      "numberFour": "102"
+   }
+
+##### **4. Cancelar reserva**
+- **URL:** `/api/hotel/cancelBooking/:bookingId`  
+- **Método:** `DELETE`  
+
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Reserva cancelada com sucesso",
+      "bookingId": "X0X0X"
+   }
+  ```
+- **Resposta de erro (404):**  
+  ```json
+   {
+      "message": "Reserva não encontrada",
+      "bookingId": "X0X0X"
    }
 
 A API pode ser consumida via POSTMAN ou similares.
