@@ -211,9 +211,7 @@ O projeto inclui uma API para testar o sistema:
 ##### **5. Devolução de livro**
 - **URL:** `/api/library/bookReturn/:code`  
 - **Método:** `POST`  
-- **Headers:**  
- 
-  ```
+
 - **Resposta de sucesso (200):**  
   ```json
    {
