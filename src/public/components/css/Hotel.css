@@ -160,7 +160,7 @@ table tr:hover {
 }
 
 /* Estilização geral do formulário */
-#addBookForm {
+#addBookingForm {
     width: 100%;
     max-width: 800px;
     margin: 20px auto;
@@ -184,7 +184,7 @@ table tr:hover {
 }
 
 /* Estilização do título */
-#addBookForm h2,
+#addBookingForm h2,
 #checkRoomAvailability h2 {
     font-size: 24px;
     text-align: center;
@@ -200,7 +200,7 @@ table tr:hover {
 }
 
 /* Estilização dos campos de input */
-#addBookForm input,
+#addBookingForm input,
 #checkRoomAvailability input{
     width: 100%;
     padding: 10px;
@@ -211,14 +211,14 @@ table tr:hover {
 }
 
 /* Foco nos campos de input */
-#addBookForm input:focus,
+#addBookingForm input:focus,
 #checkRoomAvailability input:focus{
     border-color: #4CAF50;
     outline: none;
 }
 
 /* Estilização do checkbox */
-#addBookForm label,
+#addBookingForm label,
 #checkRoomAvailability label{
     display: inline-block;
     font-size: 16px;
@@ -226,7 +226,7 @@ table tr:hover {
 }
 
 /* Estilização do botão */
-#addBookForm button,
+#addBookingForm button,
 #checkRoomAvailability button {
     width: 100%;
     padding: 12px;
@@ -240,7 +240,7 @@ table tr:hover {
 }
 
 /* Efeito no botão ao passar o mouse */
-#addBookForm button:hover,
+#addBookingForm button:hover,
 #checkRoomAvailability button:hover{
     background-color: #45a049;
 }
@@ -268,7 +268,6 @@ table tr:hover {
 }
 
 /* Estilização do título */
-#loanBookForm h2,
 #cancelBookingForm h2 {
     font-size: 24px;
     text-align: center;
@@ -277,7 +276,6 @@ table tr:hover {
 }
 
 /* Estilização dos campos de input */
-#loanBookForm input,
 #cancelBookingForm input {
     width: 100%;
     padding: 12px;
@@ -289,14 +287,12 @@ table tr:hover {
 }
 
 /* Foco nos campos de input */
-#loanBookForm input:focus,
 #cancelBookingForm input:focus{
     border-color: #4CAF50;
     outline: none;
 }
 
 /* Estilização do checkbox */
-#loanBookForm label,
 #cancelBookingForm label  {
     display: inline-block;
     font-size: 16px;
@@ -304,7 +300,6 @@ table tr:hover {
 }
 
 /* Estilização do botão */
-#loanBookForm button,
 #cancelBookingForm button {
     width: 100%;
     padding: 12px;
@@ -319,7 +314,6 @@ table tr:hover {
 }
 
 /* Efeito no botão ao passar o mouse */
-#loanBookForm button:hover,
 #cancelBookingForm button:hover {
     background-color: #45a049;
 }
@@ -357,23 +351,21 @@ table tr:hover {
         gap: 10px;
     }
     
-    #addBookForm,
+    #addBookingForm,
     #checkRoomAvailability,
     #cancelBookingForm {
         width: 90%;
         padding: 15px;
     }
 
-    #addBookForm input,
+    #addBookingForm input,
     #checkRoomAvailability input,
-    #loanBookForm input,
     #cancelBookingForm input {
         width: 100%;
     }
 
-    #addBookForm button,
-    #checkRoomAvailability input,
-    #loanBookForm button, 
+    #addBookingForm button,
+    #checkRoomAvailability button,
     #cancelBookingForm button {
         width: 100%;
     }
