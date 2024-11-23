@@ -112,14 +112,14 @@ Gerencia os livros do acervo e oferece os seguintes métodos:
 ---
 
 ### Testando o Sistema
-O projeto inclui funções para testar o sistema:
+O projeto inclui uma API para testar o sistema:
 
 ### **Rotas**
 
 ##### **1. Listar acervo**
 - **URL:** `/api/library/getAllBooks`  
 - **Método:** `GET`  
-- **Resposta de sucesso (201):**  
+- **Resposta de sucesso (200):**  
   ```json
   {
    "message": "Livros do Acervo:",
@@ -165,7 +165,7 @@ O projeto inclui funções para testar o sistema:
       "author": "NICOLAU MAQUIAVEL"
   }
   ```
-- **Resposta de sucesso (201):**  
+- **Resposta de sucesso (200):**  
   ```json
   {
       "message": "Livro adicionado com sucesso",
@@ -187,9 +187,7 @@ O projeto inclui funções para testar o sistema:
 ##### **4. Empréstimo de livro**
 - **URL:** `/api/library/bookLoan/:code`  
 - **Método:** `POST`  
-- **Headers:**  
- 
-  ```
+
 - **Resposta de sucesso (200):**  
   ```json
    {
