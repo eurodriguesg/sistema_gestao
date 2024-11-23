@@ -88,13 +88,13 @@ Gerencia os livros do acervo e oferece os seguintes métodos:
 - **`registerReturn(code: number): string`**
   Marca o livro especificado como disponível.
 
-- **`checkAvailability(code: number): boolean {`**  
+- **`checkAvailability(code: number): boolean`**  
   Retorna `true` se o livro estiver disponível, ou `false` caso contrário.
   
-- **`listAvailableBooks(): Array<Book> {`**  
+- **`listAvailableBooks(): Array<Book>`**  
   Retorna todos os livros disponíveis.
   
-- **`searchBook(): void {`**  
+- **`searchBook(): void`**  
   Busca um livro e retorna o livro se ele existir.
 
 ---
@@ -301,8 +301,8 @@ Representa um livro no acervo da biblioteca. Possui as seguintes propriedades:
 
 Além disso, inclui um construtor para inicializar todas as propriedades.
 
-### Classe `Biblioteca`
-Gerencia os livros do acervo e oferece os seguintes métodos:
+### Classe `Enterprise`
+Gerencia os funcionários da empresa e oferece os seguintes métodos:
 
 - **`getAllEmployees()`**  
   Consulta todos os funcionários da empresa.
@@ -316,7 +316,7 @@ Gerencia os livros do acervo e oferece os seguintes métodos:
 - **`updateSalary(registration: number, salary: number): string`**
   Alterar o salário de um funcionário especificado.
   
-- **`findEmployeeByRegistration(registration: number): Employee | null {`**  
+- **`findEmployeeByRegistration(registration: number): Employee | null`**  
   Busca um funcionário e retorna o funcionário se ele existir.
 
 ---
@@ -472,7 +472,7 @@ Representa uma reserva no Hotel. Possui as seguintes propriedades:
 Além disso, inclui um construtor para inicializar todas as propriedades.
 
 ### Classe `Hotel`
-Gerencia os livros do acervo e oferece os seguintes métodos:
+Gerencia as reservas do hotel e oferece os seguintes métodos:
 
 - **`getAllBookings()`**  
   Consulta todas as reservas registradas
@@ -600,6 +600,175 @@ O projeto inclui uma API para testar o sistema:
       "bookingId": "X0X0X"
    }
 
+
+## Módulo: Gerenciador de Tarefas
+
+### Descrição do Projeto
+Este módulo é um sistema de gerenciamento de tarefas desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de um Hotel:
+
+- **Consulta todas as tarefas**.
+- **Adicionar nova(s) tarefa(s) ao projeto**.
+- **Alterar o status da tarefa**.
+- **Consultar tarefas por projeto**.
+
+O projeto simula um cenário real de gerenciamento de tarefas, utilizando conceitos de orientação a objetos, encapsulamento e tipagem estática.
+
+---
+
+### Funcionalidades Principais
+O sistema possui as seguintes funcionalidades previstas na descrição.
+
+---
+
+### Estrutura do Projeto
+
+### Classe `Task`
+Representa uma tarefa no projeto. Possui as seguintes propriedades:
+
+- `id` (string): Identificador único da tarefa de 5 caracteres
+- `description` (string): Descrição da tarefa
+- `status` (string): Status atual da tarefa (e.g., "Pendente", "Em Andamento", "Concluída")
+- `project` (string): Nome do projeto ao qual a tarefa pertence.
+
+Além disso, inclui um construtor para inicializar todas as propriedades.
+
+### Classe `TaskManager`
+Gerencia as tarefas do projeto e oferece os seguintes métodos:
+
+- **`getAllTasks()`**  
+  Consulta toda as tarefas.
+
+- **`addTask(description: string, status: string, project: string): void`**  
+  Adiciona uma nova tarefa ao projeto.
+
+- **`updateStatus(id: string, status: string): void`**
+  Altera o status da tarefa.
+  
+- **`consultTasksByProject(project: string): Task[]`**  
+  Busca todas as tarefas de um projeto.
+
+---
+
+### Testando o Sistema
+O projeto inclui uma API para testar o sistema:
+
+### **Rotas**
+
+##### **1. Listar todas as tarefas**
+- **URL:** `/api/taskManager/getAllTasks`  
+- **Método:** `GET`  
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Tarefas do projeto",
+      "tasks": [
+         {
+            "id": "BGW6C",
+            "description": "Finalizar o relatório",
+            "status": "Pendente",
+            "project": "Projeto A"
+         }
+      ]
+   }
+
+##### **2. Adicionar tarefa ao projeto**
+- **URL:** `/api/taskManager/addTask`  
+- **Método:** `POST`  
+- **Headers:**  
+  ```
+  Content-Type: application/json
+  ```
+- **Body:**  
+  ```json
+   {
+      "description": "Finalizar o relatório",
+      "status": "Pendente",
+      "project": "Projeto A"
+   }
+  ```
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Tarefa adicionada com sucesso!",
+      "task": {
+         "tasks": [
+            {
+            "id": "A0MEW",
+            "description": "Finalizar o relatório",
+            "status": "Pendente",
+            "project": "Projeto A"
+            }
+         ]
+      }
+   }
+  ```
+- **Resposta de BadRequest (400):**   
+  ```json
+   {
+      "message": "Todos os campos obrigatórios devem ser preenchidos: description, status, project"
+   }
+
+##### **3. Alterar status da tarefa**
+- **URL:** `/api/taskManager/status/:id`  
+- **Método:** `PUT`  
+- **Headers:**  
+  ```
+  Content-Type: application/json
+  ```
+- **Body:**  
+  ```json
+   {
+      "status": "Concluído"
+   }
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Tarefa atualizada com sucesso"
+   }
+  ```
+- **Resposta de BadRequest (400):**  
+  ```json
+   {
+      "message": "O status é obrigatório."
+   }
+- **Resposta de erro (404):**  
+  ```json
+   {
+      "message": "Tarefa não encontrada"
+   }
+
+##### **4. Buscar tarefas de um projeto**
+- **URL:** `/api/taskManager/consultTasksByProject`  
+- **Método:** `POST`  
+- **Headers:**  
+  ```
+  Content-Type: application/json
+  ```
+- **Body:**  
+  ```json
+   {
+      "project": "Projeto A"
+   }
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Projeto encontrado",
+      "tasks": [
+         {
+            "id": "ZL8MF",
+            "description": "Finalizar o relatório",
+            "status": "Pendente",
+            "project": "Projeto A"
+         }
+      ]
+   }
+- **Resposta de erro (404):**  
+  ```json
+   {
+      "message": "Projeto não encontrado ou sem tarefas"
+   }
+
+---
 A API pode ser consumida via POSTMAN ou similares.
 
 ---

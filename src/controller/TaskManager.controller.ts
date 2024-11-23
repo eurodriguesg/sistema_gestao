@@ -26,34 +26,62 @@ export class TaskManagerController {
         }
     }
 
-  adicionarTarefa(req: Request, res: Response): void {
+    addTask(req: Request, res: Response): void {
     const { description, status, project } = req.body;
 
     if (!description || !status || !project) {
-      res.status(400).json({ message: "Todos os campos são obrigatórios." });
+      res.status(400).json({
+        message: 'Todos os campos obrigatórios devem ser preenchidos: description, status, project',
+    });
       return;
     }
 
-    taskManager.adicionarTarefa(description, status, project);
-    res.status(201).json({ message: "Tarefa adicionada com sucesso!" });
+    taskManager.addTask(description, status, project);
+    res.status(200).json({ message: "Tarefa adicionada com sucesso!",task: taskManager});
   }
 
-  atualizarStatus(req: Request, res: Response): void {
+  updateStatus(req: Request, res: Response): void {
     const { id } = req.params;
     const { status } = req.body;
+    // console.log(`[SRV-TASKMANAGER 🟡] Atualizando status da tarefa: `,id,status);
+        
 
     if (!status) {
       res.status(400).json({ message: "O status é obrigatório." });
       return;
     }
 
-    taskManager.atualizarStatus(id, status);
-    res.status(200).json({ message: "Status atualizado com sucesso!" });
+   const result = taskManager.updateStatus(id, status);
+    
+    if(result) {
+      res.status(200).json({ message: "Tarefa atualizada com sucesso" });
+    }
+    else {
+      
+      res.status(404).json({ message: "Tarefa não encontrada" });
+    }
   }
 
-  consultarTarefasPorProjeto(req: Request, res: Response): void {
-    const { projeto } = req.params;
-    const tarefas = taskManager.consultarTarefasPorProjeto(projeto);
-    res.status(200).json(tarefas);
+  consultTasksByProject(req: Request, res: Response): void {
+    const { project } = req.body;
+  
+    if (!project) {
+      res.status(400).json({
+        message: 'Todos os campos obrigatórios devem ser preenchidos: project',
+      });
+      return;
+    }
+  
+    const result = taskManager.consultTasksByProject(project);
+    // console.log(`[SRV-TASKMANAGER 🟡] Tarefas do projeto`, result);
+  
+    if (result && result.length > 0) {
+      res.status(200).json({ message: "Projeto encontrado", tasks: result });
+      return;
+    }
+  
+    // Caso o projeto não tenha tarefas ou não seja encontrado
+    res.status(404).json({ message: "Projeto não encontrado ou sem tarefas" });
   }
+  
 }

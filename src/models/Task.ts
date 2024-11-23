@@ -2,7 +2,7 @@ export class Task {
 
     id: string;          // Identificador único de 5 caracteres
     description: string; // Descrição da tarefa
-    status: string;      // status atual da tarefa (e.g., "Pendente", "Em Andamento", "Concluída")
+    status: string;      // Status atual da tarefa (e.g., "Pendente", "Em Andamento", "Concluída")
     project: string;     // Nome do projeto ao qual a tarefa pertence.
 
     constructor(description: string, status: string, project: string) {
