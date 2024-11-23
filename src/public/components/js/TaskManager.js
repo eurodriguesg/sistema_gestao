@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const status = document.getElementById('status').value;
         const project = document.getElementById('project').value;
 
-        const response = await fetch('/api/taskManager/tasks', {
+        const response = await fetch('/api/taskManager/addTask', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ description, status, project })
         });
 
-        if (response.status === 201) {
+        if (response.status === 200) {
             alert('Tarefa adicionada com sucesso!');
             document.getElementById('addTaskForm').reset();
             loadTasks();
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const taskId = document.getElementById('taskId').value;
         const newStatus = document.getElementById('newStatus').value;
 
-        const response = await fetch(`/api/taskManager/tasks/${taskId}/status`, {
+        const response = await fetch(`/api/taskManager/updateStatus/${taskId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: newStatus })
@@ -50,13 +50,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const projectName = document.getElementById('projectName').value;
 
-        const response = await fetch(`/api/taskManager/tasks/project/${projectName}`);
+        const response = await fetch(`/api/taskManager/consultTasksByProject`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ project: projectName })
+        });
 
-        if (response.ok) {
+        if (response.status === 200) {
+            
             const tasks = await response.json();
             renderTasks(tasks); // Renderizar diretamente as tarefas retornadas
+        } else if (response.status === 404) {
+            alert('Projeto não encontrado ou sem tarefas');
         } else {
-            alert('Erro ao buscar tarefas.');
+            alert('Erro desconhecido');
+            
         }
     });
 

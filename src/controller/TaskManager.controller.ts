@@ -9,12 +9,14 @@ export class TaskManagerController {
     // Listar todos os funcionários
     async getAllTasks(req: Request, res: Response) {
         try {
-            const tasks = taskManager.getAllTasks();
-            console.log(tasks)
-            res.status(200).json({ 
-                message: 'Tarefas do projeto', 
-                tasks: tasks
-            });
+          const tasks = taskManager.getAllTasks();
+
+          if (tasks) {
+              res.status(200).json({ message: 'Tarefas do projeto:', tasks: tasks});
+          } else {
+              res.status(409).json({ message: 'Sem tarefas no momento' });
+          }
+
         } catch (error: any) {
             console.error("[SRV-ENTERPRISE 🔴] Erro ao listar tarefas:", error);
             res.status(500).json({ 

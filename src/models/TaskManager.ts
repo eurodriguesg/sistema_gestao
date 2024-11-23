@@ -11,7 +11,20 @@ export class TaskManager {
     // Métodoo para listar tarefas
     public getAllTasks() {
         //console.log(`[SRV-TASKMANAGER 🟡] Listando tarefas!`);
-        return this.tasks;
+
+        let added =0;
+        
+        this.tasks.forEach(task => {
+            added++;
+        });
+        
+        if(added > 0) {
+            console.log(`[SRV-TASKMANAGER ✅] Gestor ....: ${added} Tarefa`);
+            return this.tasks; // Retorna o livro encontrado.
+        } else {
+            console.log(`[SRV-TASKMANAGER 🔴] Sem tarefas no momento`);
+            return [];
+        }
     }
     addTask(description: string, status: string, project: string): void {
         const tarefa = new Task(description, status, project);
