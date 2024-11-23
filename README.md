@@ -182,6 +182,29 @@ Este projeto foi desenvolvido com os seguintes objetivos:
 
 ---
 
+### Estrutura do Projeto
+
+### Classe `Reserva`
+Representa uma Reserva no Hotel. Possui as seguintes propriedades:
+
+- `numeroQuarto` (number): número do quarto.
+- `nomeHospede` (string): nome do hóspede.
+- `dataEntrada` (Date): data de entrada.
+- `dataSaida` (Date): data de saída.
+
+Além disso, inclui um construtor para inicializar todas as propriedades.
+
+### Classe `Hotel`
+Gerencia os Funcionários da Hotel e oferece os seguintes métodos:
+
+- **`registrarReserva(reserva: Reserva): void`**  
+  Adiciona uma nova reserva à Hotel.
+
+- **`cancelarReserva(numeroQuarto: numeroQuarto): void`**  
+  Remove a reserva do quarto especificado.
+- **`consultarStatusQuarto(numeroQuarto: number): Reserva | undefined`**  
+  Retorna "Reservado" ou "Disponível" para o quarto especificado.
+
 ### Contato
 Caso tenha dúvidas ou sugestões, entre em contato:
 
