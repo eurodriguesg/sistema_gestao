@@ -39,6 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Status atualizado com sucesso!');
             document.getElementById('updateTaskForm').reset();
             loadTasks();
+        }  else if (response.status === 404) {
+            alert('Tarefa não encontrada');
         } else {
             alert('Erro ao atualizar status.');
         }
