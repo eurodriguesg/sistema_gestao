@@ -159,8 +159,8 @@ table tr:hover {
 #isBookAvailableForm {
     width: 100%;
     max-width: 600px;
-    margin: 20px auto;
-    padding: 30px;
+    margin: 10px auto;
+    padding: 15px;
     border: 2px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
@@ -190,7 +190,6 @@ table tr:hover {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box;
     font-size: 16px;
 }
 
@@ -215,6 +214,15 @@ table tr:hover {
     justify-content: space-between; /* Espaçamento entre os formulários */
     gap: 30px; /* Espaço entre os dois formulários */
     margin: 0 auto; /* Centraliza o contêiner */
+    max-width: 850px;
+}
+
+.form-container2 {
+    width: 65%; /* Pode ajustar a largura do contêiner */
+    display: flex;
+    justify-content: space-between; /* Espaçamento entre os formulários */
+    gap: 30px; /* Espaço entre os dois formulários */
+    margin: 0 auto; /* Centraliza o contêiner */
     max-width: 900px;
 }
 
@@ -223,8 +231,8 @@ table tr:hover {
 #returnBookForm {
     width: 100%;
     max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
+    margin: 10px auto;
+    padding: 15px;
     border: 2px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
