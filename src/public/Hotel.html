@@ -45,29 +45,37 @@
                 <button type="submit" class="button">Adicionar</button>
             </form>       
             
-            <form id="checkRoomAvailability">
+            <div class="form-container">
+                
+                <form id="checkRoomAvailability">
+    
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-bed"></i> Consultar Quarto
+                    </h2>
+             
+                    
+                    <div class="input-group">
+                        <input type="number" id="cra-numberFour" placeholder="Nº Quarto" required>
+                        <input type="date"   id="cra-entryDate"  placeholder="Check-in"  required>
+                        <input type="date"   id="cra-dateExit"   placeholder="Check-out" required>
+                    </div>
+                    <button type="submit" class="button">Buscar</button>
 
-                <h2 class="section-title">
-                    <i class="fa-solid fa-bed"></i> Consultar Quarto
-                </h2>
+                </form>  
+    
+                <div class="form-container2">
 
-                <div class="input-group">
-
-                    <input type="number" id="cra-numberFour" placeholder="Nº Quarto" required>
-                    <input type="date"   id="cra-entryDate"  placeholder="Check-in"  required>
-                    <input type="date"   id="cra-dateExit"   placeholder="Check-out" required>
+                    <form id="cancelBookingForm">
+                        
+                        <h2 class="section-title">
+                            <i class="fa-solid fa-ban"></i> Cancelar Reserva
+                        </h2>
+                        <input type="text" id="cbf-bookingId" placeholder="Nº Reserva" required>
+                        <button type="submit" class="button">Registrar</button>
+                        
+                    </form>
                 </div>
-
-                <button type="submit" class="button">Buscar</button>
-            </form>  
-
-            <form id="cancelBookingForm">
-                <h2 class="section-title">
-                    <i class="fa-solid fa-ban"></i> Cancelar Reserva
-                </h2>
-                <input type="text" id="cbf-bookingId" placeholder="Nº Reserva" required>
-                <button type="submit" class="button">Registrar</button>
-            </form>
+            </div>
             
             <h2 class="section-title">
                 <i class="fa-solid fa-door-open"></i> Reservas

@@ -161,9 +161,9 @@ table tr:hover {
 /* Estilização geral do formulário */
 #addBookingForm {
     width: 100%;
-    max-width: 800px;
+    max-width: 700px;
     margin: 20px auto;
-    padding: 30px;
+    padding: 15px;
     border: 2px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
@@ -173,13 +173,58 @@ table tr:hover {
 /* Estilização geral do formulário */
 #checkRoomAvailability {
     width: 100%;
-    max-width: 500px;
+    max-width: 800px;
     margin: 20px auto;
-    padding: 30px;
+    padding: 15px;
     border: 2px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilização geral do formulário */
+
+#cancelBookingForm {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilização do título */
+#cancelBookingForm h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Estilização dos campos de input */
+#cancelBookingForm input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Foco nos campos de input */
+#cancelBookingForm input:focus{
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* Estilização do checkbox */
+#cancelBookingForm label  {
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 10px;
 }
 
 /* Estilização do título */
@@ -194,8 +239,8 @@ table tr:hover {
 /* Estilização do grupo de inputs lado a lado */
 .input-group {
     display: flex;
-    gap: 20px;  /* Espaçamento entre os inputs */
-    margin-bottom: 20px;
+    gap: 10px;  /* Espaçamento entre os inputs */
+    margin-bottom: 10px;
 }
 
 /* Estilização dos campos de input */
@@ -205,7 +250,6 @@ table tr:hover {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box;
     font-size: 16px;
 }
 
@@ -257,52 +301,16 @@ table tr:hover {
     justify-content: space-between; /* Espaçamento entre os formulários */
     gap: 30px; /* Espaço entre os dois formulários */
     margin: 0 auto; /* Centraliza o contêiner */
+    max-width: 850px;
+}
+
+.form-container2 {
+    width: 65%; /* Pode ajustar a largura do contêiner */
+    display: flex;
+    justify-content: space-between; /* Espaçamento entre os formulários */
+    gap: 30px; /* Espaço entre os dois formulários */
+    margin: 0 auto; /* Centraliza o contêiner */
     max-width: 900px;
-}
-
-/* Estilização geral do formulário */
-
-#cancelBookingForm {
-    width: 100%;
-    max-width: 500px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Estilização do título */
-#cancelBookingForm h2 {
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-/* Estilização dos campos de input */
-#cancelBookingForm input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-/* Foco nos campos de input */
-#cancelBookingForm input:focus{
-    border-color: #4CAF50;
-    outline: none;
-}
-
-/* Estilização do checkbox */
-#cancelBookingForm label  {
-    display: inline-block;
-    font-size: 16px;
-    margin-left: 10px;
 }
 
 .back-link {
