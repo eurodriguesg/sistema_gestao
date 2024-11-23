@@ -452,7 +452,7 @@ table tr:hover {
 
 /* Adicionando um ícone personalizado ao lado do campo de data (opcional) */
 .input-group input[type="date"]::-webkit-calendar-picker-indicator {
-    background: url('components/images/calendar-icon.svg') no-repeat center center; /* Ícone de calendário */
+    background: url('/components/images/calendar-icon.svg') no-repeat center center; /* Ícone de calendário */
     background-size: 16px; /* Tamanho do ícone */
     border: none; /* Remove borda do ícone */
 }
