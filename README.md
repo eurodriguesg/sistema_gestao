@@ -40,10 +40,11 @@
 ## Módulo: Biblioteca
 
 ### Descrição do Projeto
-Este prmódulo é um sistema de gerenciamento de biblioteca desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de uma biblioteca pública:
+Este módulo é um sistema de gerenciamento de biblioteca desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de uma biblioteca pública:
 
 - **Cadastrar novos livros no acervo**.
 - **Registrar empréstimos de livros para os usuários**.
+- **Registrar devolução de livros para os usuários**.
 - **Consultar a disponibilidade de um livro específico**.
 
 O projeto simula um cenário real de gerenciamento de biblioteca, utilizando conceitos de orientação a objetos, encapsulamento e tipagem estática.
@@ -59,7 +60,10 @@ O sistema possui as seguintes funcionalidades:
 2. **Registrar Empréstimos**  
    Marca um livro como indisponível para empréstimos.
 
-3. **Consultar Disponibilidade**  
+3. **Registrar Empréstimos**  
+   Marca um livro como disponível para empréstimos.
+
+4. **Consultar Disponibilidade**  
    Verifica se um livro específico está disponível ou não.
 
 ---
@@ -69,38 +73,219 @@ O sistema possui as seguintes funcionalidades:
 ### Classe `Livro`
 Representa um livro no acervo da biblioteca. Possui as seguintes propriedades:
 
-- `codigo` (number): Identificador único do livro.
-- `titulo` (string): Título do livro.
-- `autor` (string): Autor do livro.
-- `disponivel` (boolean): Indica se o livro está disponível para empréstimo.
+- `code` (number): Identificador único do livro.
+- `title` (string): Título do livro.
+- `author` (string): Autor do livro.
+- `available` (boolean): Indica se o livro está disponível para empréstimo.
 
 Além disso, inclui um construtor para inicializar todas as propriedades.
 
 ### Classe `Biblioteca`
 Gerencia os livros do acervo e oferece os seguintes métodos:
 
-- **`adicionarLivro(livro: Livro): void`**  
-  Adiciona um novo livro ao acervo.
+- **`getAllBooks(): Array<Book>`**  
+  Consulta todos os livros do acervo.
 
-- **`registrarEmprestimo(codigo: number): void`**  
+- **`addBook(book: Book): boolean`**  
+  Adiciona um novo livro ao acervo.
+  
+- **`addBooks(books: Book[]): { added: number; duplicates: number }`**  
+  Adicionar múltiplos livros ao acervo.
+
+- **`registerLoan(code: number): string`**
   Marca o livro especificado como indisponível.
 
-- **`consultarDisponibilidade(codigo: number): boolean`**  
+- **`registerReturn(code: number): string`**
+  Marca o livro especificado como disponível.
+
+- **`checkAvailability(code: number): boolean {`**  
   Retorna `true` se o livro estiver disponível, ou `false` caso contrário.
+  
+- **`listAvailableBooks(): Array<Book> {`**  
+  Retorna todos os livros disponíveis.
+  
+- **`searchBook(): void {`**  
+  Busca um livro e retorna o livro se ele existir.
+
+---
 
 ### Testando o Sistema
 O projeto inclui funções para testar o sistema:
 
-1. **Cadastrar Livros**  
-   Três instâncias de `Livro` são criadas e adicionadas ao acervo.
+### **Rotas**
 
-2. **Registrar Empréstimos**  
-   Um dos livros cadastrados é emprestado.
+##### **1. Listar acervo**
+- **URL:** `/api/library/getAllBooks`  
+- **Método:** `GET`  
+- **Resposta de sucesso (201):**  
+  ```json
+  {
+   "message": "Livros do Acervo:",
+   "allBooks": [
+      {
+         "code": 1001,
+         "title": "O Príncipe",
+         "author": "NICOLAU MAQUIAVEL",
+         "available": true
+      }
+   ]
+   }
 
-3. **Consultar Disponibilidade**  
-   Verifica a disponibilidade de um livro pelo código e imprime o resultado no console.
+##### **2. Listar livros disponíveis**
+- **URL:** `/api/library/listAvailableBooks`  
+- **Método:** `GET`  
+- **Resposta de sucesso (200):**  
+  ```json
+  {
+   "message": "Livro(s) encontrado(s).",
+   "books": [
+      {
+         "code": 1001,
+         "title": "O Príncipe",
+         "author": "NICOLAU MAQUIAVEL",
+         "available": true
+      }
+   ]
+   }
 
-As funções podem ser executadas diretamente no arquivo principal (`index.ts`).
+##### **3. Adicionar livro(s)**
+- **URL:** `/api/library/addBooks`  
+- **Método:** `POST`  
+- **Headers:**  
+  ```
+  Content-Type: application/json
+  ```
+- **Body:**  
+  ```json
+  {
+      "code": "1001",
+      "title": "O Príncipe",
+      "author": "NICOLAU MAQUIAVEL"
+  }
+  ```
+- **Resposta de sucesso (201):**  
+  ```json
+  {
+      "message": "Livro adicionado com sucesso",
+      "book": "1001 - O Príncipe (NICOLAU MAQUIAVEL)"
+  }
+  ```
+- **Resposta de conflito (409):**  
+  ```json
+  {
+      "message": "Livro já existe",
+      "book": "1001 - O Príncipe (NICOLAU MAQUIAVEL)"
+  }
+- **Resposta de erro (400):**  
+  ```json
+   {
+      "message": "Todos os campos obrigatórios devem ser preenchidos: code, title, author"
+   }
+
+##### **4. Empréstimo de livro**
+- **URL:** `/api/library/bookLoan/:code`  
+- **Método:** `POST`  
+- **Headers:**  
+ 
+  ```
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Empréstimo registrado",
+      "code": 1001
+   }
+  ```
+- **Resposta de conflito (409):**  
+  ```json
+   {
+      "message": "Livro não disponível",
+      "code": 1001
+   }
+- **Resposta de erro (404):**  
+  ```json
+   {
+      "message": "Livro não encontrado",
+      "code": 1020
+   }
+
+##### **5. Devolução de livro**
+- **URL:** `/api/library/bookReturn/:code`  
+- **Método:** `POST`  
+- **Headers:**  
+ 
+  ```
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Devolução registrada",
+      "code": 1001
+   }
+  ```
+- **Resposta de conflito (409):**  
+  ```json
+   {
+      "message": "Livro não disponível",
+      "code": 1001
+   }
+- **Resposta de erro (404):**  
+  ```json
+   {
+      "message": "Livro não encontrado",
+      "code": 1020
+   }
+
+##### **6. Consultar Disponibilidade de livro**
+- **URL:** `/api/library/checkAvailability/:code`  
+- **Método:** `POST`  
+- **Headers:**  
+ 
+  ```
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Livro disponível",
+      "code": 1001
+   }
+  ```
+- **Resposta de conflito (409):**  
+  ```json
+   {
+      "message": "Livro não disponível",
+      "code": 1001
+   }
+- **Resposta de erro (404):**  
+  ```json
+   {
+      "message": "Livro não encontrado",
+      "code": 1020
+   }
+
+##### **7. Buscar livro**
+- **URL:** `/api/library/searchBook/1001`  
+- **Método:** `POST`  
+- **Headers:**  
+ 
+  ```
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+   "message": "Livro encontrado.",
+   "book": {
+      "code": 1001,
+      "title": "O Príncipe",
+      "author": "NICOLAU MAQUIAVEL",
+      "available": true
+   }
+   }
+  ```
+- **Resposta de erro (404):**  
+  ```json
+   {
+      "message": "Livro não encontrado",
+      "code": 1020
+   }
+
+A API pode ser consumida via POSTMAN ou similares.
 
 ---
 
@@ -130,8 +315,6 @@ O sistema possui as seguintes funcionalidades:
    Verificar um funcionário específico.
 
 ---
-
-### Estrutura do Projeto
 
 ### Classe `Funcionario`
 Representa um Funcionário no acervo da Empresa. Possui as seguintes propriedades:
@@ -182,8 +365,6 @@ Este projeto foi desenvolvido com os seguintes objetivos:
 
 ---
 
-### Estrutura do Projeto
-
 ### Classe `Reserva`
 Representa uma Reserva no Hotel. Possui as seguintes propriedades:
 
@@ -204,6 +385,13 @@ Gerencia os Funcionários da Hotel e oferece os seguintes métodos:
   Remove a reserva do quarto especificado.
 - **`consultarStatusQuarto(numeroQuarto: number): Reserva | undefined`**  
   Retorna "Reservado" ou "Disponível" para o quarto especificado.
+
+
+### **Erros Comuns**
+- **400 Bad Request:** Dados inválidos na requisição.  
+- **404 Not Found:** Recurso não encontrado.  
+- **409 Conflict:** Recurso não disponível.  
+- **500 Internal Server Error:** Erro interno da aplicação.  
 
 ### Contato
 Caso tenha dúvidas ou sugestões, entre em contato:

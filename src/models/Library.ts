@@ -28,19 +28,20 @@ export class Library {
 
     // Método para adicionar um livro ao acervo
     public addBook(book: Book): boolean {
-
         const exists = this.collection.some(b => b.code === book.code);
 
         if (!exists) {
+            // Garante que o livro será adicionado como disponível
+            book.available = true;
+
             this.collection.push(book);
             console.log(`[SRV-LIBRARY ✅] Livro adicionado.....: ${book.code} - ${book.title} (${book.author})`);
-            //console.log('Acervo atual:', this.collection);
             return true;
         } else {
             console.log(`[SRV-LIBRARY 🔴] Livro já existe......: ${book.code} - ${book.title} (${book.author})`);
             return false;
         }
-    }
+    }  
 
     // Método para adicionar múltiplos livros ao acervo
     public addBooks(books: Book[]): { added: number; duplicates: number } {
@@ -131,7 +132,11 @@ export class Library {
 
     // Método para retornar todos os livros disponíveis
     public listAvailableBooks(): Array<Book> {
-        return this.collection.filter(book => book.available);
+        
+        const availableBooks = this.collection.filter(book => book.available)
+        
+        console.log(`[SRV-LIBRARY ✅] Livro(s) encontrados.: ${JSON.stringify(availableBooks)}`);
+        return availableBooks;
     }
     
 }

@@ -26,11 +26,11 @@ export const LibraryController = {
                 const books = req.body;
 
                 const isValid = books.every(
-                    (book: any) => book.code && book.title && book.author && book.available !== undefined
+                    (book: any) => book.code && book.title && book.author !== undefined
                 );
 
                 if (!isValid) {
-                    res.status(400).json({ message: 'Todos os livros devem ter code, title, author e available' });
+                    res.status(400).json({ message: 'Todos os livros devem ter code, title, author' });
                     return;
                 }
 
@@ -49,9 +49,9 @@ export const LibraryController = {
             } else {
                 const { code, title, author, available } = req.body;
 
-                if (!code || !title || !author || available === undefined) {
+                if (!code || !title || !author === undefined) {
                     res.status(400).json({
-                        message: 'Todos os campos obrigatórios devem ser preenchidos: code, title, author, available',
+                        message: 'Todos os campos obrigatórios devem ser preenchidos: code, title, author',
                     });
                     return;
                 }
@@ -148,12 +148,18 @@ export const LibraryController = {
         if (book.book != null) {
             res.status(200).json({ message: 'Livro encontrado.', book: book.book});
         } else {
-            res.status(409).json({ message: 'Livro não encontrao.' });
+            res.status(404).json({ message: 'Livro não encontrado.' });
         }
     },
 
     listAvailableBooks: (_req: Request, res: Response): void => {
+
         const availableBooks = library.listAvailableBooks();
-        res.status(200).json(availableBooks);
+
+        if (availableBooks != null) {
+            res.status(200).json({ message: 'Livro(s) encontrado(s).', books: availableBooks});
+        } else {
+            res.status(409).json({ message: 'Livro(s) não encontrados.' });
+        }
     },
 };
