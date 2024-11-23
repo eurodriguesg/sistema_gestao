@@ -8,6 +8,11 @@ export class Hotel {
         this.bookings = new Array<Booking>();
     }
 
+    // Método para ajustar a data ignorando o fuso horário
+    formatDate(date: Date): string {
+        return date.toISOString().split('T')[0].split('-').reverse().join('/'); // Retorna no formato dd/mm/aaaa
+    }
+
     // Método para obter todas as reservas registradas
     getAllBookings(): Booking[] {
         return this.bookings;
@@ -18,52 +23,84 @@ export class Hotel {
         // Verifica se há conflito para a reserva
         const conflito = this.bookings.some(r =>
             r.numberFour === booking.numberFour &&
-            ((booking.entryDate >= r.entryDate && booking.entryDate <= r.dateExit) ||
-                (booking.dateExit >= r.entryDate && booking.dateExit <= r.dateExit) ||
-                (booking.entryDate <= r.entryDate && booking.dateExit >= r.dateExit))
+            (
+                (booking.entryDate >= r.entryDate && booking.entryDate <= r.dateExit) ||
+                (booking.dateExit  >= r.entryDate && booking.dateExit  <= r.dateExit) ||
+                (booking.entryDate <= r.entryDate && booking.dateExit  >= r.dateExit)
+            )
         );
 
+        // Formatar as datas para exibição no log
+        const formattedEntryDate = this.formatDate(booking.entryDate);
+        const formattedDateExit  = this.formatDate(booking.dateExit);
+
         if (conflito) {
-            console.log(`[SRV-HOTEL 🔴] Quarto com reserva para.: ${booking.numberFour} - ${booking.guestName} (${booking.entryDate}/${booking.dateExit})`);
+            console.log(
+                "[SRV-HOTEL 🔴] Reservado para........: Quarto", booking.numberFour,
+                "-", booking.guestName,
+                "(", formattedEntryDate,
+                ">", formattedDateExit,
+                ")"
+            );
             return false; // Retorna false se houver conflito
         }
 
         // Se não houver conflito, adiciona a reserva
         this.bookings.push(booking);
-        console.log(`[SRV-HOTEL ✅] Reserva realizada para..: ${booking.numberFour} - ${booking.guestName} (${booking.entryDate}/${booking.dateExit})`);
+        console.log("[SRV-HOTEL ✅] Reserva confirmada....: Quarto", booking.numberFour,
+            "-", booking.guestName,
+            "(", formattedEntryDate,
+            ">", formattedDateExit,
+            ")"
+        );
         return true; // Retorna true se a reserva foi confirmada com sucesso
     }
 
     // Método para registrar várias reservas
     makeBookings(bookings: Booking[]): boolean {
-        const bookingsWithConflict: string[] = [];
-        const confirmedBookings: string[] = [];
-    
+        let hasConflict = false;
+        let added = 0;
+        let duplicates = 0;
+        
         for (const booking of bookings) {
             // Verifica conflitos com as reservas existentes
             const conflito = this.bookings.some(r =>
                 r.numberFour === booking.numberFour &&
-                ((booking.entryDate >= r.entryDate && booking.entryDate <= r.dateExit) ||
-                 (booking.dateExit >= r.entryDate && booking.dateExit <= r.dateExit) ||
-                 (booking.entryDate <= r.entryDate && booking.dateExit >= r.dateExit))
+                (
+                    (booking.entryDate >= r.entryDate && booking.entryDate <= r.dateExit) ||
+                    (booking.dateExit >= r.entryDate && booking.dateExit <= r.dateExit) ||
+                    (booking.entryDate <= r.entryDate && booking.dateExit >= r.dateExit)
+                )
             );
-    
+
+            const formattedEntryDate = this.formatDate(booking.entryDate);
+            const formattedDateExit  = this.formatDate(booking.dateExit);
+
             if (conflito) {
-                bookingsWithConflict.push(`Quarto ${booking.numberFour} de ${booking.guestName}`);
+                console.log("[SRV-HOTEL 🔴] Conflito na reserva...: Quarto", booking.numberFour,
+                    "-", booking.guestName,
+                    "(", formattedEntryDate,
+                    ">", formattedDateExit,
+                    ")"
+                );
+                hasConflict = true;
+                duplicates++;
             } else {
                 this.bookings.push(booking);
-                confirmedBookings.push(`Quarto ${booking.numberFour} de ${booking.guestName}`);
+                console.log("[SRV-HOTEL ✅] Reserva confirmada....: Quarto", booking.numberFour,
+                    "-", booking.guestName,
+                    "(", formattedEntryDate,
+                    ">", formattedDateExit,
+                    ")"
+                );
+                added++;
             }
         }
-    
-        if (bookingsWithConflict.length > 0) {
-            console.log(`[SRV-HOTEL 🔴] Conflitos nas reservas: ${bookingsWithConflict.join(', ')}`);
-            return false;
-        }
-    
-        console.log(`[SRV-HOTEL ✅] Reservas confirmadas: ${confirmedBookings.join(', ')}`);
-        return true;
-    }    
+
+        console.log(`[SRV-HOTEL ✅] Reservas verificadas..: Realizadas(${added}), Duplicadas(${duplicates})`);
+        return !hasConflict; // Retorna `true` apenas se todas as reservas foram confirmadas
+    }
+
 
     // Método para onsultar disponibilidade para um período
     checkRoomAvailability(numberFour: number, entryDate: Date, dateExit: Date): { status: string, details?: any } {
@@ -85,11 +122,11 @@ export class Hotel {
         //console.log("====== Fim da comparação de datas ======");
     
         if (conflict) {
-            console.log(`Quarto ${numberFour} está reservado para o período solicitado.`);
+            console.log(`[SRV-HOTEL 🔴] Status do Quarto......: ${numberFour} está reservado para o período solicitado`);
             return { status: 'not_available' };
         }
     
-        console.log(`Quarto ${numberFour} está disponível para o período solicitado.`);
+        console.log(`[SRV-HOTEL ✅] Status do Quarto......: ${numberFour} disponível no periódo solicitado`);
         return { status: 'success' };
     }
     
@@ -100,11 +137,13 @@ export class Hotel {
     
         if (index !== -1) {
             const removedBooking = this.bookings.splice(index, 1)[0];
-            console.log(`[SRV-HOTEL ✅] Reserva cancelada: Quarto ${removedBooking.numberFour}, Hóspede ${removedBooking.guestName}.`);
+            console.log("[SRV-HOTEL ✅] Reserva cancelada.....: Quarto", removedBooking.numberFour,
+                "-", removedBooking.guestName
+            );
             return true;
         }
-    
-        console.log(`[SRV-HOTEL 🔴] Reserva não encontrada com o ID: ${bookingId}`);
+
+        console.log(`[SRV-HOTEL 🔴] Reserva não encontrada: ${bookingId}`);
         return false;
     }    
 

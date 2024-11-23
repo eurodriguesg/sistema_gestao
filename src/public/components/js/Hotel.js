@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
         
+    // Carregar as reservas ao carregar a página
+    getAllBookings();
+
     // Manipulador para adicionar livro
     document.getElementById('addBookForm').addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -109,9 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 booksList.innerHTML = ''; // Limpar tabela antes de preencher
 
                 data.bookings.forEach(booking => {
-                    // Formatando as datas para exibir apenas dia/mês/ano
-                    const entryDate = new Date(booking.entryDate).toLocaleDateString();
-                    const dateExit = new Date(booking.dateExit).toLocaleDateString();
+                    // Extraindo e formatando datas a partir da string ISO (somente YYYY-MM-DD)
+                    const entryDate = booking.entryDate.split('T')[0].split('-').reverse().join('/');
+                    const dateExit = booking.dateExit.split('T')[0].split('-').reverse().join('/');
 
                     // Criar uma nova linha para cada reserva
                     const row = `
@@ -133,8 +136,5 @@ document.addEventListener('DOMContentLoaded', () => {
             booksList.innerHTML = `<tr><td colspan="5">Erro ao carregar reservas.</td></tr>`;
         }
     }
-
-    // Carregar as reservas ao carregar a página
-    document.addEventListener('DOMContentLoaded', getAllBookings);
-
+    
 });
