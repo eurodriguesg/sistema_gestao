@@ -235,9 +235,7 @@ O projeto inclui uma API para testar o sistema:
 ##### **6. Consultar Disponibilidade de livro**
 - **URL:** `/api/library/checkAvailability/:code`  
 - **Método:** `POST`  
-- **Headers:**  
- 
-  ```
+
 - **Resposta de sucesso (200):**  
   ```json
    {
@@ -259,11 +257,9 @@ O projeto inclui uma API para testar o sistema:
    }
 
 ##### **7. Buscar livro**
-- **URL:** `/api/library/searchBook/1001`  
+- **URL:** `/api/library/searchBook/:code`  
 - **Método:** `POST`  
-- **Headers:**  
- 
-  ```
+
 - **Resposta de sucesso (200):**  
   ```json
    {
