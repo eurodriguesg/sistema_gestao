@@ -45,9 +45,8 @@ h1 {
     display: inline-block;
     font-size: 16px;
     font-weight: bold; /* Torna a fonte dos botões mais grossa */
-    margin: 4px 2px;
     cursor: pointer;
-    border-radius: 80px;
+    border-radius: 5px;
     transition: background-color 0.3s;
 }
 .button:hover {
@@ -227,9 +226,11 @@ table tr:hover {
 
 /* Estilização do botão */
 #addBookingForm button,
-#checkRoomAvailability button {
-    width: 100%;
-    padding: 12px;
+#checkRoomAvailability button,
+#cancelBookingForm button {
+    width: auto; /* Permite que o botão tenha uma largura automática */
+    min-width: 150px; /* Define um tamanho mínimo, ajuste conforme necessário */
+    padding: 12px 20px; /* Ajuste o espaçamento interno para o botão */
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -237,11 +238,16 @@ table tr:hover {
     cursor: pointer;
     font-size: 16px;
     margin-top: 10px;
+    transition: background-color 0.3s;
+    display: block; /* Garante que o botão seja um bloco para centralização */
+    margin-left: auto; /* Centraliza o botão */
+    margin-right: auto; /* Centraliza o botão */
 }
 
 /* Efeito no botão ao passar o mouse */
 #addBookingForm button:hover,
-#checkRoomAvailability button:hover{
+#checkRoomAvailability button:hover,
+#cancelBookingForm button:hover {
     background-color: #45a049;
 }
 
@@ -297,25 +303,6 @@ table tr:hover {
     display: inline-block;
     font-size: 16px;
     margin-left: 10px;
-}
-
-/* Estilização do botão */
-#cancelBookingForm button {
-    width: 100%;
-    padding: 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    transition: background-color 0.3s;
-}
-
-/* Efeito no botão ao passar o mouse */
-#cancelBookingForm button:hover {
-    background-color: #45a049;
 }
 
 .back-link {
