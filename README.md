@@ -72,7 +72,7 @@ O sistema possui as seguintes funcionalidades:
 
 ### Estrutura do Projeto
 
-### Classe `Livro`
+### Classe `Book`
 Representa um livro no acervo da biblioteca. Possui as seguintes propriedades:
 
 - `code` (number): Identificador único do livro.
@@ -82,7 +82,7 @@ Representa um livro no acervo da biblioteca. Possui as seguintes propriedades:
 
 Além disso, inclui um construtor para inicializar todas as propriedades.
 
-### Classe `Biblioteca`
+### Classe `Library`
 Gerencia os livros do acervo e oferece os seguintes métodos:
 
 - **`getAllBooks(): Array<Book>`**  
@@ -286,101 +286,186 @@ A API pode ser consumida via POSTMAN ou similares.
 ## Módulo: Empresa
 
 ### Descrição do Projeto
-Este módulo é um sistema de gerenciamento de funcionários desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de uma biblioteca pública:
+Este módulo é um sistema de gerenciamento de funcionários desenvolvido em TypeScript. Ele foi criado para atender as seguintes necessidades de uma Empresa:
 
-- **Cadastrar Funcionários na Empresa**.
-- **Alterar salário do Funcionário**.
-- **Consultar um funcionário específico**.
+- **Consulta todos os funcionários da empresa**.
+- **Adicionar novo(s) funcionários(s) à empresa**.
+- **Alterar salário do funcionário**.
+- **Consultar a funcionário por matrícula**.
 
 O projeto simula um cenário real de gerenciamento de funcionários, utilizando conceitos de orientação a objetos, encapsulamento e tipagem estática.
 
 ---
 
-### Funcionalidades
+### Funcionalidades Principais
 O sistema possui as seguintes funcionalidades:
 
-1. **Cadastrar Funcionários**  
+1. **Consulta todos os funcionários da empresa**  
+   Lista todos os funcionários da empresa.
+
+2. **Adicionar novo(s) funcionários(s) à empresa**  
    Permite adicionar novos funcionários a Empresa.
 
-2. **Alterar Salário do Funcionário**  
+3. **Alterar Salário do Funcionário**  
    Alterar o salário de um funcionário.
 
-3. **Consultar Disponibilidade**  
+4. **Consultar a funcionário por matrícula**  
    Verificar um funcionário específico.
 
 ---
 
-### Classe `Funcionario`
-Representa um Funcionário no acervo da Empresa. Possui as seguintes propriedades:
+### Estrutura do Projeto
 
-- `matricula` (number): Identificador único do funcionário.
-- `nome` (string): Nome do funcionário.
-- `cargo` (string): Cargo do funcionário.
-- `salario` (number): Salário do funcionário.
+### Classe `Employee`
+Representa um livro no acervo da biblioteca. Possui as seguintes propriedades:
+
+- `registration` (number): Identificador único do funcionário.
+- `name` (string): Nome do funcionário.
+- `role` (string): Cargo do funcionário.
+- `salary` (number): Salário do funcionário.
+- `photoPath` (string): Foto do funcionário
 
 Além disso, inclui um construtor para inicializar todas as propriedades.
 
-### Classe `Empresa`
-Gerencia os Funcionários da Empresa e oferece os seguintes métodos:
+### Classe `Biblioteca`
+Gerencia os livros do acervo e oferece os seguintes métodos:
 
-- **`adicionarFuncionario(funcionario: Funcionario): void`**  
+- **`getAllEmployees()`**  
+  Consulta todos os funcionários da empresa.
+
+- **`addEmployee(employee: Employee): boolean`**  
   Adiciona um novo funcionário à empresa.
+  
+- **`addEmployees(employees: Employee[]): { added: number; duplicates: number }`**  
+  Adicionar múltiplos funcionários à empresa.
 
-- **`atualizarSalario(matricula: number, salario: number): void`**  
-  Atualiza o salário do funcionário com a matrícula
-especificada.
+- **`updateSalary(registration: number, salary: number): string`**
+  Alterar o salário de um funcionário especificado.
+  
+- **`findEmployeeByRegistration(registration: number): Employee | null {`**  
+  Busca um funcionário e retorna o funcionário se ele existir.
 
-- **`consultarFuncionario(matricula: number): Funcionario | undefined`**  
-  Atualiza o salário do funcionário com a matrícula especificada.
+---
 
 ### Testando o Sistema
-O projeto inclui funções para testar o sistema:
+O projeto inclui uma API para testar o sistema:
 
-1. **Cadastrar Funcionário**  
-   É possível criar quantas instâncias de `Funcionário` desejar adicionar a empresa.
+### **Rotas**
 
-2. **Alterar Salário**  
-   É possível atualizar o salário de duas formas, selecionando um funcionário na listagem, por veio da ação `ver`ou por meio da consulta de um determinado Funcionário.
+##### **1. Listar funcionários da empresa**
+- **URL:** `/api/enterprise/getAllEmployees`  
+- **Método:** `GET`  
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Funcionários da Empresa",
+      "employees": [
+         {
+            "registration": 1001,
+            "name": "ELISEU RODRIGUES GUIMARAES",
+            "role": "DESENVOLVEDOR",
+            "salary": 2000,
+            "photoPath": ""
+         }
+      ]
+   }
 
-3. **Consultar Funcionário**  
-   Verifica um Funcionário pela matricula e apresenta o resultado no modal.
+##### **2. Adicionar funcionário(s)**
+- **URL:** `/api/enterprise/addEmployee`  
+- **Método:** `POST`  
+- **Headers:**  
+  ```
+  Content-Type: application/json
+  ```
+- **Body:**  
+  ```json
+  {
+      "registration": "1001",
+      "name": "ELISEU RODRIGUES GUIMARAES",
+      "role": "DESENVOLVEDOR",
+      "salary": "2000"
+   }
+  ```
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Funcionário adicionado com sucesso",
+      "employee": "1001 - ELISEU RODRIGUES GUIMARAES (DESENVOLVEDOR)"
+   }
+  ```
+- **Resposta de conflito (409):**  
+  ```json
+   {
+   "message": "Funcionário já existe",
+   "employee": "1001 - ELISEU RODRIGUES GUIMARAES (DESENVOLVEDOR)"
+   }
+- **Resposta de erro (400):**  
+  ```json
+   {
+      "message": "Todos os campos obrigatórios devem ser preenchidos",
+      "fields": "registration, name, role e salary"
+   }
 
-As funções podem ser executadas diretamente na instância do servidor local que será criado (`http://127.0.0.1:31063`) ou demais interfaces de rede local.
+##### **3. Alterar salário**
+- **URL:** `/api/enterprise/changeSalary`  
+- **Método:** `POST`  
+- **Headers:**  
+  ```
+  Content-Type: application/json
+  ```
+- **Body:**  
+  ```json
+   {
+      "registration": "1001",
+      "salary": "3100"
+   }
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Salário alterado com sucesso para R$ 3100",
+      "registration": "1001",
+      "salary": "3100"
+   }
+  ```
+- **Resposta de BadRequest (400):**  
+  ```json
+   {
+      "message": "Todos os campos obrigatórios devem ser preenchidos",
+      "fields": "registration e salary"
+   }
+- **Resposta de erro (404):**  
+  ```json
+   {
+      "message": "Funcionário não encontrado",
+      "registration": "100"
+   }
+
+##### **4. Buscar funcionário**
+- **URL:** `/api/enterprise/:registration`  
+- **Método:** `GET`  
+
+- **Resposta de sucesso (200):**  
+  ```json
+   {
+      "message": "Funcionário encontrado",
+      "employee": {
+         "registration": 1001,
+         "name": "ELISEU RODRIGUES GUIMARAES",
+         "role": "DESENVOLVEDOR",
+         "salary": 3100,
+         "photoPath": ""
+      }
+   }
+- **Resposta de erro (404):**  
+  ```json
+   {
+   "message": "Funcionário não encontrado",
+   "registration": 1020
+   }
+
+A API pode ser consumida via POSTMAN ou similares.
 
 ---
-
-### Objetivos de Aprendizado
-Este projeto foi desenvolvido com os seguintes objetivos:
-
-- Praticar a definição e utilização de classes em TypeScript.
-- Implementar e invocar funções para manipular objetos e classes.
-- Aplicar conceitos de encapsulamento e tipagem estática.
-- Simular um cenário real de gerenciamento de biblioteca.
-
----
-
-### Classe `Reserva`
-Representa uma Reserva no Hotel. Possui as seguintes propriedades:
-
-- `numeroQuarto` (number): número do quarto.
-- `nomeHospede` (string): nome do hóspede.
-- `dataEntrada` (Date): data de entrada.
-- `dataSaida` (Date): data de saída.
-
-Além disso, inclui um construtor para inicializar todas as propriedades.
-
-### Classe `Hotel`
-Gerencia os Funcionários da Hotel e oferece os seguintes métodos:
-
-- **`registrarReserva(reserva: Reserva): void`**  
-  Adiciona uma nova reserva à Hotel.
-
-- **`cancelarReserva(numeroQuarto: numeroQuarto): void`**  
-  Remove a reserva do quarto especificado.
-- **`consultarStatusQuarto(numeroQuarto: number): Reserva | undefined`**  
-  Retorna "Reservado" ou "Disponível" para o quarto especificado.
-
-
 ### **Erros Comuns**
 - **400 Bad Request:** Dados inválidos na requisição.  
 - **404 Not Found:** Recurso não encontrado.  
