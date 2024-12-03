@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { Library } from '../models/Library';
-import { Book } from '../models/Book';
+import { Library }           from '../models/Library';
+import { Book }              from '../models/Book';
 
 const library = new Library();
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TaskManager } from "./../models/TaskManager";
+import { TaskManager }       from "./../models/TaskManager";
 
 const taskManager = new TaskManager();
 
